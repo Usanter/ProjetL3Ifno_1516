@@ -22,30 +22,12 @@ import client.StrategiePersonnage;
  */
 public class StrategieBarbare extends StrategiePersonnage{
 	
-	/**
-	 * Console permettant d'ajouter une phrase et de recuperer le serveur 
-	 * (l'arene).
-	 */
-	protected Console console;
-
-	/**
-	 * Cree un personnage, la console associe et sa strategie.
-	 * @param ipArene ip de communication avec l'arene
-	 * @param port port de communication avec l'arene
-	 * @param ipConsole ip de la console du personnage
-	 * @param nom nom du personnage
-	 * @param groupe groupe d'etudiants du personnage
-	 * @param nbTours nombre de tours pour ce personnage (si negatif, illimite)
-	 * @param position position initiale du personnage dans l'arene
-	 * @param logger gestionnaire de log
-	 */
 	public StrategieBarbare (String ipArene, int port, String ipConsole, 
 			String nom, String groupe, HashMap<Caracteristique, Integer> caracts,
 			long nbTours, Point position, LoggerProjet logger)
 	{
 		super(ipArene, port , ipConsole,  nom, groupe, caracts , nbTours, position , logger);
 	}
-
 	// TODO etablir une strategie afin d'evoluer dans l'arene de combat
 	// une proposition de strategie (simple) est donnee ci-dessous
 	/** 

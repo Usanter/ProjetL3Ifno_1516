@@ -10,19 +10,20 @@ import logger.LoggerProjet;
 import serveur.element.Caracteristique;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
+
 /**
  * Lance une Console avec un Element sur l'Arene. 
  * A lancer apres le serveur, eventuellement plusieurs fois.
  */
 public class LanceBarbare {
 	
-	private static String usage = "USAGE : java " + LanceBarbare.class.getName() + " [ port [ ipArene ] ]";
+	private static String usage = "USAGE : java " + LancePaladin.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-		String nom = "Barbare";
-		
+		String nom = "Truc";
+		//slooazjdjfh
 		// TODO remplacer la ligne suivante par votre numero de groupe
-		String groupe = "19"; 
+		String groupe = "19";
 		
 		// nombre de tours pour ce personnage avant d'etre deconnecte 
 		// (20 minutes par defaut)
@@ -71,7 +72,12 @@ public class LanceBarbare {
 			// caracteristiques du personnage
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
 			// seule la force n'a pas sa valeur par defaut (exemple)
-			caracts.put(Caracteristique.FORCE,70); 
+			caracts.put(Caracteristique.FORCE, 40);
+			caracts.put(Caracteristique.POUVOIR, 0);
+			caracts.put(Caracteristique.VIE, 100);
+			caracts.put(Caracteristique.INITIATIVE, 40);
+			
+			
 			
 			Point position = Calculs.positionAleatoireArene();	
 			

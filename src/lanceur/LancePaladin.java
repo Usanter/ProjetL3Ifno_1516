@@ -20,10 +20,10 @@ public class LancePaladin {
 	private static String usage = "USAGE : java " + LancePaladin.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-		String nom = "Truc";
+		String nom = "Paladin";
 		//slooazjdjfh
 		// TODO remplacer la ligne suivante par votre numero de groupe
-		String groupe = "G" + Calculs.nombreAleatoire(0,99); 
+		String groupe = "19";
 		
 		// nombre de tours pour ce personnage avant d'etre deconnecte 
 		// (20 minutes par defaut)
@@ -73,8 +73,6 @@ public class LancePaladin {
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
 			// seule la force n'a pas sa valeur par defaut (exemple)
 			caracts.put(Caracteristique.FORCE, 40);
-			caracts.put(Caracteristique.POUVOIR, 0);
-			caracts.put(Caracteristique.VIE, 100);
 			caracts.put(Caracteristique.INITIATIVE, 40);
 			
 			
