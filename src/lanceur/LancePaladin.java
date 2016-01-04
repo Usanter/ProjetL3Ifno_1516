@@ -73,7 +73,6 @@ public class LancePaladin {
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
 			// seule la force n'a pas sa valeur par defaut (exemple)
 			caracts.put(Caracteristique.FORCE, 40);
-			caracts.put(Caracteristique.VIE, 90 );
 			caracts.put(Caracteristique.INITIATIVE, 40);
 			
 			

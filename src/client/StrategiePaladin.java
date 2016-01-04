@@ -58,7 +58,7 @@ public class StrategiePaladin extends StrategiePersonnage{
 						arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR),Caracteristique.POUVOIR);
 						arene.modifCara(refRMI, 10, Caracteristique.VIE);
 					}
-					else if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) > 10 && console.getPersonnage().getCaract(Caracteristique.VIE) == 100){
+					else if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) >= 10 && console.getPersonnage().getCaract(Caracteristique.VIE) == 100){
 						arene.modifCara(refRMI, -1, Caracteristique.POUVOIR);
 					}
 					
