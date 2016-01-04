@@ -54,11 +54,12 @@ public class StrategiePaladin extends StrategiePersonnage{
 					console.setPhrase("J'erre...");
 					arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
 					// a modifier pour chaque personnage ( temps de recharge des pouvoirs )
-					if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) > 10){
+					if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) > 10 && console.getPersonnage().getCaract(Caracteristique.VIE) + 10 <= 100){
 						arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR),Caracteristique.POUVOIR);
-						if(console.getPersonnage().getCaract(Caracteristique.VIE) + 10 <= 100){
-							arene.modifCara(refRMI, 10, Caracteristique.VIE);
-						}
+						arene.modifCara(refRMI, 10, Caracteristique.VIE);
+					}
+					else if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) > 10 && console.getPersonnage().getCaract(Caracteristique.VIE) == 100){
+						arene.modifCara(refRMI, 11, Caracteristique.POUVOIR);
 					}
 					
 					
