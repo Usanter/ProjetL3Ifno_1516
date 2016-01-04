@@ -8,7 +8,6 @@ import serveur.IArene;
 import serveur.element.Caracteristique;
 import serveur.element.Element;
 import serveur.element.Potion;
-import serveur.interaction.*;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 import client.StrategiePersonnage;
@@ -86,7 +85,6 @@ public class StrategiePaladin extends StrategiePersonnage{
 								arene.lanceAttaque(refRMI, refCible);
 							}
 							else{
-								
 								
 							}
 						}
