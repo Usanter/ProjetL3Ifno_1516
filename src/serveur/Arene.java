@@ -24,6 +24,9 @@ import serveur.element.Potion;
 import serveur.interaction.Deplacement;
 import serveur.interaction.Duel;
 import serveur.interaction.Ramassage;
+
+import serveur.interaction.ModifCara;
+
 import serveur.vuelement.VueElement;
 import serveur.vuelement.VuePersonnage;
 import serveur.vuelement.VuePotion;
@@ -712,6 +715,11 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 		}
 		
 		return res;
+	}
+	
+	public void modifCara(int refRMI, int modifForce, Caracteristique cara) throws RemoteException{
+		VuePersonnage client = personnages.get(refRMI);
+		new ModifCara(this,client,modifForce,cara).agir();
 	}
 	
 	@Override

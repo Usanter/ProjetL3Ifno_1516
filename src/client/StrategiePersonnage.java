@@ -82,8 +82,14 @@ public class StrategiePersonnage {
 		
 		if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
 			console.setPhrase("J'erre...");
-			arene.deplace(refRMI, 0); 
+			arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
+			// a modifier pour chaque personnage ( temps de recharge des pouvoirs )
+			if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) > 10){
+				arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
+			}
 			
+			
+			arene.deplace(refRMI, 0); 
 		} else {
 			int refCible = Calculs.chercherElementProche(position, voisins);
 			int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));

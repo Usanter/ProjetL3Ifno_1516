@@ -21,8 +21,9 @@ public enum Caracteristique {
 	/**
 	 * Initiative : definit l'ordre d'action des personnages lors d'un tour de jeu. 
 	 */
-	INITIATIVE("Initiative", "INIT", 0, 200, 50);
+	INITIATIVE("Initiative", "INIT", 0, 200, 50),
 	
+	POUVOIR("Pouvoir","Pw",0,20,20);
 	/**
 	 * Nom complet.
 	 */

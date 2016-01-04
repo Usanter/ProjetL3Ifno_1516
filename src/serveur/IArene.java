@@ -11,6 +11,7 @@ import serveur.element.Personnage;
 import serveur.element.Potion;
 import serveur.vuelement.VueElement;
 
+import serveur.element.Caracteristique;
 /**
  * Definit les methodes qui pourront s'appliquer a l'arene par le reseau.
  */
@@ -20,7 +21,7 @@ public interface IArene extends Remote {
 	/**************************************************************************
 	 * Connexion et deconnexion, partie non commencee ou finie. 
 	 **************************************************************************/
-	
+	public void modifCara(int refRMI, int modifForce, Caracteristique cara) throws RemoteException;
 	/**
 	 * Retourne une reference RMI libre pour un element.
 	 * @return reference RMI inutilisee
