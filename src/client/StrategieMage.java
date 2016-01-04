@@ -19,9 +19,9 @@ import client.StrategiePersonnage;
 /**
  * Strategie d'un personnage. 
  */
-public class StrategieVoleur extends StrategiePersonnage{
+public class StrategieMage extends StrategiePersonnage{
 	
-	public StrategieVoleur (String ipArene, int port, String ipConsole, 
+	public StrategieMage (String ipArene, int port, String ipConsole, 
 			String nom, String groupe, HashMap<Caracteristique, Integer> caracts,
 			long nbTours, Point position, LoggerProjet logger)
 	{
@@ -54,19 +54,29 @@ public class StrategieVoleur extends StrategiePersonnage{
 					e.printStackTrace();
 				}
 				
-				// On incrémente le caractère pouvoir à chaque tout du joueur
-				if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) < 20){
-					arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
-				}
-				
 				if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
 					console.setPhrase("J'erre...");
+					arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
+					// a modifier pour chaque personnage ( temps de recharge des pouvoirs )
+					if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) > 10){
+						arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
+					}
+					
+					
 					arene.deplace(refRMI, 0); 
 				} else {
 					int refCible = Calculs.chercherElementProche(position, voisins);
 					int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
 
 					Element elemPlusProche = arene.elementFromRef(refCible);
+					//Si enemis dans le rayon d'action du pouvoir et pouvoir dispo alors attaque
+					if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION_GRANDE && console.getPersonnage().getCaract(Caracteristique.POUVOIR) > 9 ){
+						if(! elemPlusProche instanceof Potion){
+							//Duel a distance
+							console.setPhrase("Je lance ma boule de feu sur  " + elemPlusProche.getNom());
+							arene.lanceAttaque(refRMI, refCible);
+						}
+					}
 
 					if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
 						// j'interagis directement
@@ -77,19 +87,8 @@ public class StrategieVoleur extends StrategiePersonnage{
 
 						} else { // personnage
 							// duel
-							//Si le caractère pouvoir = 20 alors on peut utiliser le pouvoir ! 
-							if (console.getPersonnage().getCaract(Caracteristique.POUVOIR) == 20)
-							{
-								console.setPhrase("Je lance ma super attaque sur" + elemPlusProche.getNom());
-								arene.LanceVol(refRMI, refCible);	
-								arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
-							}
-							//Sinon on fait l'attaque de base
-							else
-							{
-								console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
-								arene.lanceAttaque(refRMI, refCible);
-							}
+							console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+							arene.lanceAttaque(refRMI, refCible);
 						}
 						
 					} else { // si voisins, mais plus eloignes

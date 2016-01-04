@@ -178,6 +178,19 @@ public interface IArene extends Remote {
 	public boolean lanceAttaque(int refRMI, int refAdv) throws RemoteException;
 	
 	/**
+	 * Execute la supert attaque du personnage voleur dessus l'adversaire correspondant a la reference RMI donnee.
+	 * Le duel echoue si une action a deja ete executee a ce tour par 
+	 * l'attaquant, si les personnages sont trop eloignes, si l'un des deux 
+	 * n'est plus actif (mort)
+	 * @param refRMI reference RMI de l'attaquant, qui demande un duel
+	 * @param refAdv reference RMI du defenseur
+	 * @return vrai si l'action a bien eu lieu, faux sinon
+	 * @throws RemoteException
+	 */
+	public boolean LanceVol(int refRMI, int refAdv) throws RemoteException;
+
+	
+	/**
 	 * Deplace le personnage correspondant a la console donne vers l'element 
 	 * correspondant a la reference RMI cible.
 	 * Le deplacement echoue si une action a deja ete executee a ce tour par 
