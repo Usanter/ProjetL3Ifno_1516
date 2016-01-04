@@ -17,7 +17,7 @@ import utilitaires.Constantes;
  */
 public class LancePaladin {
 	
-	private static String usage = "USAGE : java " + LancePersonnage.class.getName() + " [ port [ ipArene ] ]";
+	private static String usage = "USAGE : java " + LancePaladin.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
 		String nom = "Truc";
