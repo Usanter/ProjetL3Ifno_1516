@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.HashMap;
 
-import client.StrategiePersonnage;
+import client.StrategiePaladin;
 import logger.LoggerProjet;
 import serveur.element.Caracteristique;
 import utilitaires.Calculs;
@@ -72,12 +72,16 @@ public class LancePaladin {
 			// caracteristiques du personnage
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
 			// seule la force n'a pas sa valeur par defaut (exemple)
-			caracts.put(Caracteristique.FORCE, 
-					Calculs.valeurCaracAleatoire(Caracteristique.FORCE)); 
+			caracts.put(Caracteristique.FORCE, 40);
+			caracts.put(Caracteristique.POUVOIR, 0);
+			caracts.put(Caracteristique.VIE, 100);
+			caracts.put(Caracteristique.INITIATIVE, 40);
+			
+			
 			
 			Point position = Calculs.positionAleatoireArene();	
 			
-			new StrategiePersonnage(ipArene, port, ipConsole, nom, groupe, caracts, nbTours, position, logger);
+			new StrategiePaladin(ipArene, port, ipConsole, nom, groupe, caracts, nbTours, position, logger);
 			logger.info("lanceur", "Creation du personnage reussie");
 		} catch (Exception e) {
 			logger.severe("lanceur", "Erreur lancement :\n" + e.getCause());

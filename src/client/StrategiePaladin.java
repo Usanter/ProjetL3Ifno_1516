@@ -1,6 +1,5 @@
 package client;
 
-
 import java.awt.Point;
 import java.rmi.RemoteException;
 import java.util.HashMap;
@@ -16,9 +15,9 @@ import client.StrategiePersonnage;
 /**
  * Strategie d'un personnage. 
  */
-public class StrategieVoleur extends StrategiePersonnage{
+public class StrategiePaladin extends StrategiePersonnage{
 	
-	public StrategieVoleur (String ipArene, int port, String ipConsole, 
+	public StrategiePaladin (String ipArene, int port, String ipConsole, 
 			String nom, String groupe, HashMap<Caracteristique, Integer> caracts,
 			long nbTours, Point position, LoggerProjet logger)
 	{
@@ -56,7 +55,10 @@ public class StrategieVoleur extends StrategiePersonnage{
 					arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
 					// a modifier pour chaque personnage ( temps de recharge des pouvoirs )
 					if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) > 10){
-						arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
+						arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR),Caracteristique.POUVOIR);
+						if(console.getPersonnage().getCaract(Caracteristique.VIE) <= 90){
+							arene.modifCara(refRMI, 10, Caracteristique.VIE);
+						}
 					}
 					
 					
@@ -76,8 +78,14 @@ public class StrategieVoleur extends StrategiePersonnage{
 
 						} else { // personnage
 							// duel
-							console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
-							arene.lanceAttaque(refRMI, refCible);
+							
+							if(console.getPersonnage().getCaract(Caracteristique.VIE) > 50){
+								console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+								arene.lanceAttaque(refRMI, refCible);
+							}
+							else{
+								
+							}
 						}
 						
 					} else { // si voisins, mais plus eloignes
