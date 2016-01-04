@@ -48,7 +48,7 @@ public class Deplacement {
 	 */    
 	public void seDirigerVers(int refObjectif) throws RemoteException {
 		Point pvers;
-
+		
 		// on ne bouge que si la reference n'est pas la notre
 		if (refObjectif != personnage.getRefRMI()) {
 			

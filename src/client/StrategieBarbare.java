@@ -91,12 +91,11 @@ public class StrategieBarbare extends StrategiePersonnage{
 				}
 				// sinon c'est un personnage
 				else{
-					// si on peut le one shot ( plus de force que sa vie et plus d'initiative ) on le fait
-					if(elemPlusProche.getCaract(Caracteristique.VIE) <= console.getPersonnage().getCaract(Caracteristique.FORCE)
-							&& elemPlusProche.getCaract(Caracteristique.INITIATIVE) <= console.getPersonnage().getCaract(Caracteristique.INITIATIVE)
-							){
-						//on se déplace vers lui
-						console.setPhrase(elemPlusProche.getNom()+" va bientot sentir ma colère...");
+					// si il peut nous one shot on se barre
+					if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
+					{
+						//on ne va pas vers lui
+						console.setPhrase("Je ne sens pas ce combat, il sera pour plus tard");
 						arene.deplace(refRMI, refCible);
 					}
 					else if(){

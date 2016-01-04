@@ -20,7 +20,7 @@ public class LanceBarbare {
 	private static String usage = "USAGE : java " + LancePaladin.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-		String nom = "Truc";
+		String nom = "Le Berserker";
 		//slooazjdjfh
 		// TODO remplacer la ligne suivante par votre numero de groupe
 		String groupe = "19";
