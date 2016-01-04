@@ -76,44 +76,54 @@ public class StrategieVoleur extends StrategiePersonnage{
 							arene.ramassePotion(refRMI, refCible);
 
 						} else { // personnage
-							// duel
-							//Si le caractère pouvoir = 20 alors on peut utiliser le pouvoir ! 
-							if (console.getPersonnage().getCaract(Caracteristique.POUVOIR) == Constantes.POUVOIR_MAX_VOLEUR)
+							//Si on peut se faire tuer en un coup on fui !!!
+							if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
 							{
-								//Si on peut tuer l'adversaire avec l'attaque de base on utilise pas l'attaque vol
-								if (console.getPersonnage().getCaract(Caracteristique.FORCE) >= elemPlusProche.getCaract(Caracteristique.VIE) )
-								{
-									console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
-									arene.lanceAttaque(refRMI, refCible);					
-								}
-								//Sinon 
-								else
-								{
-									//Si le defenseur a une vie < à 25, le vol ne sera pas opti , donc un fait un duel simple
-									if(elemPlusProche.getCaract(Caracteristique.VIE) < Constantes.VOL_DE_VIE)
-									{
-										console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
-										arene.lanceAttaque(refRMI, refCible);	
-									}
-									//Sinon on fait l'attaque vol
-									else
-									{
-										if( -console.getPersonnage().getCaract(Caracteristique.VIE) > 75)
-										{
-											console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
-											arene.lanceAttaque(refRMI, refCible);				
-										}
-										console.setPhrase("Je lance ma super attaque sur" + elemPlusProche.getNom());
-										arene.LanceVol(refRMI, refCible);	
-										arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
-									}
-								}
+								console.setPhrase("J'erre...");
+								arene.deplace(refRMI, 0); 		
 							}
-							//Sinon on fait l'attaque de base
+							//Sinon on attaque 
 							else
 							{
-								console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
-								arene.lanceAttaque(refRMI, refCible);
+								// duel
+								//Si le caractère pouvoir = 20 alors on peut utiliser le pouvoir ! 
+								if (console.getPersonnage().getCaract(Caracteristique.POUVOIR) == Constantes.POUVOIR_MAX_VOLEUR)
+								{
+									//Si on peut tuer l'adversaire avec l'attaque de base on utilise pas l'attaque vol
+									if (console.getPersonnage().getCaract(Caracteristique.FORCE) >= elemPlusProche.getCaract(Caracteristique.VIE) )
+									{
+										console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+										arene.lanceAttaque(refRMI, refCible);					
+									}
+									//Sinon 
+									else
+									{
+										//Si le defenseur a une vie < à 25, le vol ne sera pas opti , donc un fait un duel simple
+										if(elemPlusProche.getCaract(Caracteristique.VIE) < Constantes.VOL_DE_VIE)
+										{
+											console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+											arene.lanceAttaque(refRMI, refCible);	
+										}
+										//Sinon on fait l'attaque vol
+										else
+										{
+											if( -console.getPersonnage().getCaract(Caracteristique.VIE) > 75)
+											{
+												console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+												arene.lanceAttaque(refRMI, refCible);				
+											}
+											console.setPhrase("Je lance ma super attaque sur" + elemPlusProche.getNom());
+											arene.LanceVol(refRMI, refCible);	
+											arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
+										}
+									}
+								}
+								//Sinon on fait l'attaque de base
+								else
+								{
+									console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+									arene.lanceAttaque(refRMI, refCible);
+								}
 							}
 						}
 						
