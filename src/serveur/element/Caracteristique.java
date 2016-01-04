@@ -11,19 +11,25 @@ public enum Caracteristique {
 	/**
 	 * Vie : nombre de points de vie.
 	 */
+	
 	VIE("Vie", "VIE", 0, 100, 100),
 	
 	/**
 	 * Force : indique les degats infliges. 
 	 */
+
 	FORCE("Force", "FOR", 0, 100, 1),
 		
 	/**
 	 * Initiative : definit l'ordre d'action des personnages lors d'un tour de jeu. 
 	 */
+
 	INITIATIVE("Initiative", "INIT", 0, 200, 50),
-	
-	POUVOIR("Pouvoir","Pw",0,20,20);
+	/**
+	*Pouvoir : permet d'utiliser le pouvoir du personnages
+	*/
+
+	POUVOIR("Pouvoir","PW",0,20,20);
 	/**
 	 * Nom complet.
 	 */

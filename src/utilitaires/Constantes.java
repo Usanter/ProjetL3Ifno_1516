@@ -63,6 +63,13 @@ public class Constantes {
 	public static final int DISTANCE_MIN_INTERACTION = 2;
 
 	/**
+	* Distance minimal entre deux elements pour qu'une interaction  soit possible
+	* pour une attaque à distance
+	*/
+
+	public static final int DISTANCE_MIN_INTERACTION_GRANDE = 15;
+
+	/**
 	 * Abscisse minimale de l'arene.
 	 */
 	public static final int XMIN_ARENE = 0;
@@ -86,8 +93,34 @@ public class Constantes {
 	 * Couleur sur l'IHM pour les personnages qui sont morts ou les potions qui
 	 * sont en attente.
 	 */
+
+	/**
+	* Constante pour les différentes classe de personnage
+	*/
 	public static final Color COULEUR_MORTS_OU_EN_ATTENTE = new Color(112, 112, 112);
 	
+	public static final int POUVOIR_MAX_BARBARE = 1;
+
+	public static final int POUVOIR_MAX_VOLEUR = 20;
+
+	public static final int POUVOIR_MAX_PALADIN = 10;
+
+	public static final int POUVOIR_MAX_TRAPPEUR = 20;
+
+	public static final int POUVOIR_MAX_MAGE = 15;
+
+	public static final int FORCE_MAX_BARBARE = 85;
+
+	public static final int FORCE_MAX_VOLEUR = 60;
+
+	public static final int VALEUR_POUVOIR_BARBARE = 1;
+
+	public static final int  VALEUR_POUVOIR_PALADIN = 10;
+
+	public static final int VOL_DE_VIE = 25;
+
+	public static final int VOL_DE_FORCE = 10;
+
 	/**
 	 * Retourne le nom de la classe de l'objet passe en parametre, sous 
 	 * forme de chaine de caracteres.
