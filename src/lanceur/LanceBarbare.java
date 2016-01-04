@@ -20,7 +20,7 @@ public class LanceBarbare {
 	private static String usage = "USAGE : java " + LancePaladin.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-		String nom = "Truc";
+		String nom = "Le Berserker";
 		//slooazjdjfh
 		// TODO remplacer la ligne suivante par votre numero de groupe
 		String groupe = "19";
@@ -72,10 +72,7 @@ public class LanceBarbare {
 			// caracteristiques du personnage
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
 			// seule la force n'a pas sa valeur par defaut (exemple)
-			caracts.put(Caracteristique.FORCE, 40);
-			caracts.put(Caracteristique.POUVOIR, 0);
-			caracts.put(Caracteristique.VIE, 100);
-			caracts.put(Caracteristique.INITIATIVE, 40);
+			caracts.put(Caracteristique.FORCE, 60);;
 			
 			
 			

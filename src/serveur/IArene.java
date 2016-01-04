@@ -188,7 +188,7 @@ public interface IArene extends Remote {
 	 * @throws RemoteException
 	*/
 
-	public boolean lanceBouleDeFeu (int refRMI,int refRMIAdv) throws RemoteException
+	public boolean lanceBouleDeFeu (int refRMI,int refRMIAdv) throws RemoteException;
 
 	/**
 	 * Execute la supert attaque du personnage voleur dessus l'adversaire correspondant a la reference RMI donnee.
