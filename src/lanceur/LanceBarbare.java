@@ -5,12 +5,11 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.HashMap;
 
-import client.StrategiePersonnage;
+import client.StrategieBarbare;
 import logger.LoggerProjet;
 import serveur.element.Caracteristique;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
-
 /**
  * Lance une Console avec un Element sur l'Arene. 
  * A lancer apres le serveur, eventuellement plusieurs fois.
@@ -72,8 +71,7 @@ public class LanceBarbare {
 			// caracteristiques du personnage
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
 			// seule la force n'a pas sa valeur par defaut (exemple)
-			caracts.put(Caracteristique.FORCE, 
-					Calculs.valeurCaracAleatoire(Caracteristique.FORCE)); 
+			caracts.put(Caracteristique.FORCE,70); 
 			
 			Point position = Calculs.positionAleatoireArene();	
 			
