@@ -98,6 +98,11 @@ public class StrategieVoleur extends StrategiePersonnage{
 									//Sinon on fait l'attaque vol
 									else
 									{
+										if( -console.getPersonnage().getCaract(Caracteristique.VIE) > 75)
+										{
+											console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+											arene.lanceAttaque(refRMI, refCible);				
+										}
 										console.setPhrase("Je lance ma super attaque sur" + elemPlusProche.getNom());
 										arene.LanceVol(refRMI, refCible);	
 										arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);

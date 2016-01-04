@@ -102,7 +102,52 @@ public class Calculs {
 
 		return res;
 	}
+	/** 
+	 * Renvoie le meillieur point a occuper par l'element courant dans la 
+	 * direction opposé de la cible.
+	 * @param origine point sur lequel se trouve l'element courant
+	 * @param objectif point sur lequel se trouve la cible
+	 * @param voisins positions des elements proches 
+	 * @return meilleur point libre a une distance de 1 dans la direction opposé de la 
+	 * cible, ou null s'il n'en existe aucun
+	 */
+	public static Point PirePoint(Point origine, Point objectif, 
+			HashMap<Integer, Point> voisins) {
+		
+		// liste contenant tous les positions vers lesquelles l'element peut avancer :
+		// les 8 cases autour de lui
+		ArrayList<Point> listePossibles = new ArrayList<Point>();		
+		
+		Point tempPoint;
+		
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				if ((i != 0) || (j != 0))  { // pas le point lui-meme
+					tempPoint = new Point(origine.x + i, origine.y + j);
+					
+					if(estDansArene(tempPoint)) {
+						listePossibles.add(tempPoint);
+					}
+				}
+			}
+		}
+		
+		
+		// organise les points de la liste du plus pres vers le plus eloigne de la cible
+		Collections.sort(listePossibles, new PointComp(objectif));
+		Collections.reverse(listePossibles);		// cherche la case vide la plus loin de la cible
+		boolean trouve = false;
+		int i = 0;
+		Point res = null;
+		
+		while (!trouve & i < listePossibles.size()) {
+			res = listePossibles.get(i);
+			trouve = caseVide(res, voisins);
+			i++;
+		}
 
+		return res;
+	}
 	/**
 	 * Cherche l'element le plus proche vers lequel se didiger, dans la limite
 	 * de la vision du personnnage.
