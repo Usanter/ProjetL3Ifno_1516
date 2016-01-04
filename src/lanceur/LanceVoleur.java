@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.HashMap;
 
+import client.StrategiePersonnage;
 import client.StrategieVoleur;
 import logger.LoggerProjet;
 import serveur.element.Caracteristique;
@@ -17,13 +18,13 @@ import utilitaires.Constantes;
  */
 public class LanceVoleur {
 	
-	private static String usage = "USAGE : java " + LanceVoleur.class.getName() + " [ port [ ipArene ] ]";
+	private static String usage = "USAGE : java " + LancePersonnage.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
 		String nom = "Voleur";
-		
+		//slooazjdjfh
 		// TODO remplacer la ligne suivante par votre numero de groupe
-		String groupe = "19"; 
+		String groupe = "G" + 19; 
 		
 		// nombre de tours pour ce personnage avant d'etre deconnecte 
 		// (20 minutes par defaut)
@@ -71,6 +72,8 @@ public class LanceVoleur {
 			
 			// caracteristiques du personnage
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
+			
+			//A MODIFIER EN FONCTION DES PERSOS !!!! 
 			// seule la force n'a pas sa valeur par defaut (exemple)
 			caracts.put(Caracteristique.FORCE, 
 					Calculs.valeurCaracAleatoire(Caracteristique.FORCE)); 

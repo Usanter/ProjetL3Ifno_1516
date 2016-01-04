@@ -55,7 +55,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 				}
 				
 				// On incrémente le caractère pouvoir à chaque tour du joueur
-				if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) < 20){
+				if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) < Constantes.POUVOIR_MAX_VOLEUR){
 					arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
 				}
 				
@@ -78,11 +78,31 @@ public class StrategieVoleur extends StrategiePersonnage{
 						} else { // personnage
 							// duel
 							//Si le caractère pouvoir = 20 alors on peut utiliser le pouvoir ! 
-							if (console.getPersonnage().getCaract(Caracteristique.POUVOIR) == 20)
+							if (console.getPersonnage().getCaract(Caracteristique.POUVOIR) == Constantes.POUVOIR_MAX_VOLEUR)
 							{
-								console.setPhrase("Je vole " + elemPlusProche.getNom());
-								arene.LanceVol(refRMI, refCible);	
-								arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
+								//Si on peut tuer l'adversaire avec l'attaque de base on utilise pas l'attaque vol
+								if (console.getPersonnage().getCaract(Caracteristique.FORCE) >= elemPlusProche.getCaract(Caracteristique.VIE) )
+								{
+									console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+									arene.lanceAttaque(refRMI, refCible);					
+								}
+								//Sinon 
+								else
+								{
+									//Si le defenseur a une vie < à 25, le vol ne sera pas opti , donc un fait un duel simple
+									if(elemPlusProche.getCaract(Caracteristique.VIE) < Constantes.VOL_DE_VIE)
+									{
+										console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+										arene.lanceAttaque(refRMI, refCible);	
+									}
+									//Sinon on fait l'attaque vol
+									else
+									{
+										console.setPhrase("Je lance ma super attaque sur" + elemPlusProche.getNom());
+										arene.LanceVol(refRMI, refCible);	
+										arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
+									}
+								}
 							}
 							//Sinon on fait l'attaque de base
 							else

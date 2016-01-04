@@ -34,25 +34,19 @@ public class Vol extends Interaction<VuePersonnage> {
 		try {
 			Personnage pAttaquant = (Personnage) attaquant.getElement();
 			int forceAttaquant = pAttaquant.getCaract(Caracteristique.FORCE);
-			int perteVie = 25;
-			int perteForce = 10;
-		
-			Point positionEjection = positionEjection(defenseur.getPosition(), attaquant.getPosition(), forceAttaquant);
 
-			// ejection du defenseur
-			defenseur.setPosition(positionEjection);
 
 			// On enlève 25 de vie au défenseur 
-			arene.ajouterCaractElement(defenseur, Caracteristique.VIE, -perteVie);
-			arene.ajouterCaractElement(attaquant, Caracteristique.VIE, +perteVie);		
+			arene.ajouterCaractElement(defenseur, Caracteristique.VIE, -Constantes.VOL_DE_VIE);
+			arene.ajouterCaractElement(attaquant, Caracteristique.VIE, +Constantes.VOL_DE_VIE);		
 			logs(Level.INFO, Constantes.nomRaccourciClient(attaquant) + " vol ("
-						+ perteVie + " points de vie) a " + Constantes.nomRaccourciClient(defenseur));
+						+ Constantes.VOL_DE_VIE + " points de vie) a " + Constantes.nomRaccourciClient(defenseur));
 			
 			// On enlève 10 de force au défenseur 
-			arene.ajouterCaractElement(defenseur, Caracteristique.FORCE, -perteForce);
-			arene.ajouterCaractElement(attaquant, Caracteristique.FORCE, +perteForce);			
+			arene.ajouterCaractElement(defenseur, Caracteristique.FORCE, -Constantes.VOL_DE_FORCE);
+			arene.ajouterCaractElement(attaquant, Caracteristique.FORCE, +Constantes.VOL_DE_FORCE);			
 			logs(Level.INFO, Constantes.nomRaccourciClient(attaquant) + " vol ("
-						+ perteForce + " points de degats) a " + Constantes.nomRaccourciClient(defenseur));
+						+ Constantes.VOL_DE_FORCE + " points de degats) a " + Constantes.nomRaccourciClient(defenseur));
 			
 			// initiative
 			incrementerInitiative(defenseur);
@@ -63,8 +57,6 @@ public class Vol extends Interaction<VuePersonnage> {
 		}
 	}
 	
-	
-	
 	@Override
 	public void interagir() {
 		try {
@@ -72,24 +64,24 @@ public class Vol extends Interaction<VuePersonnage> {
 			int forceAttaquant = pAttaquant.getCaract(Caracteristique.FORCE);
 			int perteVie = 25;
 			int perteForce = 10;
-		
-			Point positionEjection = positionEjection(defenseur.getPosition(), attaquant.getPosition(), forceAttaquant);
 
-			// ejection du defenseur
-			defenseur.setPosition(positionEjection);
 
 			// On enlève 25 de vie au défenseur 
 			arene.ajouterCaractElement(defenseur, Caracteristique.VIE, -perteVie);
+			//On rajoute 25 de vie au voleur
 			arene.ajouterCaractElement(attaquant, Caracteristique.VIE, +perteVie);		
 			logs(Level.INFO, Constantes.nomRaccourciClient(attaquant) + " vol ("
 						+ perteVie + " points de vie) a " + Constantes.nomRaccourciClient(defenseur));
 			
-			// On enlève 10 de force au défenseur 
-			arene.ajouterCaractElement(defenseur, Caracteristique.FORCE, -perteForce);
-			arene.ajouterCaractElement(attaquant, Caracteristique.FORCE, +perteForce);			
-			logs(Level.INFO, Constantes.nomRaccourciClient(attaquant) + " vol ("
-						+ perteForce + " points de degats) a " + Constantes.nomRaccourciClient(defenseur));
-			
+			if(forceAttaquant < 60 )
+			{
+				// On enlève 10 de force au défenseur 
+				arene.ajouterCaractElement(defenseur, Caracteristique.FORCE, -perteForce);
+				// On rajoute 10 de force au voleur
+				arene.ajouterCaractElement(attaquant, Caracteristique.FORCE, +perteForce);			
+				logs(Level.INFO, Constantes.nomRaccourciClient(attaquant) + " vol ("
+							+ perteForce + " points de degats) a " + Constantes.nomRaccourciClient(defenseur));
+			}
 			// initiative
 			incrementerInitiative(defenseur);
 			decrementerInitiative(attaquant);
@@ -117,57 +109,5 @@ public class Vol extends Interaction<VuePersonnage> {
 	private void decrementerInitiative(VuePersonnage attaquant) throws RemoteException {
 		arene.ajouterCaractElement(attaquant, Caracteristique.INITIATIVE, 
 				-Constantes.INCR_DECR_INITIATIVE_DUEL);
-	}
-
-	
-	/**
-	 * Retourne la position ou le defenseur se retrouvera apres ejection.
-	 * @param posDefenseur position d'origine du defenseur
-	 * @param positionAtt position de l'attaquant
-	 * @param forceAtt force de l'attaquant
-	 * @return position d'ejection du personnage
-	 */
-	private Point positionEjection(Point posDefenseur, Point positionAtt, int forceAtt) {
-		int distance = forceVersDistance(forceAtt);
-		
-		// abscisses 
-		int dirX = posDefenseur.x - positionAtt.x;
-		
-		if (dirX > 0) {
-			dirX = distance;
-		}
-		
-		if (dirX < 0) {
-			dirX = -distance;
-		}
-		
-		// ordonnees
-		int dirY = posDefenseur.y - positionAtt.y;
-		
-		if (dirY > 0) {
-			dirY = distance;
-		}
-		
-		if (dirY < 0) {
-			dirY = -distance;
-		}
-		
-		int x = posDefenseur.x + dirX;
-		int y = posDefenseur.y + dirY;
-		
-		return Calculs.restreindrePositionArene(new Point(x, y));
-	}
-	
-	/**
-	 * Calcule la distance a laquelle le defenseur est projete suite a un coup.
-	 * @param forceAtt force de l'attaquant
-	 * @return distance de projection
-	 */
-	private int forceVersDistance(int forceAtt) {
-		int max = Caracteristique.FORCE.getMax();
-		
-		int quart = (int) (4 * ((float) (forceAtt - 1) / max)); // -1 pour le cas force = 100
-		
-		return Constantes.DISTANCE_PROJECTION[quart];
 	}
 }

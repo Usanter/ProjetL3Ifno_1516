@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.HashMap;
 
-import client.StrategiePersonnage;
+import client.StrategieMage;
 import logger.LoggerProjet;
 import serveur.element.Caracteristique;
 import utilitaires.Calculs;
