@@ -177,6 +177,19 @@ public interface IArene extends Remote {
 	 */
 	public boolean lanceAttaque(int refRMI, int refAdv) throws RemoteException;
 	
+
+	/*
+	* Permert à un mage de lancer une boule de feu, cette boule de feu possède une
+	* force equivalente à la force du mage divisé par deux
+	 * @param refRMI reference RMI du personnage voulant se deplacer
+	 * @param refCible reference RMI de l'element vers lequel on veut se 
+	 * deplacer, ou 0 si on veut se deplacer aleatoirement
+	 * @return vrai si l'action a bien eu lieu, faux sinon
+	 * @throws RemoteException
+	*/
+
+	public boolean lanceBouleDeFeu (int refRMI,int refRMIAdv) throws RemoteException
+
 	/**
 	 * Execute la supert attaque du personnage voleur dessus l'adversaire correspondant a la reference RMI donnee.
 	 * Le duel echoue si une action a deja ete executee a ce tour par 

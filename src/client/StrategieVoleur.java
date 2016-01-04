@@ -54,7 +54,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 					e.printStackTrace();
 				}
 				
-				// On incrémente le caractère pouvoir à chaque tout du joueur
+				// On incrémente le caractère pouvoir à chaque tour du joueur
 				if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) < 20){
 					arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
 				}
@@ -80,7 +80,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 							//Si le caractère pouvoir = 20 alors on peut utiliser le pouvoir ! 
 							if (console.getPersonnage().getCaract(Caracteristique.POUVOIR) == 20)
 							{
-								console.setPhrase("Je lance ma super attaque sur" + elemPlusProche.getNom());
+								console.setPhrase("Je vole " + elemPlusProche.getNom());
 								arene.LanceVol(refRMI, refCible);	
 								arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
 							}
