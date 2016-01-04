@@ -99,7 +99,7 @@ public class Constantes {
 	*/
 	public static final Color COULEUR_MORTS_OU_EN_ATTENTE = new Color(112, 112, 112);
 	
-	public static final int POUVOIR_MAX_BARBARE = 1;
+	public static final int POUVOIR_MAX_BARBARE = 2;
 
 	public static final int POUVOIR_MAX_VOLEUR = 20;
 

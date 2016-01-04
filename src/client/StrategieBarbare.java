@@ -53,24 +53,24 @@ public class StrategieBarbare extends StrategiePersonnage{
 			e.printStackTrace();
 		}
 		
+		//on augmente la jauge de pouvoir si elle est inferieure au max
+		if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) < Constantes.POUVOIR_MAX_BARBARE )
+			arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
+		// si la jauge de pouvoir est au max, on la met a 0 et on augmente la force de VALEUR_POUVOIR_BARBARE
+		if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) >= Constantes.POUVOIR_MAX_BARBARE && console.getPersonnage().getCaract(Caracteristique.FORCE) < Constantes.FORCE_MAX_BARBARE){
+			arene.modifCara(refRMI, Constantes.VALEUR_POUVOIR_BARBARE , Caracteristique.FORCE);
+			arene.modifCara(refRMI, -Constantes.POUVOIR_MAX_BARBARE, Caracteristique.POUVOIR);
+		}
+		
 		if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
 			console.setPhrase("J'erre...");
-			//on augmente la jauge de pouvoir si elle est inferieure au max
-			if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) < Constantes.POUVOIR_MAX_BARBARE )
-				arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
-			// a modifier pour chaque personnage ( temps de recharge des pouvoirs )
-			if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) > 0 && console.getPersonnage().getCaract(Caracteristique.FORCE) < Constantes.FORCE_MAX_BARBARE){
-				arene.modifCara(refRMI, Constantes.VALEUR_POUVOIR_BARBARE , Caracteristique.FORCE);
-			}
-			
-			
 			arene.deplace(refRMI, 0); 
 		} else {
 			int refCible = Calculs.chercherElementProche(position, voisins);
 			int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
-
+			
 			Element elemPlusProche = arene.elementFromRef(refCible);
-
+			
 			if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
 				// j'interagis directement
 				if(elemPlusProche instanceof Potion) { // potion
@@ -85,9 +85,26 @@ public class StrategieBarbare extends StrategiePersonnage{
 				}
 				
 			} else { // si voisins, mais plus eloignes
-				// je vais vers le plus proche
-				console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
-				arene.deplace(refRMI, refCible);
+				if(elemPlusProche instanceof Potion){
+					console.setPhrase("Je vais vers la potion " + elemPlusProche.getNom());
+					arene.deplace(refRMI, refCible);
+				}
+				// sinon c'est un personnage
+				else{
+					// si on peut le one shot ( plus de force que sa vie et plus d'initiative ) on le fait
+					if(elemPlusProche.getCaract(Caracteristique.VIE) <= console.getPersonnage().getCaract(Caracteristique.FORCE)
+							&& elemPlusProche.getCaract(Caracteristique.INITIATIVE) <= console.getPersonnage().getCaract(Caracteristique.INITIATIVE)
+							){
+						//on se déplace vers lui
+						console.setPhrase(elemPlusProche.getNom()+" va bientot sentir ma colère...");
+						arene.deplace(refRMI, refCible);
+					}
+					else if(){
+						
+					}
+				}
+				
+				
 			}
 		}
 	}
