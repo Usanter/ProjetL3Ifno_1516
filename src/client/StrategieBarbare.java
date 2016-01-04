@@ -95,11 +95,13 @@ public class StrategieBarbare extends StrategiePersonnage{
 					if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
 					{
 						//on ne va pas vers lui
-						console.setPhrase("Je ne sens pas ce combat, il sera pour plus tard");
-						arene.deplace(refRMI, refCible);
+						console.setPhrase(elemPlusProche.getNom()+" a l'air fort, je vais lui faire croire que je suis sans défence...");
+						arene.deplace(refRMI, 0);
 					}
-					else if(){
-						
+					//sinon on le défonce ( on est un barbare quand meme )
+					else{
+						console.setPhrase(elemPlusProche.getNom()+" va sentir ma colere ...");
+						arene.deplace(refRMI, refCible);
 					}
 				}
 				
