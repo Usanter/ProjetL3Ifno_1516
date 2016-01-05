@@ -85,12 +85,12 @@ public class StrategieTrappeur extends StrategiePersonnage{
 							{
 								console.setPhrase("Je fuis et je met une potion ! ");
 								LancePotionTrappeur lancepotion = new LancePotionTrappeur ();
-								lancepotion.LancePotion (port, IP); 
+								lancepotion.LancePotion (port, IP, refRMI); 
 								arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
-								arene.deplace(refRMI, 0); 
+								arene.deplaceLoin(refRMI, refCible);
 							}
 							console.setPhrase("Je fuis ! ");
-							arene.deplace(refRMI, 0); 
+							arene.deplaceLoin(refRMI, refCible); 
 						}
 						
 					} else { // si voisins, mais plus eloignes
@@ -99,16 +99,13 @@ public class StrategieTrappeur extends StrategiePersonnage{
 						{
 							console.setPhrase("Je fuis et je met une potion ! ");
 							LancePotionTrappeur lancepotion = new LancePotionTrappeur ();
-							lancepotion.LancePotion (port, IP); 
+							lancepotion.LancePotion (port, IP, refRMI); 
 							arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
-							arene.deplace(refRMI, 0); 
+							arene.deplaceLoin(refRMI, refCible);
 						}
 						console.setPhrase("Je fuis ! ");
 						arene.deplace(refRMI, 0); 
 					}
 				}
-	}
-		
-
-	
+	}	
 }
