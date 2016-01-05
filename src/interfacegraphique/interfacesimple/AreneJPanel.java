@@ -47,7 +47,7 @@ public class AreneJPanel extends JPanel {
 	/**
 	 * Vrai les jauges de vie doivent etre affichees.
 	 */
-	private boolean jaugesAffichees = false;
+	private boolean jaugesAffichees = true;
 	
 	/**
 	 * Taille des elements.

@@ -57,7 +57,7 @@ public class LancePoison {
 			IArene arene = (IArene) java.rmi.Naming.lookup(Constantes.nomRMI(ipArene, port, "Arene"));
 
 			logger.info("lanceur", "Lancement de la potion sur le serveur...");
-			
+			 
 			// caracteristiques de la potion
 			HashMap<Caracteristique, Integer> caractsPotion = new HashMap<Caracteristique, Integer>();
 			caractsPotion.put(Caracteristique.VIE, Calculs.nombreAleatoire(-20, -1));

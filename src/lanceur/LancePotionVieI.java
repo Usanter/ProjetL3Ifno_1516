@@ -10,12 +10,12 @@ import serveur.element.Potion;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 
-public class LancePotionSacrificeVieI {
+public class LancePotionVieI {
 	
 	private static String usage = "USAGE : java " + LancePotion.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-		String nom = "Anduril";
+		String nom = "Indreju";
 		
 		// TODO remplacer la ligne suivante par votre numero de groupe
 		String groupe = "G19" ; 
@@ -61,8 +61,8 @@ public class LancePotionSacrificeVieI {
 			
 			// caracteristiques de la potion
 			HashMap<Caracteristique, Integer> caractsPotion = new HashMap<Caracteristique, Integer>();
-			caractsPotion.put(Caracteristique.VIE, -20);
-			caractsPotion.put(Caracteristique.INITIATIVE, 20);
+			caractsPotion.put(Caracteristique.INITIATIVE,Calculs.nombreAleatoire(-20, 0));
+			caractsPotion.put(Caracteristique.VIE, Calculs.nombreAleatoire(1, 20));
 			
 			// ajout de la potion
 			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion));
