@@ -29,7 +29,13 @@ public enum Caracteristique {
 	*Pouvoir : permet d'utiliser le pouvoir du personnages
 	*/
 
-	POUVOIR("Pouvoir","PW",0,20,0);
+	POUVOIR("Pouvoir","PW",0,20,0),
+	/**
+	 * Compteur : definit le nombre de mort effectue pendant la partie
+	 */
+	COMPTEUR("Compteur","CMP",0,100,0);
+	
+	
 	/**
 	 * Nom complet.
 	 */

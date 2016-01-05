@@ -919,6 +919,9 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 						
 						logger.info(Constantes.nomClasse(this), nomRaccourciClient(refRMI) + 
 								" tue " + nomRaccourciClient(consoleAdv.getRefRMI()));
+						
+						IArene arene = console.getArene();
+						arene.modifCara(refRMI, 1 , Caracteristique.COMPTEUR);
 					}
 					
 					res = true;
