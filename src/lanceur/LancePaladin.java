@@ -23,7 +23,7 @@ public class LancePaladin {
 		String nom = "Paladin";
 		//slooazjdjfh
 		// TODO remplacer la ligne suivante par votre numero de groupe
-		String groupe = "19";
+		String groupe = "G19";
 		
 		// nombre de tours pour ce personnage avant d'etre deconnecte 
 		// (20 minutes par defaut)
