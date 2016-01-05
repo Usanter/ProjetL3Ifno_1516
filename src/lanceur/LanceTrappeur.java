@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.util.HashMap;
 
 import client.StrategiePersonnage;
+import client.StrategieTrappeur;
 import logger.LoggerProjet;
 import serveur.element.Caracteristique;
 import utilitaires.Calculs;
@@ -23,7 +24,7 @@ public class LanceTrappeur {
 		String nom = "Trappeur";
 		
 		// TODO remplacer la ligne suivante par votre numero de groupe
-		String groupe = "19"; 
+		String groupe = "G19"; 
 		
 		// nombre de tours pour ce personnage avant d'etre deconnecte 
 		// (20 minutes par defaut)

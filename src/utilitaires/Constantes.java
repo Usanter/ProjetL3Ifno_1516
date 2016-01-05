@@ -121,6 +121,10 @@ public class Constantes {
 
 	public static final int VOL_DE_FORCE = 10;
 
+	public static final int POTION_TRAPPEUR_VIE = 10;
+	
+	public static final int POTION_TRAPPEUR_FORCE = 5;
+
 	/**
 	 * Retourne le nom de la classe de l'objet passe en parametre, sous 
 	 * forme de chaine de caracteres.
