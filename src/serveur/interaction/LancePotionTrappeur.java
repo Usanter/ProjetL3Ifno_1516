@@ -15,7 +15,7 @@ public class LancePotionTrappeur {
 	
 	private static String usage = "USAGE : java " + LancePotionTrappeur.class.getName() + " [ port [ ipArene ] ]";
 
-	public void LancePotion (int port, String ipArene) 
+	public void LancePotion (int port, String ipArene, int refRMI) 
 	{
 		String nom = ">-<";
 		
@@ -44,7 +44,7 @@ public class LancePotionTrappeur {
 			caractsPotion.put(Caracteristique.INITIATIVE, 0);
 			
 			// ajout de la potion
-			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion));
+			arene.ajoutePotionTrappeur(new Potion(nom, groupe, caractsPotion), refRMI);
 			logger.info("lanceur", "Lancement de la potion trappeur reussi");
 			
 		} catch (Exception e) {

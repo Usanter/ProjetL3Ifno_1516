@@ -674,6 +674,19 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 		potions.remove(refRMI);
 	}	
 
+	@Override
+	public synchronized void ajoutePotionTrappeur(Potion potion, int refRMI) throws RemoteException {		
+		//int refRMI = allocateRefRMI();
+		
+		// ajout de la potion a la liste
+		VuePotion vuePotion = new VuePotion(potion, Calculs.positionAleatoireArene(), refRMI, true);
+		potions.put(refRMI, vuePotion);
+		
+		logger.info(Constantes.nomClasse(this), "Ajout de la potion " + 
+				Constantes.nomCompletClient(vuePotion) + " (" + refRMI + ")");
+		
+		logElements();
+	}
 	
 	@Override
 	public synchronized void ajoutePotion(Potion potion) throws RemoteException {		

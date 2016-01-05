@@ -72,6 +72,12 @@ public interface IArene extends Remote {
 	 */
 	public void ajoutePotion(Potion potion) throws RemoteException;
 	
+	/**
+	 * Ajoute une potion de Trappeur
+	 * @param potion potion
+	 * @throws RemoteException
+	 */
+	public void ajoutePotionTrappeur(Potion potion, int refRMI) throws RemoteException;
 	
 
 	/**************************************************************************
