@@ -36,8 +36,7 @@ public class BouleDeFeu extends Interaction<VuePersonnage> {
 		try {
 			Personnage pAttaquant = (Personnage) attaquant.getElement();
 			int forceAttaquant = pAttaquant.getCaract(Caracteristique.FORCE);
-			forceAttaquant = forceAttaquant * 2;
-			int perteVie = forceAttaquant;
+			int perteVie = forceAttaquant*2;
 		
 			Point positionEjection = positionEjection(defenseur.getPosition(), attaquant.getPosition(), forceAttaquant);
 
@@ -45,9 +44,9 @@ public class BouleDeFeu extends Interaction<VuePersonnage> {
 			defenseur.setPosition(positionEjection);
 
 
-			// On enlève 25 de vie au défenseur 
-			arene.ajouterCaractElement(defenseur, Caracteristique.VIE, -perteVie);
-			logs(Level.INFO, Constantes.nomRaccourciClient(attaquant) + " vol ("
+			// On enlève  de la vie au défenseur 
+			arene.ajouterCaractElement(defenseur, Caracteristique.VIE, - perteVie);
+			logs(Level.INFO, Constantes.nomRaccourciClient(attaquant) + " attaque ("
 						+ perteVie + " points de vie) a " + Constantes.nomRaccourciClient(defenseur));
 			
 
