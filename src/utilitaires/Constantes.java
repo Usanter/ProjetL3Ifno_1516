@@ -108,6 +108,8 @@ public class Constantes {
 	public static final int POUVOIR_MAX_TRAPPEUR = 20;
 
 	public static final int POUVOIR_MAX_MAGE = 15;
+	
+	public static final int POUVOIR_MAX_ASSASSIN = 15;
 
 	public static final int FORCE_MAX_BARBARE = 85;
 

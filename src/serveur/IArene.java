@@ -207,7 +207,7 @@ public interface IArene extends Remote {
 	 * @throws RemoteException
 	 */
 	public boolean LanceVol(int refRMI, int refAdv) throws RemoteException;
-
+	
 	
 	/**
 	 * Deplace le personnage correspondant a la console donne vers l'element 
@@ -222,6 +222,8 @@ public interface IArene extends Remote {
 	 */
 	public boolean deplace(int refRMI, int refCible) throws RemoteException;
 	
+	
+	public boolean blink(int refRMI, int refCible) throws RemoteException; 
 	/**
 	 * Deplace le personnage correspondant a la console donne vers le point 
 	 * cible.

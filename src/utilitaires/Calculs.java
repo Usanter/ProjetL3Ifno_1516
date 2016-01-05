@@ -85,7 +85,6 @@ public class Calculs {
 			}
 		}
 		
-		
 		// organise les points de la liste du plus pres vers le plus eloigne de la cible
 		Collections.sort(listePossibles, new PointComp(objectif));
 		
@@ -111,6 +110,30 @@ public class Calculs {
 	 * @return meilleur point libre a une distance de 1 dans la direction opposé de la 
 	 * cible, ou null s'il n'en existe aucun
 	 */
+	
+	public static Point procheDeCible(Point origine, Point objectif){
+		
+		Point retour = new Point(objectif.x,objectif.y);
+		//on set la destination X
+		if(objectif.getX() == 100){
+			retour.x -= 1;
+		} 
+		else {
+			retour.x += 1;
+		}
+		
+		//on set la destination Y
+		if(objectif.getY() == 100){
+			retour.y -= 1;
+		}
+		else {
+			retour.y += 1;
+		}
+		
+		return retour;
+		
+	}
+	
 	public static Point PirePoint(Point origine, Point objectif, 
 			HashMap<Integer, Point> voisins) {
 		

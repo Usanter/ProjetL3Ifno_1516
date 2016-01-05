@@ -55,6 +55,7 @@ public class Deplacement {
 			// la reference est nulle (en fait, nulle ou negative) : 
 			// le personnage erre
 			if (refObjectif <= 0) { 
+				//position a coté de la cible
 				pvers = Calculs.positionAleatoireArene();
 						
 			} else { 
@@ -70,6 +71,42 @@ public class Deplacement {
 		}
 	}
 
+	public void allerA(int refObjectif){
+		Point pvers;
+		
+		// on ne bouge que si la reference n'est pas la notre
+		if (refObjectif != personnage.getRefRMI()) {
+			
+			// la reference est nulle (en fait, nulle ou negative) : 
+			// le personnage erre
+			if (refObjectif <= 0) { 
+				//position a coté de la cible
+				pvers = Calculs.positionAleatoireArene();
+						
+			} else { 
+				// sinon :
+				// la cible devient le point sur lequel se trouve l'element objectif
+				pvers = voisins.get(refObjectif);
+			}
+	
+			// on ne bouge que si l'element existe
+			if(pvers != null) {
+				seTpVers(pvers);
+			}
+		}
+	}
+	
+	public void seTpVers(Point objectif){
+		Point cible = Calculs.restreindrePositionArene(objectif); 
+		
+		// on cherche le point voisin vide
+		Point dest = Calculs.procheDeCible(personnage.getPosition(), cible);
+		
+		if(dest != null) {
+			personnage.setPosition(dest);
+		}
+	}
+	
 	/**
 	 * Deplace ce sujet d'une case en direction de la case donnee.
 	 * @param objectif case cible
