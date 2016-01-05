@@ -111,7 +111,7 @@ public class Constantes {
 	
 	public static final int POUVOIR_MAX_ASSASSIN = 15;
 	
-	public static final int POUVOIR_MAX_TANK = 5;
+	public static final int POUVOIR_MAX_TANK = 10;
 
 	public static final int ARMURE_MAX_TANK = 1;
 	
