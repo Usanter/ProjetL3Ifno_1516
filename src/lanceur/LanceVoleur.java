@@ -74,7 +74,7 @@ public class LanceVoleur {
 			
 			//A MODIFIER EN FONCTION DES PERSOS !!!! 
 			// seule la force n'a pas sa valeur par defaut (exemple)
-			caracts.put(Caracteristique.FORCE, 40); 
+			caracts.put(Caracteristique.FORCE, 25); 
 			
 			Point position = Calculs.positionAleatoireArene();	
 			
