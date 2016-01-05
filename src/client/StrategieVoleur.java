@@ -4,20 +4,27 @@ package client;
 import java.awt.Point;
 import java.rmi.RemoteException;
 import java.util.HashMap;
+import java.util.Hashtable;
 
 import logger.LoggerProjet;
 import serveur.IArene;
 import serveur.element.Caracteristique;
 import serveur.element.Element;
 import serveur.element.Potion;
+import serveur.vuelement.VuePersonnage;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 import client.StrategiePersonnage;
+import serveur.element.Personnage;
+
 
 /**
  * Strategie d'un personnage. 
  */
 public class StrategieVoleur extends StrategiePersonnage{
+	
+	protected Hashtable<Integer, VuePersonnage> personnages1 = null;
+
 	
 	public StrategieVoleur (String ipArene, int port, String ipConsole, 
 			String nom, String groupe, HashMap<Caracteristique, Integer> caracts,
@@ -72,7 +79,6 @@ public class StrategieVoleur extends StrategiePersonnage{
 							// ramassage
 							console.setPhrase("Je ramasse une potion");
 							arene.ramassePotion(refRMI, refCible);
-
 						} else { // personnage
 							//Si on peut se faire tuer en un coup on fui !!!
 							if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
@@ -83,56 +89,97 @@ public class StrategieVoleur extends StrategiePersonnage{
 							//Sinon on attaque 
 							else
 							{
-								// duel
-								//Si le caractère pouvoir = 20 alors on peut utiliser le pouvoir ! 
-								if (console.getPersonnage().getCaract(Caracteristique.POUVOIR) == Constantes.POUVOIR_MAX_VOLEUR)
+								//si on ne peut pas se faire one-shot on combat !!!
+								if (elemPlusProche.getCaract(Caracteristique.FORCE) < console.getPersonnage().getCaract(Caracteristique.VIE) )
 								{
-									//Si on peut tuer l'adversaire avec l'attaque de base on utilise pas l'attaque vol
-									if (console.getPersonnage().getCaract(Caracteristique.FORCE) >= elemPlusProche.getCaract(Caracteristique.VIE) )
+									// duel
+									//Si le caractère pouvoir = 20 alors on peut utiliser le pouvoir ! 
+									if (console.getPersonnage().getCaract(Caracteristique.POUVOIR) == Constantes.POUVOIR_MAX_VOLEUR)
 									{
-										console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
-										arene.lanceAttaque(refRMI, refCible);					
-									}
-									//Sinon 
-									else
-									{
-										//Si le defenseur a une vie < à 25, le vol ne sera pas opti , donc un fait un duel simple
-										if(elemPlusProche.getCaract(Caracteristique.VIE) < Constantes.VOL_DE_VIE)
+										//Si on peut tuer l'adversaire avec l'attaque de base on utilise pas l'attaque vol
+										if (console.getPersonnage().getCaract(Caracteristique.FORCE) >= elemPlusProche.getCaract(Caracteristique.VIE) )
 										{
+											console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+											arene.lanceAttaque(refRMI, refCible);		
+											VuePersonnage client = personnages1.get(refRMI);
+											personnages1.get(refRMI).DeuxiemeTourVoleur();
 											console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
 											arene.lanceAttaque(refRMI, refCible);	
 										}
-										//Sinon on fait l'attaque vol
+										//Sinon 
 										else
 										{
-											if( -console.getPersonnage().getCaract(Caracteristique.VIE) > 75)
+											//Si le defenseur a une vie < à 25, le vol ne sera pas opti , donc un fait un duel simple
+											if(elemPlusProche.getCaract(Caracteristique.VIE) < Constantes.VOL_DE_VIE)
 											{
 												console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
-												arene.lanceAttaque(refRMI, refCible);				
+												arene.lanceAttaque(refRMI, refCible);	
+												VuePersonnage client = personnages1.get(refRMI);
+												personnages1.get(refRMI).DeuxiemeTourVoleur();
+												console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+												arene.lanceAttaque(refRMI, refCible);	
 											}
-											console.setPhrase("Je lance ma super attaque sur" + elemPlusProche.getNom());
-											arene.LanceVol(refRMI, refCible);	
-											arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
+											//Sinon on fait l'attaque vol
+											else
+											{
+												// Si le voleur a une vie > 75 cela ne vaut pas le coup de voler de la vie .. on ne fait pas de super attaque
+												if( -console.getPersonnage().getCaract(Caracteristique.VIE) > 75)
+												{
+													console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+													arene.lanceAttaque(refRMI, refCible);		
+													VuePersonnage client = personnages1.get(refRMI);
+													personnages1.get(refRMI).DeuxiemeTourVoleur();
+													console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+													arene.lanceAttaque(refRMI, refCible);	
+												}
+												else
+												{
+													console.setPhrase("Je lance ma super attaque sur" + elemPlusProche.getNom());
+													arene.LanceVol(refRMI, refCible);	
+													arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
+												}
+											}
 										}
 									}
+									//Sinon on fait l'attaque de base
+									else
+									{
+										console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+										arene.lanceAttaque(refRMI, refCible);
+										VuePersonnage client = personnages1.get(refRMI);
+										personnages1.get(refRMI).DeuxiemeTourVoleur();
+										console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+										arene.lanceAttaque(refRMI, refCible);		
+									}
 								}
-								//Sinon on fait l'attaque de base
+								//si on peut se faire one-shot on fui !!!
 								else
 								{
-									console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
-									arene.lanceAttaque(refRMI, refCible);
+									console.setPhrase("Je fui  " + elemPlusProche.getNom());
+									arene.deplaceLoin(refRMI, refCible);
 								}
 							}
 						}
-						
 					} else { // si voisins, mais plus eloignes
 						// je vais vers le plus proche
+						if(elemPlusProche instanceof Potion) { // potion
 						console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
 						arene.deplace(refRMI, refCible);
+						}
+						else
+						{
+							if (elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE) )
+							{
+								console.setPhrase("Je fui  " + elemPlusProche.getNom());
+								arene.deplaceLoin(refRMI, refCible);
+							}
+							else
+							{
+								console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
+								arene.deplace(refRMI, refCible);
+							}
+						}
 					}
 				}
 	}
-		
-
-	
 }

@@ -942,7 +942,6 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 						nomRaccourciClient(refRMIAdv) + " est trop eloigne !\nDistance = " + distance);
 			}
 		}
-		
 		return res;
 	}
 	
