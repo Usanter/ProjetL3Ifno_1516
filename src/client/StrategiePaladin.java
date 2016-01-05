@@ -49,19 +49,19 @@ public class StrategiePaladin extends StrategiePersonnage{
 				} catch (RemoteException e) {
 					e.printStackTrace();
 				}
+				if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) < 10){
+					arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
+				}
 				
 				if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) == 10 && console.getPersonnage().getCaract(Caracteristique.VIE) + 10 <= 100){
 					arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR),Caracteristique.POUVOIR);
 					arene.modifCara(refRMI, 10, Caracteristique.VIE);
 				}
-				else if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) > 10 && console.getPersonnage().getCaract(Caracteristique.VIE) == 100){
-					arene.modifCara(refRMI, -1, Caracteristique.POUVOIR);
-				}
+				
 				
 				if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
 					console.setPhrase("J'erre...");
-					arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
-					// a modifier pour chaque personnage ( temps de recharge des pouvoirs )
+					
 					
 					arene.deplace(refRMI, 0); 
 				} else {
