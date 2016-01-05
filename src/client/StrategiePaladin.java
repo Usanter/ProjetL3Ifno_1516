@@ -58,7 +58,7 @@ public class StrategiePaladin extends StrategiePersonnage{
 						arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR),Caracteristique.POUVOIR);
 						arene.modifCara(refRMI, 10, Caracteristique.VIE);
 					}
-					else if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) >= 10 && console.getPersonnage().getCaract(Caracteristique.VIE) == 100){
+					else if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) > 10 && console.getPersonnage().getCaract(Caracteristique.VIE) == 100){
 						arene.modifCara(refRMI, -1, Caracteristique.POUVOIR);
 					}
 					
@@ -84,8 +84,11 @@ public class StrategiePaladin extends StrategiePersonnage{
 								console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
 								arene.lanceAttaque(refRMI, refCible);
 							}
-							else{
-								
+							else if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
+							{
+								//on ne va pas vers lui
+								console.setPhrase(elemPlusProche.getNom()+" a l'air fort, je vais lui faire croire que je suis sans défence...");
+								arene.deplaceLoin(refRMI, refCible);
 							}
 						}
 						
