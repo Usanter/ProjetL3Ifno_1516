@@ -36,7 +36,7 @@ public class BouleDeFeu extends Interaction<VuePersonnage> {
 		try {
 			Personnage pAttaquant = (Personnage) attaquant.getElement();
 			int forceAttaquant = pAttaquant.getCaract(Caracteristique.FORCE);
-			forceAttaquant = forceAttaquant / 2;
+			forceAttaquant = forceAttaquant * 2;
 			int perteVie = forceAttaquant;
 		
 			Point positionEjection = positionEjection(defenseur.getPosition(), attaquant.getPosition(), forceAttaquant);

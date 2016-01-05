@@ -72,7 +72,7 @@ public class LanceBarbare {
 			// caracteristiques du personnage
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
 			// seule la force n'a pas sa valeur par defaut (exemple)
-			caracts.put(Caracteristique.FORCE, 60);;
+			caracts.put(Caracteristique.FORCE, 60);
 			
 			
 			

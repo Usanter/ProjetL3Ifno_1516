@@ -60,10 +60,7 @@ public class StrategieMage extends StrategiePersonnage{
 				if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
 					console.setPhrase("J'erre...");
 					arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
-					// a modifier pour chaque personnage ( temps de recharge des pouvoirs )
-					if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) > 10){
-						arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
-					}
+					
 					
 					
 					arene.deplace(refRMI, 0); 
@@ -73,11 +70,16 @@ public class StrategieMage extends StrategiePersonnage{
 
 					Element elemPlusProche = arene.elementFromRef(refCible);
 					//Si enemis dans le rayon d'action du pouvoir et pouvoir dispo alors attaque
-					if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION_GRANDE && console.getPersonnage().getCaract(Caracteristique.POUVOIR) >= Constantes.POUVOIR_MAX_MAGE ){
+					if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION_GRANDE 
+					&& console.getPersonnage().getCaract(Caracteristique.POUVOIR) >= Constantes.POUVOIR_MAX_MAGE ){
 						if(!(elemPlusProche instanceof Potion)){
 							//Duel a distance
 							console.setPhrase("Je lance ma boule de feu sur  " + elemPlusProche.getNom());
 							arene.lanceBouleDeFeu(refRMI, refCible);
+							// a modifier pour chaque personnage ( temps de recharge des pouvoirs )
+				
+							arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
+							
 						}
 					}
 
@@ -95,9 +97,17 @@ public class StrategieMage extends StrategiePersonnage{
 						}
 						
 					} else { // si voisins, mais plus eloignes
-						// je vais vers le plus proche
-						console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
-						arene.deplace(refRMI, refCible);
+						if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
+						{
+							//on ne va pas vers lui
+							console.setPhrase(elemPlusProche.getNom()+" a l'air fort, je vais lui faire croire que je suis sans défence...");
+							arene.deplaceLoin(refRMI, refCible);
+						}
+						//sinon on le bat on va vers lui
+						else{
+							console.setPhrase(elemPlusProche.getNom()+" va sentir ma colere ...");
+							arene.deplace(refRMI, refCible);
+						}
 					}
 				}
 	}
