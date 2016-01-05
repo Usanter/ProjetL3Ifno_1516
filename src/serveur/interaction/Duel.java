@@ -33,18 +33,23 @@ public class Duel extends Interaction<VuePersonnage> {
 			Personnage pAttaquant = (Personnage) attaquant.getElement();
 			int forceAttaquant = pAttaquant.getCaract(Caracteristique.FORCE);
 			int perteVie = forceAttaquant;
-		
+			
 			Point positionEjection = positionEjection(defenseur.getPosition(), attaquant.getPosition(), forceAttaquant);
 
 			// ejection du defenseur
 			defenseur.setPosition(positionEjection);
 
-			// degats
-			if (perteVie > 0) {
+			// degats si l'ennemi n'as pas d'armure
+			if(perteVie > 0 && defenseur.getPersonnage().getCaract(Caracteristique.ARMURE) == 0){
 				arene.ajouterCaractElement(defenseur, Caracteristique.VIE, -perteVie);
-				
 				logs(Level.INFO, Constantes.nomRaccourciClient(attaquant) + " colle une beigne ("
 						+ perteVie + " points de degats) a " + Constantes.nomRaccourciClient(defenseur));
+			}
+			// si l'ennemi a une armure alors il la perd
+			else if (perteVie > 0){
+				logs(Level.INFO, Constantes.nomRaccourciClient(attaquant) + " colle une beigne ("
+						+ perteVie + " points de degats) a " + Constantes.nomRaccourciClient(defenseur)+ " mais il avait une armure ! ( dommages annulés )");
+				arene.ajouterCaractElement(defenseur, Caracteristique.ARMURE, -defenseur.getPersonnage().getCaract(Caracteristique.ARMURE));
 			}
 			
 			// initiative

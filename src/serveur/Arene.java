@@ -737,6 +737,7 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 		VuePersonnage client = personnages.get(refRMI);
 		new ModifCara(this,client,modifForce,cara).agir();
 	}
+	
 	public boolean lanceBouleDeFeu (int refRMI,int refRMIAdv) throws RemoteException{
 		boolean res =false ;
 

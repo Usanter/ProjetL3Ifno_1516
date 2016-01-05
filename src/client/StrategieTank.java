@@ -18,9 +18,9 @@ import client.StrategiePersonnage;
 /**
  * Strategie d'un personnage. 
  */
-public class StrategieAssassin extends StrategiePersonnage{
+public class StrategieTank extends StrategiePersonnage{
 	
-	public StrategieAssassin (String ipArene, int port, String ipConsole, 
+	public StrategieTank (String ipArene, int port, String ipConsole, 
 			String nom, String groupe, HashMap<Caracteristique, Integer> caracts,
 			long nbTours, Point position, LoggerProjet logger)
 	{
@@ -52,8 +52,14 @@ public class StrategieAssassin extends StrategiePersonnage{
 		}
 		
 		//on augmente la jauge de pouvoir si elle est inferieure au max
-		if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) < Constantes.POUVOIR_MAX_ASSASSIN )
+		if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) < Constantes.POUVOIR_MAX_TANK )
 			arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
+		// si la jauge de pouvoir est au max, on la met a 0 et on augmente la force de VALEUR_POUVOIR_BARBARE
+		if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) >= Constantes.POUVOIR_MAX_TANK 
+				&& console.getPersonnage().getCaract(Caracteristique.ARMURE) < Constantes.ARMURE_MAX_TANK){
+			arene.modifCara(refRMI, 1 , Caracteristique.ARMURE);
+			arene.modifCara(refRMI, -Constantes.POUVOIR_MAX_TANK, Caracteristique.POUVOIR);
+		}
 		
 		if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
 			console.setPhrase("J'erre...");
@@ -84,36 +90,9 @@ public class StrategieAssassin extends StrategiePersonnage{
 				}
 				// sinon c'est un personnage
 				else{
-					// si on peut le one shot on le fait
-					if(elemPlusProche.getCaract(Caracteristique.VIE) <= console.getPersonnage().getCaract(Caracteristique.FORCE)
-							&& console.getPersonnage().getCaract(Caracteristique.POUVOIR) >= Constantes.POUVOIR_MAX_ASSASSIN){
-						console.setPhrase("Je suis parmi les ombres ...");
-						//restat du pouvoir
-						arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
-						//on se tp sur lui et on le tape
-						arene.blink(refRMI, refCible);
-						arene.lanceAttaque(refRMI, refCible);
-					}
-					else if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
-					{
-						//on le fuit
-						console.setPhrase(elemPlusProche.getNom()+" a l'air fort, je vais lui faire croire que je suis sans défence...");
-						arene.deplaceLoin(refRMI, refCible);
-					}
-					//sinon on tente le coup
-					else{
-						//si on peut se tp on le fait
-						if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) >= Constantes.POUVOIR_MAX_ASSASSIN){
-
-							arene.blink(refRMI, refCible);
-							arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
-							arene.lanceAttaque(refRMI, refCible);
-						}
-						//sinon
-						else
-						console.setPhrase(elemPlusProche.getNom()+" ne me verra jamais venir...");
+					// on va toujours vers lui, on est un tank quand meme
+						console.setPhrase(elemPlusProche.getNom()+" va sentir ma colere ...");
 						arene.deplace(refRMI, refCible);
-					}
 				}
 				
 				

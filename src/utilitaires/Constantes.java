@@ -110,7 +110,11 @@ public class Constantes {
 	public static final int POUVOIR_MAX_MAGE = 15;
 	
 	public static final int POUVOIR_MAX_ASSASSIN = 15;
+	
+	public static final int POUVOIR_MAX_TANK = 5;
 
+	public static final int ARMURE_MAX_TANK = 1;
+	
 	public static final int FORCE_MAX_BARBARE = 85;
 
 	public static final int FORCE_MAX_VOLEUR = 60;

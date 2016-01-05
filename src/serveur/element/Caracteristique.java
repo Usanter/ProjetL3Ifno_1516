@@ -33,7 +33,12 @@ public enum Caracteristique {
 	/**
 	 * Compteur : definit le nombre de mort effectue pendant la partie
 	 */
-	COMPTEUR("Compteur","CMP",0,100,0);
+	COMPTEUR("Compteur","CMP",0,100,0),
+	
+	/**
+	 *Armure: entre 0 et 1 , une armure a 1 permet de bloquer un coup ( l'annule entierement )
+	 */
+	ARMURE("Armure","ARM",0,1,0);
 	
 	
 	/**
