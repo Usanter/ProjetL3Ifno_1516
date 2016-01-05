@@ -20,9 +20,7 @@ public class LanceBarbare {
 	private static String usage = "USAGE : java " + LancePaladin.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-		String nom = "Le Berserker";
-		//slooazjdjfh
-		// TODO remplacer la ligne suivante par votre numero de groupe
+		String nom = "Berserker";
 		String groupe = "19";
 		
 		// nombre de tours pour ce personnage avant d'etre deconnecte 
@@ -72,7 +70,7 @@ public class LanceBarbare {
 			// caracteristiques du personnage
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
 			// seule la force n'a pas sa valeur par defaut (exemple)
-			caracts.put(Caracteristique.FORCE, 60);;
+			caracts.put(Caracteristique.FORCE, 60);
 			
 			
 			

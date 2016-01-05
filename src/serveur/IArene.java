@@ -228,8 +228,10 @@ public interface IArene extends Remote {
 	 */
 	public boolean deplace(int refRMI, Point objectif) throws RemoteException;
 	
-	
+	/*Principe Inverse de deplace */
+	public boolean deplaceLoin(int refRMI, Point objectif) throws RemoteException ;
 
+	public boolean deplaceLoin(int refRMI, int refCible) throws RemoteException ;
 	
 
 	/**************************************************************************
