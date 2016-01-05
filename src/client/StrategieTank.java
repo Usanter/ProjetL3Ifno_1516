@@ -62,9 +62,24 @@ public class StrategieTank extends StrategiePersonnage{
 		}
 		
 		if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
+			if (console.getPersonnage().getCaract(Caracteristique.VIE) < 50)
+			{
+				Point position1 = arene.getPosition(refRMI); 
+				if(arene.TestSurSpawn(refRMI , position1) )
+				{
+					console.setPhrase("Je suis dessus le spawn ");
+				}
+				else
+				{
+				console.setPhrase("Je me déplace vers le spwan " +position1.x + "  " + position1.y);
+				arene.deplaceSpawn(refRMI, position); 
+				}
+			}
+			else {
 			console.setPhrase("J'erre...");
-			arene.deplace(refRMI, 0); 
-		} else {
+			arene.deplace(refRMI, 0); }
+		}	
+		else {
 			int refCible = Calculs.chercherElementProche(position, voisins);
 			int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
 			

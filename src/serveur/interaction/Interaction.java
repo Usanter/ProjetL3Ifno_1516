@@ -46,6 +46,16 @@ public abstract class Interaction<T extends VueElement> {
 	}
 	
 	/**
+	 * Deuxième constructeur pour la classe RegeneVieSpawn, cette classe ne prend que un seul perso
+	 * @param arene
+	 * @param perso
+	 */
+	public Interaction(Arene arene, VuePersonnage perso) {
+		this.arene = arene;
+		this.attaquant = perso;
+	}
+	
+	/**
 	 * Realise l'interaction.
 	 */
 	public abstract void interagir();

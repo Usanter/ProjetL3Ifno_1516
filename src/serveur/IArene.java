@@ -285,5 +285,12 @@ public interface IArene extends Remote {
 	 */
 	public void lancePotionEnAttente(int refRMI, String mdp) throws RemoteException;
 	
+	/**
+	 * Permet de regénérer la vie d'un perso si il se trouve dans la zone de spwan
+	 * @param position
+	 */
+	public boolean TestSurSpawn (int refRMI , Point position)  throws RemoteException;
+	public boolean deplaceSpawn(int refRMI, Point objectif) throws RemoteException ;
+
 }
 

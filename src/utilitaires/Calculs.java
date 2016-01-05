@@ -222,6 +222,7 @@ public class Calculs {
 				Calculs.nombreAleatoire(XMIN_ARENE, XMAX_ARENE), 
 				Calculs.nombreAleatoire(YMIN_ARENE, YMAX_ARENE));
 	}
+	
 
 	/**
 	 * Cape une valeur dans un intervalle donne.

@@ -132,6 +132,13 @@ public class Constantes {
 	public static final int POTION_TRAPPEUR_FORCE = 5;
 
 	/**
+	 * Calcul de positions pour le spawn
+	 */
+	public static final int XMOYENNE_SPAWN = 50;
+	public static final int YMOYENNE_SPAWN = 50;
+
+	
+	/**
 	 * Retourne le nom de la classe de l'objet passe en parametre, sous 
 	 * forme de chaine de caracteres.
 	 * @param o object

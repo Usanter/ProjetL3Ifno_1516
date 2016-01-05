@@ -22,7 +22,6 @@ public class Deplacement {
 	 * References RMI et vues des voisins (calcule au prealable). 
 	 */
 	private HashMap<Integer, Point> voisins;
-	
 	/**
 	 * Cree un deplacement.
 	 * @param personnage personnage voulant se deplacer
@@ -37,6 +36,12 @@ public class Deplacement {
 			this.voisins = voisins;
 		}
 	}
+	
+	public Deplacement(VuePersonnage personnage)
+	{
+		this.personnage = personnage;
+	}
+
 
 	/**
 	 * Deplace ce sujet d'une case en direction de l'element dont la reference
@@ -70,6 +75,19 @@ public class Deplacement {
 			}
 		}
 	}
+
+	
+	public void seDirigerVersSpawn(Point objectif) throws RemoteException {
+		Point cible = Calculs.restreindrePositionArene(objectif); 
+		
+		// on cherche le point voisin vide
+		Point dest = Calculs.meilleurPoint(personnage.getPosition(), cible, voisins);
+		
+		if(dest != null) {
+			personnage.setPosition(dest);
+		}
+	}
+
 
 	public void allerA(int refObjectif){
 		Point pvers;

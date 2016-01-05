@@ -1,5 +1,10 @@
 package serveur;
 
+import static utilitaires.Constantes.XMAX_ARENE;
+import static utilitaires.Constantes.XMIN_ARENE;
+import static utilitaires.Constantes.YMAX_ARENE;
+import static utilitaires.Constantes.YMIN_ARENE;
+
 import java.awt.Point;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -25,7 +30,7 @@ import serveur.interaction.Deplacement;
 import serveur.interaction.Duel;
 import serveur.interaction.Vol;
 import serveur.interaction.BouleDeFeu;
-
+import serveur.interaction.RegeneVieSpawn;
 import serveur.interaction.Ramassage;
 
 import serveur.interaction.ModifCara;
@@ -982,6 +987,7 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 		
 		return res;
 	}
+	
 
 	@Override
 	public boolean deplace(int refRMI, Point objectif) throws RemoteException {
@@ -1035,10 +1041,8 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 			// sinon, on tente de jouer l'interaction
 			new Deplacement(client, getVoisins(refRMI)).seDirigerVersLoin(objectif);
 			client.executeAction();
-
 			res = true;
 		}
-		
 		return res;
 	}
 	/**
@@ -1171,8 +1175,45 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 		return Constantes.nomRaccourciClient(vueFromRef(refRMI));
 	}
 
-	
-	
+	/**
+	 * Permet de se déplacer en direction du centre du spawn (50/50)
+	 * 
+	 */
+	public boolean deplaceSpawn(int refRMI, Point objectif) throws RemoteException {
+		boolean res = false;
+
+		VuePersonnage client = personnages.get(refRMI);
+		if (client.isActionExecutee()) {
+			// si une action a deja ete executee
+			logActionDejaExecutee(refRMI);
+		} else {
+			// sinon, on tente de jouer l'interaction
+			//Ici on défini l'objectif , se déplacer vers le centre du spawn
+			objectif.x = Constantes.XMOYENNE_SPAWN;
+			objectif.y = Constantes.YMOYENNE_SPAWN;
+			new Deplacement(client, getVoisins(refRMI)).seDirigerVersSpawn(objectif);
+			client.executeAction();
+			res = true;
+		}
+		return res;
+	}
+
+	/**
+	 * Permet de savoir si le point est dans les limites du spwan de regénération de vie
+	 * @param refRMI reference RMI
+	 * @param position position de l'élément
+	 * @return boolean
+	 */
+	public boolean TestSurSpawn (int refRMI , Point position)  throws RemoteException
+	{
+		 
+		if(( position.x >= 45|| position.x <= 55 )&&
+				( position.y >= 45 && position.y <= 55))
+		{
+			return true;
+		}
+		return false;
+	}
 
 
 	/**************************************************************************

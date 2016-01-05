@@ -72,7 +72,8 @@ public class LanceTank {
 			// seule la force n'a pas sa valeur par defaut (exemple)
 			caracts.put(Caracteristique.FORCE, 10);
 			caracts.put(Caracteristique.ARMURE , 1);
-			
+			caracts.put(Caracteristique.VIE, 49);
+
 			
 			
 			Point position = Calculs.positionAleatoireArene();	

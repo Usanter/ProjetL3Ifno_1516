@@ -27,36 +27,6 @@ public class Vol extends Interaction<VuePersonnage> {
 		super(arene, attaquant, defenseur);
 	}
 	
-	/**
-	 * Cree une interaction de duel avec un pouvoir voleur !
-	 */
-	public void attaqueVoleur() {
-		try {
-			Personnage pAttaquant = (Personnage) attaquant.getElement();
-			int forceAttaquant = pAttaquant.getCaract(Caracteristique.FORCE);
-
-
-			// On enlève 25 de vie au défenseur 
-			arene.ajouterCaractElement(defenseur, Caracteristique.VIE, -Constantes.VOL_DE_VIE);
-			arene.ajouterCaractElement(attaquant, Caracteristique.VIE, +Constantes.VOL_DE_VIE);		
-			logs(Level.INFO, Constantes.nomRaccourciClient(attaquant) + " vol ("
-						+ Constantes.VOL_DE_VIE + " points de vie) a " + Constantes.nomRaccourciClient(defenseur));
-			
-			// On enlève 10 de force au défenseur 
-			arene.ajouterCaractElement(defenseur, Caracteristique.FORCE, -Constantes.VOL_DE_FORCE);
-			arene.ajouterCaractElement(attaquant, Caracteristique.FORCE, +Constantes.VOL_DE_FORCE);			
-			logs(Level.INFO, Constantes.nomRaccourciClient(attaquant) + " vol ("
-						+ Constantes.VOL_DE_FORCE + " points de degats) a " + Constantes.nomRaccourciClient(defenseur));
-			
-			// initiative
-			incrementerInitiative(defenseur);
-			decrementerInitiative(attaquant);
-			
-		} catch (RemoteException e) {
-			logs(Level.INFO, "\nErreur lors d'une attaque : " + e.toString());
-		}
-	}
-	
 	@Override
 	public void interagir() {
 		try {
