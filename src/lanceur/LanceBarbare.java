@@ -20,9 +20,7 @@ public class LanceBarbare {
 	private static String usage = "USAGE : java " + LancePaladin.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-		String nom = "Le Berserker";
-		//slooazjdjfh
-		// TODO remplacer la ligne suivante par votre numero de groupe
+		String nom = "Berserker";
 		String groupe = "19";
 		
 		// nombre de tours pour ce personnage avant d'etre deconnecte 
