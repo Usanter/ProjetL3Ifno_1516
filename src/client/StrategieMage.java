@@ -57,8 +57,7 @@ public class StrategieMage extends StrategiePersonnage{
 				}
 				if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
 					console.setPhrase("J'erre...");
-					arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
-					
+				
 					
 					
 					arene.deplace(refRMI, 0); 
@@ -69,14 +68,14 @@ public class StrategieMage extends StrategiePersonnage{
 					Element elemPlusProche = arene.elementFromRef(refCible);
 					//Si enemis dans le rayon d'action du pouvoir et pouvoir dispo alors attaque
 					if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION_GRANDE 
-					&& console.getPersonnage().getCaract(Caracteristique.POUVOIR) >= Constantes.POUVOIR_MAX_MAGE ){
+					&& console.getPersonnage().getCaract(Caracteristique.POUVOIR) > Constantes.POUVOIR_MAX_MAGE ){
 						if(!(elemPlusProche instanceof Potion)){
 							//Duel a distance
 							console.setPhrase("Je lance ma boule de feu sur  " + elemPlusProche.getNom());
 							arene.lanceBouleDeFeu(refRMI, refCible);
 							// a modifier pour chaque personnage ( temps de recharge des pouvoirs )
 				
-							arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), 	Caracteristique.POUVOIR);
+							arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), Caracteristique.POUVOIR);
 							
 						}
 					}
