@@ -67,7 +67,7 @@ public class Constantes {
 	* pour une attaque à distance
 	*/
 
-	public static final int DISTANCE_MIN_INTERACTION_GRANDE = 15;
+	public static final int DISTANCE_MIN_INTERACTION_GRANDE = 8;
 
 	/**
 	 * Abscisse minimale de l'arene.

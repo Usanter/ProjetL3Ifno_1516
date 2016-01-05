@@ -70,9 +70,8 @@ public class LanceMage {
 			
 			// caracteristiques du personnage
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
-			// seule la force n'a pas sa valeur par defaut (exemple)
-			caracts.put(Caracteristique.FORCE, 
-					Calculs.valeurCaracAleatoire(Caracteristique.FORCE)); 
+			caracts.put(Caracteristique.FORCE, 15 );
+			 
 			
 			Point position = Calculs.positionAleatoireArene();	
 			

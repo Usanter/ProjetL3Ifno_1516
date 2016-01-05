@@ -85,4 +85,52 @@ public class Deplacement {
 			personnage.setPosition(dest);
 		}
 	}
+	
+	/**
+	 * Deplace ce sujet d'une case en direction opposé de l'element dont la reference
+	 * est donnee.
+	 * Si la reference est la reference de l'element courant, il ne bouge pas ;
+	 * si la reference est egale a 0, il erre ;
+	 * sinon il va vers le voisin correspondant (s'il existe dans les voisins).
+	 * @param refObjectif reference de l'element cible
+	 */    
+	public void seDirigerVersLoin(int refObjectif) throws RemoteException {
+		Point pvers;
+		
+		// on ne bouge que si la reference n'est pas la notre
+		if (refObjectif != personnage.getRefRMI()) {
+			
+			// la reference est nulle (en fait, nulle ou negative) : 
+			// le personnage erre
+			if (refObjectif <= 0) { 
+				pvers = Calculs.positionAleatoireArene();
+						
+			} else { 
+				// sinon :
+				// la cible devient le point sur lequel se trouve l'element objectif
+				pvers = voisins.get(refObjectif);
+			}
+	
+			// on ne bouge que si l'element existe
+			if(pvers != null) {
+				seDirigerVersLoin(pvers);
+			}
+		}
+	}
+
+	/**
+	 * Deplace ce sujet d'une case en direction de la case donnee.
+	 * @param objectif case cible
+	 * @throws RemoteException
+	 */
+	public void seDirigerVersLoin(Point objectif) throws RemoteException {
+		Point cible = Calculs.restreindrePositionArene(objectif); 
+		
+		// on cherche le point voisin vide
+		Point dest = Calculs.PirePoint(personnage.getPosition(), cible, voisins);
+		
+		if(dest != null) {
+			personnage.setPosition(dest);
+		}
+	}
 }
