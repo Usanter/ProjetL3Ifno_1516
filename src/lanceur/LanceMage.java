@@ -22,7 +22,7 @@ public class LanceMage {
 	public static void main(String[] args) {
 		String nom = "Mage";
 		
-		String groupe = "19"; 
+		String groupe = "G19"; 
 		
 		// nombre de tours pour ce personnage avant d'etre deconnecte 
 		// (20 minutes par defaut)
