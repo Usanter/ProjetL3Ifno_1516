@@ -101,6 +101,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 										{
 											console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
 											arene.lanceAttaque(refRMI, refCible);		
+											arene.blink(refRMI, refCible);
 											VuePersonnage client = personnages1.get(refRMI);
 											personnages1.get(refRMI).DeuxiemeTourVoleur();
 											console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
@@ -114,6 +115,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 											{
 												console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
 												arene.lanceAttaque(refRMI, refCible);	
+												arene.blink(refRMI, refCible);
 												VuePersonnage client = personnages1.get(refRMI);
 												personnages1.get(refRMI).DeuxiemeTourVoleur();
 												console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
@@ -127,6 +129,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 												{
 													console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
 													arene.lanceAttaque(refRMI, refCible);		
+													arene.blink(refRMI, refCible);
 													VuePersonnage client = personnages1.get(refRMI);
 													personnages1.get(refRMI).DeuxiemeTourVoleur();
 													console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
@@ -146,6 +149,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 									{
 										console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
 										arene.lanceAttaque(refRMI, refCible);
+										arene.blink(refRMI, refCible);
 										VuePersonnage client = personnages1.get(refRMI);
 										personnages1.get(refRMI).DeuxiemeTourVoleur();
 										console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
