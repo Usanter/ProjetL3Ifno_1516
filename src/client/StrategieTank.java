@@ -56,14 +56,25 @@ public class StrategieTank extends StrategiePersonnage{
             arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
         // si la jauge de pouvoir est au max, on la met a 0 et on augmente la force de VALEUR_POUVOIR_BARBARE
         if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) >= Constantes.POUVOIR_MAX_TANK
-                && console.getPersonnage().getCaract(Caracteristique.BLOCK) < Constantes.ARMURE_MAX_TANK){
+                && console.getPersonnage().getCaract(Caracteristique.BLOCK) < Constantes.BLOCK_MAX_TANK){
             arene.modifCara(refRMI, 1 , Caracteristique.BLOCK);
             arene.modifCara(refRMI, -Constantes.POUVOIR_MAX_TANK, Caracteristique.POUVOIR);
         }
        
+        if(arene.getPosition(refRMI).x <= 55 && arene.getPosition(refRMI).y <= 55 
+        		&& arene.getPosition(refRMI).x >= 45 && arene.getPosition(refRMI).y >= 45){
+        	arene.modifCara(refRMI, 1 ,Caracteristique.VIE);
+        }
+        
+        if(console.getPersonnage().getCaract(Caracteristique.VIE) < 50){
+    		arene.deplace(refRMI, new Point(50,50));
+    	}
+        
         if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
-            console.setPhrase("J'erre...");
-            arene.deplace(refRMI, 0); 
+        	
+        		console.setPhrase("J'erre...");
+            	arene.deplace(refRMI, 0);
+        	
         }  
         else {
             int refCible = Calculs.chercherElementProche(position, voisins);
@@ -77,18 +88,11 @@ public class StrategieTank extends StrategiePersonnage{
                     // ramassage
                 	if(((Potion) elemPlusProche).getArmure()){
 						console.setPhrase("Je ramasse une armure");
-					}
-					else if(((Potion)elemPlusProche).getLife()){
-						console.setPhrase("Je ramasse de la vie");
-					}
-					else if(((Potion)elemPlusProche).getWeapon()){
-						console.setPhrase("Je ramasse une arme");
-					}
-					else
-					{
+					}else{
 						console.setPhrase("Je ramasse une potion");	
 					}
-                	arene.ramassePotion(refRMI, refCible);
+					arene.ramassePotion(refRMI, refCible);
+ 
                 } else { // personnage
                     // duel
                     console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
