@@ -15,7 +15,6 @@ import serveur.vuelement.VuePersonnage;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 import client.StrategiePersonnage;
-import serveur.element.Personnage;
 
 
 /**
@@ -25,6 +24,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 	
 	//Pour pouvoir faire deux attaques de bases en 1 tour
 	protected Hashtable<Integer, VuePersonnage> personnages1 = null;
+	
 	protected IArene arene;
 	public StrategieVoleur (String ipArene, int port, String ipConsole, 
 			String nom, String groupe, HashMap<Caracteristique, Integer> caracts,
@@ -63,7 +63,6 @@ public class StrategieVoleur extends StrategiePersonnage{
 		//car quand il fait la première attaque l'adversaire est poussé, il faut donc que le voleur se TP sur l'adversaire
 		//pour pouvoir faire ca deuxième attaque
 		arene.blink(refRMI, refCible);
-		VuePersonnage client = personnages1.get(refRMI);
 		personnages1.get(refRMI).DeuxiemeTourVoleur();
 		console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
 		arene.lanceAttaque(refRMI, refCible);	
@@ -76,7 +75,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 	 * @param refRMI
 	 * @throws RemoteException
 	 */
-	public void ChoixAttaque (Element elemPlusProche , int refCible , int refRMI) throws RemoteException
+	public void StrategiAttaque (Element elemPlusProche , int refCible , int refRMI) throws RemoteException
 	{
 		//Si on peut tuer l'adversaire avec l'attaque de base on utilise pas l'attaque vol
 		if (console.getPersonnage().getCaract(Caracteristique.FORCE) >= elemPlusProche.getCaract(Caracteristique.VIE) )
@@ -102,8 +101,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 		}
 	}
 	
-	// TODO etablir une strategie afin d'evoluer dans l'arene de combat
-	// une proposition de strategie (simple) est donnee ci-dessous
+
 	/** 
 	 * Decrit la strategie.
 	 * Les methodes pour evoluer dans le jeu doivent etre les methodes RMI
@@ -134,32 +132,29 @@ public class StrategieVoleur extends StrategiePersonnage{
 					arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
 				}
 				
+				Point position1 = arene.getPosition(refRMI); 
+				if(TestSurSpawn(refRMI , position1) == true)
+				{
+					console.setPhrase("Je regénère ma vie ");
+					arene.RegeneVie(refRMI );
+				}
+				
 				if (voisins.isEmpty()) { // je n'ai pas de voisins
-					//Si la vie du voleur est > 50 alors on va regénérer sa vie en allant au spawn
-					if (console.getPersonnage().getCaract(Caracteristique.VIE) < 50)
+					//Si la vie du voleur est < 100 alors on va regénérer sa vie en allant au spawn
+					if (console.getPersonnage().getCaract(Caracteristique.VIE) < 100 )
 					{
-						Point position1 = arene.getPosition(refRMI); 
-						//Si le voleur est sur le spawn on regénère sa vie
-						if(TestSurSpawn(refRMI , position1) == true)
-						{
-							console.setPhrase("Je regénère ma vie ");
-							arene.RegeneVie(refRMI );
-							arene.deplace(refRMI, 0); 
-						}
-						//Si il n'est pas sur le spawn il va en direction du spawn
-						else
-						{
 						console.setPhrase("Je me déplace vers le spwan ");
-						arene.deplaceSpawn(refRMI, position); 
-						}
+						arene.deplaceSpawn(refRMI, position);
 					}
-					//Sinon, si le voleur a une vie >= 50 alors on erre
+					//Sinon on erre
 					else {
 					console.setPhrase("Je cherche quelqu'un a dépouiller...");
-					arene.deplace(refRMI, 0); }
+					arene.deplace(refRMI, 0);
+					}
 				}
 				//Si j'ai un voisin
 				else {
+					
 					int refCible = Calculs.chercherElementProche(position, voisins);
 					int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
 
@@ -168,21 +163,22 @@ public class StrategieVoleur extends StrategiePersonnage{
 					if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) 
 					{ // si suffisamment proches
 						// j'interagis directement
-						if(elemPlusProche instanceof Potion) { // potion
-							// ramassage
-							if(((Potion) elemPlusProche).getArmure()){
-								console.setPhrase("Je ramasse une armure");
-							}else{
-								console.setPhrase("Je ramasse une potion");	
-							}
-						} 
-						else { 
+						if(elemPlusProche instanceof Potion == false) { 
 							// personnage
 							//Si on peut se faire tuer en un coup on fui !!!
 							if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
 							{
-								console.setPhrase("Je cherche quelqu'un à depouiller...");
-								arene.deplace(refRMI, 0); 		
+								//Si le voleur n'est pas sur le spawn on va en direction de ce dernier
+								if(TestSurSpawn(refRMI , position1) == false)
+								{
+									console.setPhrase("Je vais récupérer de la vie pour te combattre ! " + elemPlusProche.getNom());
+									arene.deplaceSpawn(refRMI, position);
+								}
+								else
+								{
+									console.setPhrase("Je fuis ! " + elemPlusProche.getNom());
+									arene.deplaceLoin(refRMI, refCible);
+								}	
 							}
 							//Sinon on attaque 
 							else
@@ -190,7 +186,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 								//Si le caractère pouvoir = 20 alors on peut utiliser le pouvoir ! 
 								if (console.getPersonnage().getCaract(Caracteristique.POUVOIR) == Constantes.POUVOIR_MAX_VOLEUR)
 								{
-									ChoixAttaque (elemPlusProche , refCible , refRMI);
+									StrategiAttaque (elemPlusProche , refCible , refRMI);
 								}
 								//Si le voleur n'a pas encore chargé sa super attaque vol
 								// On fait l'attaque de base
@@ -199,26 +195,54 @@ public class StrategieVoleur extends StrategiePersonnage{
 									DoubleAttaqueSimple (elemPlusProche ,refCible , refRMI);	
 								}
 							}
+						} 
+						else { // potion
+							// ramassage
+							if(((Potion) elemPlusProche).getArmure()){
+								console.setPhrase("Je ramasse une armure");
+							}
+							else{
+								console.setPhrase("Je ramasse une potion");	
+							}
 						}
 					} //fin si j'ai un voisin avec qui je peut interagir
 					else { // si voisins, mais plus eloignes
 						// je vais vers le plus proche
-						if(elemPlusProche instanceof Potion) { // potion
-						console.setPhrase( elemPlusProche.getNom()+ " je viens te chercher !");
-						arene.deplace(refRMI, refCible);
-						}
-						else
-						{
+						if(elemPlusProche instanceof Potion == false) { //Perso
 							//Si le personnage est trop fort pour nous, on fui !
 							if (elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE) )
 							{
-								console.setPhrase("Je fui  " + elemPlusProche.getNom());
-								arene.deplaceLoin(refRMI, refCible);
+								//Si la vie du voleur est < 100 alors on va regénérer sa vie en allant au spawn
+								if (console.getPersonnage().getCaract(Caracteristique.VIE) < 100 && TestSurSpawn(refRMI , position1) == false)
+								{
+									console.setPhrase("Je me déplace vers le spwan ");
+									arene.deplaceSpawn(refRMI, position);
+								}
+								else
+								{
+									console.setPhrase("Je fuis  " + elemPlusProche.getNom());
+									arene.deplaceLoin(refRMI, refCible);
+								}
 							}
 							//Sinon on va vers lui
 							else
 							{
 								console.setPhrase(elemPlusProche.getNom()+" j'arrive !");
+								arene.deplace(refRMI, refCible);
+							}
+						}
+						else
+						{
+							// potion
+							//Si la potion peut nous tuer on ne va pas la chercher
+							if(elemPlusProche.getCaract(Caracteristique.VIE ) == -console.getPersonnage().getCaract(Caracteristique.VIE))
+							{
+								console.setPhrase( elemPlusProche.getNom()+ " je ne viens pas te chercher ");
+								arene.deplaceLoin(refRMI, refCible);
+							}
+							else
+							{
+								console.setPhrase( elemPlusProche.getNom()+ " je viens te chercher !");
 								arene.deplace(refRMI, refCible);
 							}
 						}
