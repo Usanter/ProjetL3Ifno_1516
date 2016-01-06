@@ -33,21 +33,6 @@ public class StrategieVoleur extends StrategiePersonnage{
 		super(ipArene, port , ipConsole,  nom, groupe, caracts , nbTours, position , logger);
 	}
 	
-	/**
-	 * Permet de savoir si le point est dans les limites du spwan de regénération de vie
-	 * @param refRMI reference RMI
-	 * @param position position de l'élément
-	 * @return boolean
-	 */
-	public boolean TestSurSpawn (int refRMI , Point position)  throws RemoteException
-	{	 
-		if(( position.x >= 45 && position.x <= 55 )&&
-				( position.y >= 45 && position.y <= 55))
-		{
-			return true;
-		}
-		return false;
-	}
 	
 	/**
 	 * Permet d'effectuer une double attaque simple
@@ -133,7 +118,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 				}
 				
 				Point position1 = arene.getPosition(refRMI); 
-				if(TestSurSpawn(refRMI , position1) == true)
+				if(arene.TestSurSpawn(refRMI , position1) == true)
 				{
 					console.setPhrase("Je regénère ma vie ");
 					arene.RegeneVie(refRMI );
@@ -144,9 +129,9 @@ public class StrategieVoleur extends StrategiePersonnage{
 					if (console.getPersonnage().getCaract(Caracteristique.VIE) < 100 )
 					{
 						console.setPhrase("Je me déplace vers le spwan ");
-						arene.deplaceSpawn(refRMI, position);
+						arene.deplace(refRMI,new Point(Calculs.nombreAleatoire(46, 54),Calculs.nombreAleatoire(46, 54)));
 					}
-					//Sinon on erre
+			//Sinon on erre
 					else {
 					console.setPhrase("Je cherche quelqu'un a dépouiller...");
 					arene.deplace(refRMI, 0);
@@ -169,10 +154,10 @@ public class StrategieVoleur extends StrategiePersonnage{
 							if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
 							{
 								//Si le voleur n'est pas sur le spawn on va en direction de ce dernier
-								if(TestSurSpawn(refRMI , position1) == false)
+								if(arene.TestSurSpawn(refRMI , position1) == false)
 								{
 									console.setPhrase("Je vais récupérer de la vie pour te combattre ! " + elemPlusProche.getNom());
-									arene.deplaceSpawn(refRMI, position);
+									arene.deplace(refRMI,new Point(Calculs.nombreAleatoire(46, 54),Calculs.nombreAleatoire(46, 54)));
 								}
 								else
 								{
@@ -221,10 +206,10 @@ public class StrategieVoleur extends StrategiePersonnage{
 							if (elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE) )
 							{
 								//Si la vie du voleur est < 100 alors on va regénérer sa vie en allant au spawn
-								if (console.getPersonnage().getCaract(Caracteristique.VIE) < 100 && TestSurSpawn(refRMI , position1) == false)
+								if (console.getPersonnage().getCaract(Caracteristique.VIE) < 100 && arene.TestSurSpawn(refRMI , position1) == false)
 								{
-									console.setPhrase("Je me déplace vers le spwan ");
-									arene.deplaceSpawn(refRMI, position);
+									console.setPhrase("Je me déplace vers le spawn ");
+									arene.deplace(refRMI,new Point(Calculs.nombreAleatoire(46, 54),Calculs.nombreAleatoire(46, 54)));
 								}
 								else
 								{

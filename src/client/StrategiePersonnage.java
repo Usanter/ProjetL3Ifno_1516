@@ -7,13 +7,8 @@ import java.util.HashMap;
 
 import client.controle.Console;
 import logger.LoggerProjet;
-import serveur.IArene;
 import serveur.element.Caracteristique;
-import serveur.element.Element;
 import serveur.element.Personnage;
-import serveur.element.Potion;
-import utilitaires.Calculs;
-import utilitaires.Constantes;
 
 /**
  * Strategie d'un personnage. 
@@ -25,7 +20,6 @@ public abstract class StrategiePersonnage {
 	 * (l'arene).
 	 */
 	protected Console console;
-	protected int type ;
 	/**
 	 * Cree un personnage, la console associe et sa strategie.
 	 * @param ipArene ip de communication avec l'arene
@@ -40,8 +34,7 @@ public abstract class StrategiePersonnage {
 	public StrategiePersonnage(String ipArene, int port, String ipConsole, 
 			String nom, String groupe, HashMap<Caracteristique, Integer> caracts,
 			long nbTours, Point position, LoggerProjet logger ) {
-		this.type = type;
-		logger.info("lanceur", "Creation de la console...");
+			logger.info("lanceur", "Creation de la console...");
 		
 		try {
 			console = new Console(ipArene, port, ipConsole, this, 
