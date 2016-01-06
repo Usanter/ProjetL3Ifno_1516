@@ -213,7 +213,7 @@ public class AreneJPanel extends JPanel {
 			}
 			else if(vp.getEstVie()){
 				//Graphisme vie
-				//g.setColor(new Color(205,92,92));
+				g.setColor(new Color(205,92,92));
 				g.fillOval(coordX-5, coordY-5, ELEMENT_SIZE-1, ELEMENT_SIZE-1);	
 				g.fillOval(coordX+5, coordY-5, ELEMENT_SIZE-1, ELEMENT_SIZE-1);
 				Polygon p = new Polygon(); // Triangle
