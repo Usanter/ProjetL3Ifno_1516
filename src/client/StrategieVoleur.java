@@ -33,8 +33,6 @@ public class StrategieVoleur extends StrategiePersonnage{
 		super(ipArene, port , ipConsole,  nom, groupe, caracts , nbTours, position , logger);
 	}
 	
-	
-	
 	/**
 	 * Permet de savoir si le point est dans les limites du spwan de regénération de vie
 	 * @param refRMI reference RMI

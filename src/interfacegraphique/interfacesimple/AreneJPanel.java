@@ -27,7 +27,7 @@ import utilitaires.Constantes;
  */
 public class AreneJPanel extends JPanel {
 	public static Color vert = new Color(152,251,152);
-
+	
 	public void paint(Graphics g)
 	{
 		super.paint(g);
@@ -35,6 +35,9 @@ public class AreneJPanel extends JPanel {
 		g.setColor(vert);
 		g.fillRect(317,253,85,70);
 	}
+	
+
+	
 	private static final long serialVersionUID = 1L;
 	
 	/**
