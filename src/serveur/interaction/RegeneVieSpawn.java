@@ -12,7 +12,7 @@ import utilitaires.Calculs;
 import utilitaires.Constantes;
 
 /**
- * Represente un duel entre deux personnages.
+ * Represente la regénération de PV quand un personnage est sur le spawn
  *
  */
 public class RegeneVieSpawn extends Interaction<VuePersonnage> {
@@ -32,7 +32,7 @@ public class RegeneVieSpawn extends Interaction<VuePersonnage> {
 		try {
 			Personnage pAttaquant = (Personnage) attaquant.getElement();
 
-			// On enlève 25 de vie au défenseur 
+			// On récupère +2 de vie quand on est dans le spawn 
 			arene.ajouterCaractElement(attaquant, Caracteristique.VIE, +2);
 
 		} catch (RemoteException e) {

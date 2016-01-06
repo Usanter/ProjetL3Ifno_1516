@@ -73,10 +73,9 @@ public class LanceTank {
 			caracts.put(Caracteristique.FORCE, 10);
 			caracts.put(Caracteristique.ARMURE , 1);
 			caracts.put(Caracteristique.VIE, 49);
-
-			
 			
 			Point position = Calculs.positionAleatoireArene();	
+
 			
 			new StrategieTank(ipArene, port, ipConsole, nom, groupe, caracts, nbTours, position, logger);
 			logger.info("lanceur", "Creation du personnage reussie");

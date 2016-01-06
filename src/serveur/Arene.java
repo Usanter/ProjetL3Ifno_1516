@@ -1199,23 +1199,17 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 	}
 
 	/**
-	 * Permet de savoir si le point est dans les limites du spwan de regénération de vie
-	 * @param refRMI reference RMI
-	 * @param position position de l'élément
-	 * @return boolean
+	 * Fonction qui permet la regénération de vie
+	 * @param refRMI
+	 * @sorti +2 points de vie
 	 */
-	public boolean TestSurSpawn (int refRMI , Point position)  throws RemoteException
+	public void RegeneVie(int refRMI ) throws RemoteException 
 	{
-		 
-		if(( position.x >= 45|| position.x <= 55 )&&
-				( position.y >= 45 && position.y <= 55))
-		{
-			return true;
-		}
-		return false;
+		VuePersonnage client = personnages.get(refRMI);
+		new RegeneVieSpawn(this, client).interagir();
 	}
 
-
+	
 	/**************************************************************************
 	 * Specifique a l'arene tournoi.
 	 **************************************************************************/

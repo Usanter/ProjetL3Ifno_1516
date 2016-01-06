@@ -26,7 +26,15 @@ import utilitaires.Constantes;
  * connectes et les dessine.
  */
 public class AreneJPanel extends JPanel {
+	public static Color vert = new Color(152,251,152);
 
+	public void paint(Graphics g)
+	{
+		super.paint(g);
+		g.setXORMode(getBackground());
+		g.setColor(vert);
+		g.fillRect(317,253,85,70);
+	}
 	private static final long serialVersionUID = 1L;
 	
 	/**
@@ -382,6 +390,6 @@ public class AreneJPanel extends JPanel {
 		
 		return new Point(coordX, coordY);
 	}
-	
+
 	
 }

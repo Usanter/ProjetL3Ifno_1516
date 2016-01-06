@@ -1,4 +1,5 @@
 package interfacegraphique;
+import java.awt.Graphics;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -114,6 +115,9 @@ public class IHM extends JFrame implements Runnable {
 		}
 	}
 
+
+	
+
 	/**
 	 * Panel affichant l'arene.
 	 */
@@ -135,12 +139,16 @@ public class IHM extends JFrame implements Runnable {
 	 */
 	private JLabel timerLabel;
 	
+
+	
 	/**
 	 * Couleurs predefinies.
 	 */
 	public static Color grisFonce = new Color(115, 115, 115);
 	public static Color noir = new Color(33, 33, 33);
 	public static Color grisClair = new Color(200, 200, 200);
+	public static Color blue = new Color(0, 0, 255);
+	public static Color rose = new Color(176, 242, 182);
 
 	/**
 	 * Initialise l'IHM.
@@ -183,6 +191,7 @@ public class IHM extends JFrame implements Runnable {
 
 		gauchePanel = new JPanel(new BorderLayout());
 		gauchePanel.add(timerLabel, BorderLayout.NORTH);
+
 		gauchePanel.add(arenePanel, BorderLayout.CENTER);
 
 		infosPanel = new ElementsJPanel(this);
@@ -293,7 +302,6 @@ public class IHM extends JFrame implements Runnable {
 						+ Calculs.timerToString(nbTour)
 						+ "   -   Temps restant : "
 						+ Calculs.timerToString(tempsRestant));
-
 				if (!isPartieCommencee())
 					arenePanel
 							.afficherMessage("La partie n'a pas encore commence");
