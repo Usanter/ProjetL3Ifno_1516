@@ -243,7 +243,7 @@ public class IHMTournoi extends IHM {
 			demanderMotDePasse();
 		} else {
 			try {
-				arene.ajoutePotionEnAttente(new Potion(nom, "Arene", ht,false), position, motDePasse);
+				arene.ajoutePotionEnAttente(new Potion(nom, "Arene", ht,false,false,false), position, motDePasse);
 			} catch (RemoteException e) {
 				erreurConnexion(e);
 			}

@@ -10,12 +10,12 @@ import serveur.element.Potion;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 
-public class LancePotionDeVie {
+public class LanceVie {
 	
 	private static String usage = "USAGE : java " + LancePotion.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-		String nom = "Potion de vie";
+		String nom = "Vie";
 		
 		// TODO remplacer la ligne suivante par votre numero de groupe
 		String groupe = "G19" ; 
@@ -47,7 +47,7 @@ public class LancePotionDeVie {
 		// creation du logger
 		LoggerProjet logger = null;
 		try {
-			logger = new LoggerProjet(true, "potion_"+nom+groupe);
+			logger = new LoggerProjet(true, "vie_"+nom+groupe);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(ErreurLancement.suivant);
@@ -57,15 +57,21 @@ public class LancePotionDeVie {
 		try {
 			IArene arene = (IArene) java.rmi.Naming.lookup(Constantes.nomRMI(ipArene, port, "Arene"));
 
-			logger.info("lanceur", "Lancement de la potion sur le serveur...");
+			logger.info("lanceur", "Lancement de la vie sur le serveur...");
 			
 			// caracteristiques de la potion
 			HashMap<Caracteristique, Integer> caractsPotion = new HashMap<Caracteristique, Integer>();
-			caractsPotion.put(Caracteristique.VIE, Calculs.nombreAleatoire(0, 100));
+			caractsPotion.put(Caracteristique.ARMURE,0);
+			caractsPotion.put(Caracteristique.VIE, Calculs.nombreAleatoire(10, 40));
+			caractsPotion.put(Caracteristique.BLOCK, 0);
+			caractsPotion.put(Caracteristique.COMPTEUR, 0);
+			caractsPotion.put(Caracteristique.FORCE, 0);
+			caractsPotion.put(Caracteristique.POUVOIR, 0);
+			caractsPotion.put(Caracteristique.INITIATIVE, 0);
 			
 			// ajout de la potion
-			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion,false));
-			logger.info("lanceur", "Lancement de la potion reussi");
+			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion,false,false,true));
+			logger.info("lanceur", "Lancement de la vie reussi");
 			
 		} catch (Exception e) {
 			logger.severe("lanceur", "Erreur lancement :\n" + e.getCause());

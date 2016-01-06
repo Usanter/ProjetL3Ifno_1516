@@ -76,9 +76,18 @@ public class StrategiePaladin extends StrategiePersonnage{
 							// ramassage
 							if(((Potion) elemPlusProche).getArmure()){
 								console.setPhrase("Je ramasse une armure");
-							}else{
+							}
+							else if(((Potion)elemPlusProche).getLife()){
+								console.setPhrase("Je ramasse de la vie");
+							}
+							else if(((Potion)elemPlusProche).getWeapon()){
+								console.setPhrase("Je ramasse une arme");
+							}
+							else
+							{
 								console.setPhrase("Je ramasse une potion");	
 							}
+							arene.ramassePotion(refRMI, refCible);
 						} else { // personnage
 							// duel
 							

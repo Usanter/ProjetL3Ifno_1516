@@ -10,12 +10,12 @@ import serveur.element.Potion;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 
-public class LancePotionDeForce {
+public class LanceArme {
 	
 	private static String usage = "USAGE : java " + LancePotion.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-		String nom = "Potion de force";
+		String nom = "Arme";
 		
 		// TODO remplacer la ligne suivante par votre numero de groupe
 		String groupe = "G19" ; 
@@ -61,10 +61,15 @@ public class LancePotionDeForce {
 			
 			// caracteristiques de la potion
 			HashMap<Caracteristique, Integer> caractsPotion = new HashMap<Caracteristique, Integer>();
-			caractsPotion.put(Caracteristique.FORCE, Calculs.nombreAleatoire(0, 100));
-			
+			caractsPotion.put(Caracteristique.ARMURE, 0);
+			caractsPotion.put(Caracteristique.VIE, 0);
+			caractsPotion.put(Caracteristique.BLOCK, 0);
+			caractsPotion.put(Caracteristique.COMPTEUR, 0);
+			caractsPotion.put(Caracteristique.FORCE, Calculs.nombreAleatoire(5, 30));
+			caractsPotion.put(Caracteristique.POUVOIR, 0);
+			caractsPotion.put(Caracteristique.INITIATIVE, 0);
 			// ajout de la potion
-			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion,false));
+			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion,false,true,false));
 			logger.info("lanceur", "Lancement de la potion reussi");
 			
 		} catch (Exception e) {
