@@ -56,8 +56,8 @@ public class StrategieTank extends StrategiePersonnage{
 			arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
 		// si la jauge de pouvoir est au max, on la met a 0 et on augmente la force de VALEUR_POUVOIR_BARBARE
 		if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) >= Constantes.POUVOIR_MAX_TANK 
-				&& console.getPersonnage().getCaract(Caracteristique.ARMURE) < Constantes.ARMURE_MAX_TANK){
-			arene.modifCara(refRMI, 1 , Caracteristique.ARMURE);
+				&& console.getPersonnage().getCaract(Caracteristique.BLOCK) < Constantes.ARMURE_MAX_TANK){
+			arene.modifCara(refRMI, 1 , Caracteristique.BLOCK);
 			arene.modifCara(refRMI, -Constantes.POUVOIR_MAX_TANK, Caracteristique.POUVOIR);
 		}
 		
@@ -100,7 +100,7 @@ public class StrategieTank extends StrategiePersonnage{
 				
 			} else { // si voisins, mais plus eloignes
 				if(elemPlusProche instanceof Potion){
-					console.setPhrase("Je vais vers la potion " + elemPlusProche.getNom());
+					console.setPhrase("Je vais vers " + elemPlusProche.getNom());
 					arene.deplace(refRMI, refCible);
 				}
 				// sinon c'est un personnage

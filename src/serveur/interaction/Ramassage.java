@@ -42,9 +42,14 @@ public class Ramassage extends Interaction<VuePotion> {
 				for(Caracteristique c : valeursPotion.keySet()) {
 					arene.ajouterCaractElement(attaquant, c, valeursPotion.get(c));
 				}
-				
-				logs(Level.INFO, "Potion bue !");
-				
+				if(defenseur.getEstArmure())
+				{
+					logs(Level.INFO, "Armure équipée !");
+				}
+				else
+				{
+					logs(Level.INFO, "Potion bue !");
+				}
 				// test si mort
 				if(!attaquant.getElement().estVivant()) {
 					arene.setPhrase(attaquant.getRefRMI(), "Je me suis empoisonne, je meurs ");

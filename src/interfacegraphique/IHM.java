@@ -105,8 +105,8 @@ public class IHM extends JFrame implements Runnable {
 			this.setHorizontalAlignment(JLabel.CENTER);
 			this.setVerticalAlignment(JLabel.CENTER);
 			this.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-			this.setForeground(grisFonce);
-			this.setBackground(grisClair);
+			this.setForeground(grisClair);
+			this.setBackground(grisFonce);
 			this.setOpaque(true);
 			this.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0,
 					grisFonce));
@@ -140,7 +140,9 @@ public class IHM extends JFrame implements Runnable {
 	 */
 	public static Color grisFonce = new Color(115, 115, 115);
 	public static Color noir = new Color(33, 33, 33);
+	public static Color vert = new Color(127,255,0);
 	public static Color grisClair = new Color(200, 200, 200);
+	public static Color bleu = new Color(0,191,255);
 
 	/**
 	 * Initialise l'IHM.
@@ -242,7 +244,7 @@ public class IHM extends JFrame implements Runnable {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JCheckBoxMenuItem cb = (JCheckBoxMenuItem) e.getSource();
-				arenePanel.setAffichageJauge(cb.isSelected());
+				arenePanel.setAffichageJauge(!cb.isSelected());
 			}
 		});
 

@@ -37,6 +37,13 @@ public class Personnage extends Element {
 	 */
 	public boolean incrementeCaract(Caracteristique c, int inc) {		
 		if(caracts.containsKey(c)) {
+			if( c.equals(c.ARMURE)){
+				if(caracts.get(c)>= inc ){
+					
+				}else
+					caracts.put(c, Calculs.restreindreCarac(c,inc));	
+			}else
+				
 			caracts.put(c, Calculs.restreindreCarac(c, caracts.get(c) + inc));
 		} else {
 			caracts.put(c, Calculs.restreindreCarac(c, inc));

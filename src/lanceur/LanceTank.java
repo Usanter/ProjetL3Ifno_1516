@@ -71,7 +71,7 @@ public class LanceTank {
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
 			// seule la force n'a pas sa valeur par defaut (exemple)
 			caracts.put(Caracteristique.FORCE, 10);
-			caracts.put(Caracteristique.ARMURE , 1);
+			caracts.put(Caracteristique.BLOCK , 1);
 			caracts.put(Caracteristique.VIE, 49);
 
 			

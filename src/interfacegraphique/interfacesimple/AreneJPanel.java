@@ -189,9 +189,16 @@ public class AreneJPanel extends JPanel {
 		if(vueElement instanceof VuePersonnage) {
 			g.fillOval(coordX, coordY, ELEMENT_SIZE, ELEMENT_SIZE);	
 		} else {
-			Polygon p = new Polygon(); // Triangle
-			p = creeTriangle(coordX + ELEMENT_SIZE/2, coordY + ELEMENT_SIZE/2 - 1, ELEMENT_SIZE);
-			g.fillPolygon(p);
+			VuePotion vp= (VuePotion)vueElement;
+			if(vp.getEstArmure()){
+				g.fillRect(coordX, coordY, ELEMENT_SIZE, ELEMENT_SIZE);
+			}
+			else
+			{
+				Polygon p = new Polygon(); // Triangle
+				p = creeTriangle(coordX + ELEMENT_SIZE/2, coordY + ELEMENT_SIZE/2 - 1, ELEMENT_SIZE);
+				g.fillPolygon(p);
+			}
 		}
 	}
 
