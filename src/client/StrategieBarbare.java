@@ -60,9 +60,19 @@ public class StrategieBarbare extends StrategiePersonnage{
 			arene.modifCara(refRMI, -Constantes.POUVOIR_MAX_BARBARE, Caracteristique.POUVOIR);
 		}
 		
+		if(arene.TestSurSpawn(refRMI, arene.getPosition(refRMI))){
+        	arene.RegeneVie(refRMI);
+        }
+		
 		if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
-			console.setPhrase("J'erre...");
-			arene.deplace(refRMI, 0); 
+			if(console.getPersonnage().getCaract(Caracteristique.VIE) < Constantes.VIE_GO_SPAWN){
+    			console.setPhrase("Je me sens faible, je vais aller me soigner.");
+    			arene.deplace(refRMI, new Point(Calculs.nombreAleatoire(46, 54),Calculs.nombreAleatoire(46, 54)));
+    		}
+    		else{
+    			console.setPhrase("J'erre...");
+        		arene.deplace(refRMI, 0);
+        	} 
 		} else {
 			int refCible = Calculs.chercherElementProche(position, voisins);
 			int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
@@ -88,9 +98,26 @@ public class StrategieBarbare extends StrategiePersonnage{
 					}
 					arene.ramassePotion(refRMI, refCible);
 				} else { // personnage
-					// duel
-					console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
-					arene.lanceAttaque(refRMI, refCible);
+					//Si le personnage est trop fort pour nous, on fui !
+					if (elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE) )
+					{
+						//Si la vie du berseker est < 85 alors on va regénérer sa vie en allant au spawn
+						if (console.getPersonnage().getCaract(Caracteristique.VIE) < 100 && !arene.TestSurSpawn(refRMI , arene.getPosition(refRMI)))
+						{
+							console.setPhrase("Je me déplace vers le spawn ");
+							arene.deplace(refRMI, new Point(Calculs.nombreAleatoire(46, 54),Calculs.nombreAleatoire(46, 54)));
+						}
+						else
+						{
+							console.setPhrase("Je fuis  " + elemPlusProche.getNom());
+							arene.deplaceLoin(refRMI, refCible);
+						}
+					}
+					//sinon on le tape
+					else{
+						console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+						arene.lanceAttaque(refRMI, refCible);
+					}
 				}
 				
 			} else { // si voisins, mais plus eloignes
@@ -100,12 +127,18 @@ public class StrategieBarbare extends StrategiePersonnage{
 				}
 				// sinon c'est un personnage
 				else{
-					// si il peut nous one shot on se barre
+					// si il peut nous one shot on erre histoire de faire on l'as pas vu
 					if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
 					{
-						//on ne va pas vers lui
-						console.setPhrase(elemPlusProche.getNom()+"est trop fort ! Je doit partir!");
-						arene.deplace(refRMI, 0);
+						if(console.getPersonnage().getCaract(Caracteristique.VIE) < 85 && !arene.TestSurSpawn(refRMI , arene.getPosition(refRMI))){
+							console.setPhrase("Je me déplace vers le spawn ");
+							arene.deplace(refRMI, new Point(Calculs.nombreAleatoire(46, 54),Calculs.nombreAleatoire(46, 54)));
+						}
+						else{
+							//on ne va pas vers lui
+							console.setPhrase("* sifflotte .. *");
+							arene.deplace(refRMI, 0);
+						}
 					}
 					//sinon on le défonce ( on est un barbare quand meme )
 					else{

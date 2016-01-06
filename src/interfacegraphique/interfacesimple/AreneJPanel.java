@@ -33,7 +33,7 @@ public class AreneJPanel extends JPanel {
 		Rectangle rect = this.getBounds();
 		super.paint(g);
 		g.setXORMode(getBackground());
-		g.setColor(Color.GREEN);
+		g.setColor(new Color(140,250,140));
 		
 		int milieuX = (int) rect.getCenterX();
 		int milieuY = (int) rect.getCenterY();
