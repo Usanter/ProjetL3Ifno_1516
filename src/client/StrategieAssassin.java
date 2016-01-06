@@ -68,8 +68,11 @@ public class StrategieAssassin extends StrategiePersonnage{
 				// j'interagis directement
 				if(elemPlusProche instanceof Potion) { // potion
 					// ramassage
-					console.setPhrase("Je ramasse une potion");
-					arene.ramassePotion(refRMI, refCible);
+					if(((Potion) elemPlusProche).getArmure()){
+						console.setPhrase("Je ramasse une armure");
+					}else{
+						console.setPhrase("Je ramasse une potion");	
+					}
 
 				} else { // personnage
 					// duel
@@ -97,7 +100,7 @@ public class StrategieAssassin extends StrategiePersonnage{
 					else if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
 					{
 						//on le fuit
-						console.setPhrase(elemPlusProche.getNom()+" a l'air fort, je vais lui faire croire que je suis sans défence...");
+						console.setPhrase(elemPlusProche.getNom()+"est trop fort, je vais me cacher !");
 						arene.deplaceLoin(refRMI, refCible);
 					}
 					//sinon on tente le coup

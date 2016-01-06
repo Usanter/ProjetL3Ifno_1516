@@ -203,12 +203,14 @@ public class AreneJPanel extends JPanel {
 			VuePotion vp= (VuePotion)vueElement;
 			if(vp.getEstArmure()){
 				g.fillRect(coordX, coordY, ELEMENT_SIZE, ELEMENT_SIZE);
+				g.fillRect(coordX-5,coordY,ELEMENT_SIZE+10,ELEMENT_SIZE-9);
 			}
 			else
 			{
 				Polygon p = new Polygon(); // Triangle
 				p = creeTriangle(coordX + ELEMENT_SIZE/2, coordY + ELEMENT_SIZE/2 - 1, ELEMENT_SIZE);
 				g.fillPolygon(p);
+				g.fillRect(coordX+3, coordY-1, ELEMENT_SIZE-5, 3);
 			}
 		}
 	}

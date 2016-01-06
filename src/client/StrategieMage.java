@@ -84,7 +84,11 @@ public class StrategieMage extends StrategiePersonnage{
 						// j'interagis directement
 						if(elemPlusProche instanceof Potion) { // potion
 							// ramassage
-							console.setPhrase("Je ramasse une potion");
+							if(((Potion) elemPlusProche).getArmure()){
+								console.setPhrase("Je ramasse une armure");
+							}else{
+								console.setPhrase("Je ramasse une potion");	
+							}
 							arene.ramassePotion(refRMI, refCible);
 
 						} else { // personnage
@@ -97,12 +101,12 @@ public class StrategieMage extends StrategiePersonnage{
 						if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
 						{
 							//on ne va pas vers lui
-							console.setPhrase(elemPlusProche.getNom()+" a l'air fort, je vais lui faire croire que je suis sans défence...");
+							console.setPhrase(elemPlusProche.getNom()+" est trop fort, retraite !");
 							arene.deplaceLoin(refRMI, refCible);
 						}
 						//sinon on le bat on va vers lui
 						else{
-							console.setPhrase(elemPlusProche.getNom()+" va sentir ma colere ...");
+							console.setPhrase("Hum, je vois un(e) "+elemPlusProche.getNom());
 							arene.deplace(refRMI, refCible);
 						}
 					}

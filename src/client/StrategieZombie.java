@@ -69,13 +69,13 @@ public class StrategieZombie extends StrategiePersonnage{
 						// j'interagis directement
 						if(elemPlusProche instanceof Personnage) { // potion
 							// ramassage
-							console.setPhrase("Manger cerveau " + elemPlusProche.getNom());
+							console.setPhrase("Manger...Cerveaux " + elemPlusProche.getNom());
 							arene.lanceAttaque(refRMI, refCible);
 						}
 						
 					} else { // si voisins, mais plus eloignes
 						// je vais vers le plus proche
-						console.setPhrase("Chaire fraiche " + elemPlusProche.getNom());
+						console.setPhrase("Chaire fraiche..Breuhhhh " + elemPlusProche.getNom());
 						arene.deplace(refRMI, refCible);
 					}
 				}
