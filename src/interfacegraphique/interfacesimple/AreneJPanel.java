@@ -26,8 +26,6 @@ import utilitaires.Constantes;
  * connectes et les dessine.
  */
 public class AreneJPanel extends JPanel {
-	public static Color vert = new Color(152,251,152);
-	public static Color noir = new Color(0,0,0);
 	
 	
 	public void paint(Graphics g)
@@ -35,15 +33,15 @@ public class AreneJPanel extends JPanel {
 		Rectangle rect = this.getBounds();
 		super.paint(g);
 		g.setXORMode(getBackground());
-		g.setColor(vert);
+		g.setColor(Color.GREEN);
 		
 		int milieuX = (int) rect.getCenterX();
 		int milieuY = (int) rect.getCenterY();
 		
 	    g.fillRect(milieuX - rect.width/15,milieuY- rect.height/6, rect.width/10, rect.height/10);
 	    
-	    g.setColor(noir);
-	    g.fillRect(milieuX - rect.width/15,milieuY- rect.height/6, rect.width/10, rect.height/10);
+	    g.setColor(Color.BLACK);
+	    g.drawRect(milieuX - rect.width/15,milieuY- rect.height/6, rect.width/10, rect.height/10);
 	}	
 
 	
