@@ -38,7 +38,10 @@ public class VuePersonnage extends VueElement implements Comparable<VuePersonnag
 	 * Egal a -1 s'il est vivant.
 	 */
 	private int tourMort = -1;
-	
+	/**
+	 * Numero de categorie de personnage ( pour affichage)
+	 */
+	private int categorie;
 	/**
 	 * Cree une vue du personnage.
 	 * @param adresseIp adresse IP de la console correspondant au personnage
@@ -56,6 +59,14 @@ public class VuePersonnage extends VueElement implements Comparable<VuePersonnag
 		this.adresseIp = adresseIp;
 		this.actionExecutee = false;
 		this.NB_TOURS = nbTours;
+		this.categorie = personnage.getCategorie();
+		
+	}
+	/**
+	 * Retourne le numero de categorie
+	 */
+	public int getCategorie(){
+		return categorie;
 	}
 	
 	/**

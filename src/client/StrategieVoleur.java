@@ -30,7 +30,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 			String nom, String groupe, HashMap<Caracteristique, Integer> caracts,
 			long nbTours, Point position, LoggerProjet logger)
 	{
-		super(ipArene, port , ipConsole,  nom, groupe, caracts , nbTours, position , logger);
+		super(ipArene, port , ipConsole,  nom, groupe, caracts , nbTours, position , logger,7);
 	}
 	
 	/**

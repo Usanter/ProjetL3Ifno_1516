@@ -24,7 +24,7 @@ public class StrategieAssassin extends StrategiePersonnage{
 			String nom, String groupe, HashMap<Caracteristique, Integer> caracts,
 			long nbTours, Point position, LoggerProjet logger)
 	{
-		super(ipArene, port , ipConsole,  nom, groupe, caracts , nbTours, position , logger);
+		super(ipArene, port , ipConsole,  nom, groupe, caracts , nbTours, position , logger,1);
 	}
 	// TODO etablir une strategie afin d'evoluer dans l'arene de combat
 	// une proposition de strategie (simple) est donnee ci-dessous

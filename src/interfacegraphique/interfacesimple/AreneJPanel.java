@@ -8,11 +8,15 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import java.awt.Image;
 
 import serveur.element.Caracteristique;
 import serveur.vuelement.VueElement;
@@ -198,7 +202,52 @@ public class AreneJPanel extends JPanel {
 		}
 		
 		if(vueElement instanceof VuePersonnage) {
-			g.fillOval(coordX, coordY, ELEMENT_SIZE, ELEMENT_SIZE);	
+			
+			try {
+				Image perso;
+				int cat = ((VuePersonnage) vueElement).getCategorie();
+				switch(cat){
+				case 1://Assassin
+					perso = ImageIO.read(new File("images/Assassin.png"));
+					g.drawImage(perso, coordX-8, coordY, null);
+				break;
+				case 2://Barbare
+					perso = ImageIO.read(new File("images/Warrior.png"));
+					g.drawImage(perso, coordX-8, coordY, null);
+				break;
+				case 3://Mage
+					perso = ImageIO.read(new File("images/Mage.png"));
+					g.drawImage(perso, coordX-8, coordY, null);
+				break;
+				case 4://Paladin
+					perso = ImageIO.read(new File("images/Paladin.png"));
+					g.drawImage(perso, coordX-8, coordY, null);
+				break;
+				case 5://Tank
+					perso = ImageIO.read(new File("images/Tank.png"));
+					g.drawImage(perso, coordX-8, coordY, null);
+				break;
+				case 6://Victime
+					perso = ImageIO.read(new File("images/Vicitme.png"));
+					g.drawImage(perso, coordX-8, coordY, null);
+				break;
+				case 7://Voleur
+					perso = ImageIO.read(new File("images/Thief.png"));
+					g.drawImage(perso, coordX-8, coordY, null);
+				break;
+				case 8://Zombie
+					perso = ImageIO.read(new File("images/Zombie.png"));
+					g.drawImage(perso, coordX-8, coordY, null);
+				break;
+				default:
+					g.fillOval(coordX, coordY, ELEMENT_SIZE, ELEMENT_SIZE);	
+				break;
+				}
+				
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		} else {
 			VuePotion vp= (VuePotion)vueElement;
 			if(vp.getEstArmure()){

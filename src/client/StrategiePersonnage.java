@@ -26,6 +26,8 @@ public abstract class StrategiePersonnage {
 	 */
 	protected Console console;
 	protected int type ;
+	
+
 	/**
 	 * Cree un personnage, la console associe et sa strategie.
 	 * @param ipArene ip de communication avec l'arene
@@ -39,14 +41,14 @@ public abstract class StrategiePersonnage {
 	 */
 	public StrategiePersonnage(String ipArene, int port, String ipConsole, 
 			String nom, String groupe, HashMap<Caracteristique, Integer> caracts,
-			long nbTours, Point position, LoggerProjet logger ) {
+			long nbTours, Point position, LoggerProjet logger,int categorie ) {
 		this.type = type;
 		logger.info("lanceur", "Creation de la console...");
 		
 		try {
 			console = new Console(ipArene, port, ipConsole, this, 
-					new Personnage(nom, groupe, caracts), nbTours, position, logger);
-			logger.info("lanceur", "Creation de la console reussie");
+					new Personnage(nom, groupe, caracts,categorie), nbTours, position, logger);
+			//logger.info("lanceur", "Creation de la console reussie");
 			
 		} catch (Exception e) {
 			logger.info("Personnage", "Erreur lors de la creation de la console : \n" + e.toString());

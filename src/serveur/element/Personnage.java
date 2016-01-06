@@ -17,13 +17,27 @@ public class Personnage extends Element {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * Donne la categorie du perso: 
+	 * 1->Assassin
+	 * 2->Barbare
+	 * 3->Mage
+	 * 4->Paladin
+	 * 5->Tank
+	 * 6->Victime
+	 * 7->Voleur
+	 * 8->Zombie
+	 */
+	
+	private int categorie;
+	/**
 	 * Cree un personnage avec un nom et un groupe.
 	 * @param nom du personnage
 	 * @param groupe d'etudiants du personnage
 	 * @param caracts caracteristiques du personnage
 	 */
-	public Personnage(String nom, String groupe, HashMap<Caracteristique, Integer> caracts) {
+	public Personnage(String nom, String groupe, HashMap<Caracteristique, Integer> caracts,int categorieP) {
 		super(nom, groupe, caracts);
+		categorie = categorieP;
 	}
 	
 	/**
@@ -56,5 +70,9 @@ public class Personnage extends Element {
 	public boolean estVivant() {
 		Integer vie = caracts.get(Caracteristique.VIE);
 		return vie != null && vie > 0;
+	}
+	
+	public int getCategorie(){
+		return categorie;
 	}
 }

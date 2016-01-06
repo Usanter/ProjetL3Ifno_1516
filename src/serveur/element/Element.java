@@ -20,7 +20,7 @@ public abstract class Element implements Serializable {
 	 * Groupe a l'origine de l'element. 
 	 */
 	protected String groupe;
-
+	
 	/**
 	 * Caracteristiques de l'element (au moins sa vie).
 	 */
