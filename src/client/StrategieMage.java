@@ -106,7 +106,7 @@ public class StrategieMage extends StrategiePersonnage{
 						}
 						//sinon on le bat on va vers lui
 						else{
-							console.setPhrase("Hum, je vois un(e)"+elemPlusProche.getNom());
+							console.setPhrase("Hum, je vois un(e) "+elemPlusProche.getNom());
 							arene.deplace(refRMI, refCible);
 						}
 					}
