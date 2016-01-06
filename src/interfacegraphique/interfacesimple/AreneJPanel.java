@@ -40,10 +40,10 @@ public class AreneJPanel extends JPanel {
 		int milieuX = (int) rect.getCenterX();
 		int milieuY = (int) rect.getCenterY();
 		
-	    g.fillRect(milieuX - rect.width/10,milieuY- rect.height/5, rect.width/6, rect.height/6);
+	    g.fillRect(milieuX - rect.width/15,milieuY- rect.height/6, rect.width/10, rect.height/10);
 	    
 	    g.setColor(noir);
-	    g.drawRect(milieuX - rect.width/10,milieuY- rect.height/5, rect.width/6, rect.height/6);
+	    g.fillRect(milieuX - rect.width/15,milieuY- rect.height/6, rect.width/10, rect.height/10);
 	}	
 
 	
