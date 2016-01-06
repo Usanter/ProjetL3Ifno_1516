@@ -27,15 +27,24 @@ import utilitaires.Constantes;
  */
 public class AreneJPanel extends JPanel {
 	public static Color vert = new Color(152,251,152);
+	public static Color noir = new Color(0,0,0);
+	
 	
 	public void paint(Graphics g)
 	{
+		Rectangle rect = this.getBounds();
 		super.paint(g);
 		g.setXORMode(getBackground());
 		g.setColor(vert);
-		g.fillRect(317,253,85,70);
-	}
-	
+		
+		int milieuX = (int) rect.getCenterX();
+		int milieuY = (int) rect.getCenterY();
+		
+	    g.fillRect(milieuX - rect.width/10,milieuY- rect.height/5, rect.width/6, rect.height/6);
+	    
+	    g.setColor(noir);
+	    g.drawRect(milieuX - rect.width/10,milieuY- rect.height/5, rect.width/6, rect.height/6);
+	}	
 
 	
 	private static final long serialVersionUID = 1L;
@@ -125,7 +134,6 @@ public class AreneJPanel extends JPanel {
 			message = null;
 			g.setFont(of);				
 		}
-		g.drawRect( rect.width/10, rect.height/10, rect.width/10, rect.height/10);
 		// dessiner les elements
 		for(VueElement vueElement:potions) {
 			dessinerElement(g, vueElement);
