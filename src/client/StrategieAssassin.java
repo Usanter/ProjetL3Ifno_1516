@@ -55,10 +55,21 @@ public class StrategieAssassin extends StrategiePersonnage{
 		if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) < Constantes.POUVOIR_MAX_ASSASSIN )
 			arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
 		
-		if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
-			console.setPhrase("J'erre...");
-			arene.deplace(refRMI, 0); 
-		} else {
+		if(arene.TestSurSpawn(refRMI, arene.getPosition(refRMI))){
+        	arene.RegeneVie(refRMI);
+        }
+		
+		if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre, ou je vais me regen
+    		if(console.getPersonnage().getCaract(Caracteristique.VIE) < Constantes.VIE_GO_SPAWN){
+    			console.setPhrase("Je me sens faible, je vais aller me soigner.");
+    			arene.deplace(refRMI, new Point(Calculs.nombreAleatoire(46, 54),Calculs.nombreAleatoire(46, 54)));
+    		}
+    		else{
+    			console.setPhrase("J'erre...");
+        		arene.deplace(refRMI, 0);
+        	}
+		} 
+		else {
 			int refCible = Calculs.chercherElementProche(position, voisins);
 			int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
 			
@@ -83,15 +94,42 @@ public class StrategieAssassin extends StrategiePersonnage{
 					}
 					arene.ramassePotion(refRMI, refCible);
 				} else { // personnage
-					// duel
-					console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
-					arene.lanceAttaque(refRMI, refCible);
+					//Si le personnage est trop fort pour nous, on fui !
+					if (elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE) )
+					{
+						//Si la vie de l'assassin est < 100 alors on va regénérer sa vie en allant au spawn
+						if (console.getPersonnage().getCaract(Caracteristique.VIE) < 100 && !arene.TestSurSpawn(refRMI , arene.getPosition(refRMI)))
+						{
+							console.setPhrase("Je me déplace vers le spawn ");
+							arene.deplace(refRMI, new Point(Calculs.nombreAleatoire(46, 54),Calculs.nombreAleatoire(46, 54)));
+						}
+						else
+						{
+							console.setPhrase("Je fuis  " + elemPlusProche.getNom());
+							arene.deplaceLoin(refRMI, refCible);
+						}
+					}
+					//sinon va vers lui
+					else{
+							console.setPhrase("J'attaque " + elemPlusProche.getNom());
+							arene.lanceAttaque(refRMI, refCible);
+					}
 				}
 				
 			} else { // si voisins, mais plus eloignes
 				if(elemPlusProche instanceof Potion){
-					console.setPhrase("Je vais vers la potion " + elemPlusProche.getNom());
-					arene.deplace(refRMI, refCible);
+					// potion
+					//Si la potion peut nous tuer on ne va pas la chercher
+					if(elemPlusProche.getCaract(Caracteristique.VIE ) == -console.getPersonnage().getCaract(Caracteristique.VIE))
+					{
+						console.setPhrase( elemPlusProche.getNom()+ " je ne viens pas te chercher ");
+						arene.deplaceLoin(refRMI, refCible);
+					}
+					else
+					{
+						console.setPhrase( elemPlusProche.getNom()+ " je viens te chercher !");
+						arene.deplace(refRMI, refCible);
+					}
 				}
 				// sinon c'est un personnage
 				else{
@@ -107,9 +145,16 @@ public class StrategieAssassin extends StrategiePersonnage{
 					}
 					else if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
 					{
-						//on le fuit
-						console.setPhrase(elemPlusProche.getNom()+"est trop fort, je vais me cacher !");
-						arene.deplaceLoin(refRMI, refCible);
+						if (console.getPersonnage().getCaract(Caracteristique.VIE) < 100 && !arene.TestSurSpawn(refRMI , arene.getPosition(refRMI)))
+						{
+							console.setPhrase("Je me déplace vers le spawn ");
+							arene.deplace(refRMI, new Point(Calculs.nombreAleatoire(46, 54),Calculs.nombreAleatoire(46, 54)));
+						}
+						else
+						{
+							console.setPhrase("Je fuis  " + elemPlusProche.getNom());
+							arene.deplaceLoin(refRMI, refCible);
+						}
 					}
 					//sinon on tente le coup
 					else{

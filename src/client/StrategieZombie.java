@@ -8,7 +8,6 @@ import serveur.IArene;
 import serveur.element.Caracteristique;
 import serveur.element.Element;
 import serveur.element.Personnage;
-import serveur.element.Potion;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 import client.StrategiePersonnage;
@@ -56,8 +55,6 @@ public class StrategieZombie extends StrategiePersonnage{
 				
 				if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
 					console.setPhrase("BEEEEEEUUUUUUURRRRRRR");
-					
-					
 					arene.deplace(refRMI, 0); 
 				} else {
 					int refCible = Calculs.chercherElementProche(position, voisins);
@@ -67,15 +64,14 @@ public class StrategieZombie extends StrategiePersonnage{
 
 					if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
 						// j'interagis directement
-						if(elemPlusProche instanceof Personnage) { // potion
-							// ramassage
+						if(elemPlusProche instanceof Personnage) {
 							console.setPhrase("Manger...Cerveaux " + elemPlusProche.getNom());
 							arene.lanceAttaque(refRMI, refCible);
 						}
 						
 					} else { // si voisins, mais plus eloignes
 						// je vais vers le plus proche
-						console.setPhrase("Chaire fraiche..Breuhhhh " + elemPlusProche.getNom());
+						console.setPhrase("Chair fraiche..Breuhhhh " + elemPlusProche.getNom());
 						arene.deplace(refRMI, refCible);
 					}
 				}

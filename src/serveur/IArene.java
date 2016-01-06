@@ -247,6 +247,16 @@ public interface IArene extends Remote {
 	 **************************************************************************/
 	
 	/**
+	 * Verifie si on est sur le spawn
+	 * @param refRMI personnage
+	 * @param position position personnage
+	 * @return boolean si on est sur le spawn
+	 * @throws RemoteException
+	 */
+	
+	public boolean TestSurSpawn (int refRMI , Point position)  throws RemoteException;
+	
+	/**
 	 * Verifie le mot de passe administrateur. 
 	 * @param motDePasse mot de passe a verifier
 	 * @return true si le mot de passe est ok, false sinon
@@ -290,6 +300,12 @@ public interface IArene extends Remote {
 	 * @param position
 	 */
 	public boolean deplaceSpawn(int refRMI, Point objectif) throws RemoteException ;
+	
+	/**
+	 * Permet de regenerer sa vie
+	 * @param refRMI cible
+	 * @throws RemoteException
+	 */
 	public void RegeneVie(int refRMI ) throws RemoteException ;
 
 }

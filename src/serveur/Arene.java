@@ -1,10 +1,10 @@
 package serveur;
-
+/*
 import static utilitaires.Constantes.XMAX_ARENE;
 import static utilitaires.Constantes.XMIN_ARENE;
 import static utilitaires.Constantes.YMAX_ARENE;
 import static utilitaires.Constantes.YMIN_ARENE;
-
+*/
 import java.awt.Point;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -30,7 +30,6 @@ import serveur.interaction.Deplacement;
 import serveur.interaction.Duel;
 import serveur.interaction.Vol;
 import serveur.interaction.BouleDeFeu;
-import serveur.interaction.RegeneVieSpawn;
 import serveur.interaction.Ramassage;
 
 import serveur.interaction.ModifCara;
@@ -877,8 +876,23 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 		return res;
 	}
 	
+	/**
+	 * Verifie si on est sur le spawn
+	 * @param refRMI personnage
+	 * @param position position personnage
+	 * @return boolean si on est sur le spawn
+	 * @throws RemoteException
+	 */
 	
-	
+	public boolean TestSurSpawn (int refRMI , Point position)  throws RemoteException
+	{	
+		if(( position.x >= 45 && position.x <= 55 )&&
+				( position.y >= 45 && position.y <= 55))
+		{
+			return true;
+		}
+		return false;
+	}
 	
 	@Override
 	public boolean lanceAttaque(int refRMI, int refRMIAdv) throws RemoteException {
@@ -1201,12 +1215,11 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 	/**
 	 * Fonction qui permet la regénération de vie
 	 * @param refRMI
-	 * @sorti +2 points de vie
+	 * @sorti +Constantes.HEAL_SPAWN points de vie
 	 */
 	public void RegeneVie(int refRMI ) throws RemoteException 
 	{
-		VuePersonnage client = personnages.get(refRMI);
-		new RegeneVieSpawn(this, client).interagir();
+		this.modifCara(refRMI, Constantes.HEAL_SPAWN , Caracteristique.VIE);
 	}
 
 	

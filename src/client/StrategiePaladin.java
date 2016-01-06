@@ -53,18 +53,28 @@ public class StrategiePaladin extends StrategiePersonnage{
 					arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
 				}
 				
-				if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) == 10 && console.getPersonnage().getCaract(Caracteristique.VIE) + 10 <= 100){
+				if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) == 10 
+						&& console.getPersonnage().getCaract(Caracteristique.VIE) <= 90){
 					arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR),Caracteristique.POUVOIR);
 					arene.modifCara(refRMI, 10, Caracteristique.VIE);
 				}
 				
+				if(arene.TestSurSpawn(refRMI, arene.getPosition(refRMI))){
+		        	arene.RegeneVie(refRMI);
+		        }
 				
 				if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
-					console.setPhrase("J'erre...");
-					
-					
-					arene.deplace(refRMI, 0); 
-				} else {
+					if(console.getPersonnage().getCaract(Caracteristique.VIE) < Constantes.VIE_GO_SPAWN){
+	        			console.setPhrase("Je me sens faible, je vais aller me soigner.");
+	        			arene.deplace(refRMI, new Point(Calculs.nombreAleatoire(46, 54),Calculs.nombreAleatoire(46, 54)));
+	        		}
+	        		else{
+	        			console.setPhrase("J'erre...");
+	            		arene.deplace(refRMI, 0);
+	            	} 
+				} 
+				// si j'ai des voisins
+				else {
 					int refCible = Calculs.chercherElementProche(position, voisins);
 					int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
 
@@ -83,8 +93,7 @@ public class StrategiePaladin extends StrategiePersonnage{
 							else if(((Potion)elemPlusProche).getWeapon()){
 								console.setPhrase("Je ramasse une arme");
 							}
-							else
-							{
+							else{
 								console.setPhrase("Je ramasse une potion");	
 							}
 							arene.ramassePotion(refRMI, refCible);
@@ -95,18 +104,33 @@ public class StrategiePaladin extends StrategiePersonnage{
 								console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom()+",en garde!");
 								arene.lanceAttaque(refRMI, refCible);
 							}
-							else if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
-							{
+							else{
 								//on ne va pas vers lui
-								console.setPhrase(elemPlusProche.getNom()+" est trop fort, vaut mieux ne pas se battre.");
+								console.setPhrase(elemPlusProche.getNom()+" est trop fort, vaut mieux attendre de se regenerer");
 								arene.deplaceLoin(refRMI, refCible);
 							}
 						}
 						
 					} else { // si voisins, mais plus eloignes
-						// je vais vers le plus proche
-						console.setPhrase("Je vais vers " + elemPlusProche.getNom());
-						arene.deplace(refRMI, refCible);
+						if(elemPlusProche instanceof Potion){
+		                	// potion
+							//Si la potion peut nous tuer on ne va pas la chercher
+							if(elemPlusProche.getCaract(Caracteristique.VIE ) == -console.getPersonnage().getCaract(Caracteristique.VIE))
+							{
+								console.setPhrase( elemPlusProche.getNom()+ " je ne viens pas te chercher ");
+								arene.deplaceLoin(refRMI, refCible);
+							}
+							else
+							{
+								console.setPhrase( elemPlusProche.getNom()+ " je viens te chercher !");
+								arene.deplace(refRMI, refCible);
+							}
+		                }
+		                // sinon c'est un personnage, on va vers lui
+						else{
+							console.setPhrase(elemPlusProche.getNom()+" j'arrive !");
+							arene.deplace(refRMI, refCible);
+						}
 					}
 				}
 	}

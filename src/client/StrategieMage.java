@@ -52,32 +52,38 @@ public class StrategieMage extends StrategiePersonnage{
 					e.printStackTrace();
 				}
 				// On incrémente le caractère pouvoir à chaque tour du joueur
-				if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) < 20){
+				if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) < Constantes.POUVOIR_MAX_MAGE){
 					arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
 				}
-				if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
-					console.setPhrase("J'erre...");
+				if(arene.TestSurSpawn(refRMI, arene.getPosition(refRMI))){
+		        	arene.RegeneVie(refRMI);
+		        }
 				
-					
-					
-					arene.deplace(refRMI, 0); 
-				} else {
+				if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre, ou je vais me regen
+		    		if(console.getPersonnage().getCaract(Caracteristique.VIE) < Constantes.VIE_GO_SPAWN){
+		    			console.setPhrase("Je me sens faible, je vais aller me soigner.");
+		    			arene.deplace(refRMI, new Point(Calculs.nombreAleatoire(46, 54),Calculs.nombreAleatoire(46, 54)));
+		    		}
+		    		else{
+		    			console.setPhrase("J'erre...");
+		        		arene.deplace(refRMI, 0);
+		        	}
+				} 
+				else {
 					int refCible = Calculs.chercherElementProche(position, voisins);
 					int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
 
 					Element elemPlusProche = arene.elementFromRef(refCible);
 					//Si enemis dans le rayon d'action du pouvoir et pouvoir dispo alors attaque
+					
 					if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION_GRANDE 
-					&& console.getPersonnage().getCaract(Caracteristique.POUVOIR) > Constantes.POUVOIR_MAX_MAGE ){
-						if(!(elemPlusProche instanceof Potion)){
-							//Duel a distance
-							console.setPhrase("Je lance ma boule de feu sur  " + elemPlusProche.getNom());
-							arene.lanceBouleDeFeu(refRMI, refCible);
-							// a modifier pour chaque personnage ( temps de recharge des pouvoirs )
-				
-							arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), Caracteristique.POUVOIR);
-							
-						}
+					&& console.getPersonnage().getCaract(Caracteristique.POUVOIR) > Constantes.POUVOIR_MAX_MAGE 
+					&& !(elemPlusProche instanceof Potion)){
+						//Duel a distance
+						console.setPhrase("Je lance ma boule de feu sur  " + elemPlusProche.getNom());
+						arene.lanceBouleDeFeu(refRMI, refCible);
+						// a modifier pour chaque personnage ( temps de recharge des pouvoirs )
+						arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR), Caracteristique.POUVOIR);
 					}
 
 					if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
@@ -100,23 +106,67 @@ public class StrategieMage extends StrategiePersonnage{
 							arene.ramassePotion(refRMI, refCible);
 
 						} else { // personnage
-							// duel
-							console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
-							arene.lanceAttaque(refRMI, refCible);
+							//Si le personnage est trop fort pour nous, on fui !
+							if (elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE) )
+							{
+								//Si la vie du mage est < 100 alors on va regénérer sa vie en allant au spawn
+								if (console.getPersonnage().getCaract(Caracteristique.VIE) < 100 && !arene.TestSurSpawn(refRMI , arene.getPosition(refRMI)))
+								{
+									console.setPhrase("Je me déplace vers le spawn ");
+									arene.deplace(refRMI, new Point(Calculs.nombreAleatoire(46, 54),Calculs.nombreAleatoire(46, 54)));
+								}
+								else
+								{
+									console.setPhrase("Je fuis  " + elemPlusProche.getNom());
+									arene.deplaceLoin(refRMI, refCible);
+								}
+							}
+							//sinon duel
+							else{
+								console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+								arene.lanceAttaque(refRMI, refCible);
+							}
 						}
 						
 					} else { // si voisins, mais plus eloignes
-						if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
-						{
-							//on ne va pas vers lui
-							console.setPhrase(elemPlusProche.getNom()+" est trop fort, retraite !");
-							arene.deplaceLoin(refRMI, refCible);
-						}
-						//sinon on le bat on va vers lui
-						else{
-							console.setPhrase("Hum, je vois un(e) "+elemPlusProche.getNom());
-							arene.deplace(refRMI, refCible);
-						}
+						 if(elemPlusProche instanceof Potion){
+			                	// potion
+								//Si la potion peut nous tuer on ne va pas la chercher
+								if(elemPlusProche.getCaract(Caracteristique.VIE ) == -console.getPersonnage().getCaract(Caracteristique.VIE))
+								{
+									console.setPhrase( elemPlusProche.getNom()+ " je ne viens pas te chercher ");
+									arene.deplaceLoin(refRMI, refCible);
+								}
+								else
+								{
+									console.setPhrase( elemPlusProche.getNom()+ " je viens te chercher !");
+									arene.deplace(refRMI, refCible);
+								}
+			             }
+						 //sinon c'est un personnage
+						 else{
+							//Si le personnage est trop fort pour nous, on fui !
+								if (elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE) )
+								{
+									//Si la vie du mage est < 100 alors on va regénérer sa vie en allant au spawn
+									if (console.getPersonnage().getCaract(Caracteristique.VIE) < 100 && arene.TestSurSpawn(refRMI , arene.getPosition(refRMI)) == false)
+									{
+										console.setPhrase("Je me déplace vers le spawn ");
+										arene.deplace(refRMI,new Point(50,50));
+									}
+									else
+									{
+										console.setPhrase("Je fuis  " + elemPlusProche.getNom());
+										arene.deplaceLoin(refRMI, refCible);
+									}
+								}
+								//Sinon on va vers lui
+								else
+								{
+									console.setPhrase(elemPlusProche.getNom()+" j'arrive !");
+									arene.deplace(refRMI, refCible);
+								}
+						 }
 					}
 				}
 	}

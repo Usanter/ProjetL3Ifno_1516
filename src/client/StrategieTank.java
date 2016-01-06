@@ -61,21 +61,21 @@ public class StrategieTank extends StrategiePersonnage{
             arene.modifCara(refRMI, -Constantes.POUVOIR_MAX_TANK, Caracteristique.POUVOIR);
         }
        
-        if(arene.getPosition(refRMI).x <= 55 && arene.getPosition(refRMI).y <= 55 
-        		&& arene.getPosition(refRMI).x >= 45 && arene.getPosition(refRMI).y >= 45){
-        	arene.modifCara(refRMI, 1 ,Caracteristique.VIE);
+        if(arene.TestSurSpawn(refRMI, arene.getPosition(refRMI))){
+        	arene.RegeneVie(refRMI);
         }
         
-        if(console.getPersonnage().getCaract(Caracteristique.VIE) < 50){
-    		arene.deplace(refRMI, new Point(50,50));
-    	}
-        
-        if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
-        	
-        		console.setPhrase("J'erre...");
-            	arene.deplace(refRMI, 0);
-        	
+        if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre, ou je vais me regen
+        		if(console.getPersonnage().getCaract(Caracteristique.VIE) < Constantes.VIE_GO_SPAWN){
+        			console.setPhrase("Je me sens faible, je vais aller me soigner.");
+        			arene.deplace(refRMI, new Point(Calculs.nombreAleatoire(46, 54),Calculs.nombreAleatoire(46, 54)));
+        		}
+        		else{
+        			console.setPhrase("J'erre...");
+            		arene.deplace(refRMI, 0);
+            	}
         }  
+        //si j'ai des voisins
         else {
             int refCible = Calculs.chercherElementProche(position, voisins);
             int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
@@ -88,21 +88,55 @@ public class StrategieTank extends StrategiePersonnage{
                     // ramassage
                 	if(((Potion) elemPlusProche).getArmure()){
 						console.setPhrase("Je ramasse une armure");
-					}else{
+					}
+                	else if(((Potion)elemPlusProche).getWeapon()){
+						console.setPhrase("Je ramasse une arme");
+					}
+                	else if(((Potion)elemPlusProche).getLife()){
+						console.setPhrase("Je ramasse de la vie");
+					}
+                	else{
 						console.setPhrase("Je ramasse une potion");	
 					}
 					arene.ramassePotion(refRMI, refCible);
  
                 } else { // personnage
-                    // duel
-                    console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
-                    arene.lanceAttaque(refRMI, refCible);
+                	//Si le personnage est trop fort pour nous, on fui !
+					if (elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE) )
+					{
+						//Si la vie du tank est < 100 alors on va regénérer sa vie en allant au spawn
+						if (console.getPersonnage().getCaract(Caracteristique.VIE) < 100 && !arene.TestSurSpawn(refRMI , arene.getPosition(refRMI)))
+						{
+							console.setPhrase("Je me déplace vers le spawn ");
+							arene.deplace(refRMI, new Point(Calculs.nombreAleatoire(46, 54),Calculs.nombreAleatoire(46, 54)));
+						}
+						else
+						{
+							console.setPhrase("Je fuis  " + elemPlusProche.getNom());
+							arene.deplaceLoin(refRMI, refCible);
+						}
+					}
+					//sinon on le tape
+					else{
+						console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+						arene.lanceAttaque(refRMI, refCible);
+					}
                 }
                
             } else { // si voisins, mais plus eloignes
                 if(elemPlusProche instanceof Potion){
-                    console.setPhrase("Je vais vers " + elemPlusProche.getNom());
-                    arene.deplace(refRMI, refCible);
+                	// potion
+					//Si la potion peut nous tuer on ne va pas la chercher
+					if(elemPlusProche.getCaract(Caracteristique.VIE ) == -console.getPersonnage().getCaract(Caracteristique.VIE))
+					{
+						console.setPhrase( elemPlusProche.getNom()+ " je ne viens pas te chercher ");
+						arene.deplaceLoin(refRMI, refCible);
+					}
+					else
+					{
+						console.setPhrase( elemPlusProche.getNom()+ " je viens te chercher !");
+						arene.deplace(refRMI, refCible);
+					}
                 }
                 // sinon c'est un personnage
                 else{

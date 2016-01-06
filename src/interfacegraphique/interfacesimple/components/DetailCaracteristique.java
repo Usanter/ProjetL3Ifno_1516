@@ -45,6 +45,19 @@ public class DetailCaracteristique extends JPanel {
 		case INITIATIVE: 
 			couleur = Color.BLUE;
 			break;
+		case POUVOIR:
+			couleur = Color.CYAN;
+			break;
+		case COMPTEUR:
+			couleur = Color.PINK;
+			break;
+		case ARMURE:
+			couleur = Color.DARK_GRAY;
+			break;
+		case BLOCK:
+			couleur = Color.GRAY;
+			break;
+			
 		}
 		
 		// valeur ramenee sur 100, en fonction du max de la caracteristique

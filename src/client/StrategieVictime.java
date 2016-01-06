@@ -50,16 +50,28 @@ public class StrategieVictime extends StrategiePersonnage{
 					e.printStackTrace();
 				}
 				
+				if(arene.TestSurSpawn(refRMI, arene.getPosition(refRMI))){
+		        	arene.RegeneVie(refRMI);
+		        }
+				
 				if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
-					console.setPhrase("Je suis perdu...");
-					arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
-					// a modifier pour chaque personnage ( temps de recharge des pouvoirs )
-					if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) == 10 && console.getPersonnage().getCaract(Caracteristique.VIE) + 10 <= 100){
-						arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR),Caracteristique.POUVOIR);
-						arene.modifCara(refRMI, 10, Caracteristique.VIE);
-					}
-					else if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) >= 10 && console.getPersonnage().getCaract(Caracteristique.VIE) == 100){
-						arene.modifCara(refRMI, -1, Caracteristique.POUVOIR);
+					
+					if(console.getPersonnage().getCaract(Caracteristique.VIE) < Constantes.VIE_GO_SPAWN){
+		    			console.setPhrase("Je me sens faible, je vais aller me soigner.");
+		    			arene.deplace(refRMI, new Point(Calculs.nombreAleatoire(46, 54),Calculs.nombreAleatoire(46, 54)));
+		    		}
+					else{
+						console.setPhrase("Je suis perdu...");
+						
+						arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
+						// a modifier pour chaque personnage ( temps de recharge des pouvoirs )
+						if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) == 10 && console.getPersonnage().getCaract(Caracteristique.VIE) + 10 <= 100){
+							arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR),Caracteristique.POUVOIR);
+							arene.modifCara(refRMI, 10, Caracteristique.VIE);
+						}
+						else if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) >= 10 && console.getPersonnage().getCaract(Caracteristique.VIE) == 100){
+							arene.modifCara(refRMI, -1, Caracteristique.POUVOIR);
+						}
 					}
 					
 					

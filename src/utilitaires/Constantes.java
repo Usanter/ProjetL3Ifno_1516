@@ -130,6 +130,10 @@ public class Constantes {
 	public static final int POTION_TRAPPEUR_VIE = 10;
 	
 	public static final int POTION_TRAPPEUR_FORCE = 5;
+	
+	public static final int HEAL_SPAWN = 2;
+	
+	public static final int VIE_GO_SPAWN = 60;
 
 	/**
 	 * Calcul de positions pour le spawn
