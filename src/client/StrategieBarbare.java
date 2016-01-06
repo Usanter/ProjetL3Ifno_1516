@@ -5,12 +5,10 @@ import java.awt.Point;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 
-import client.controle.Console;
 import logger.LoggerProjet;
 import serveur.IArene;
 import serveur.element.Caracteristique;
 import serveur.element.Element;
-import serveur.element.Personnage;
 import serveur.element.Potion;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
@@ -77,10 +75,18 @@ public class StrategieBarbare extends StrategiePersonnage{
 					// ramassage
 					if(((Potion) elemPlusProche).getArmure()){
 						console.setPhrase("Je ramasse une armure");
-					}else{
+					}
+					else if(((Potion)elemPlusProche).getLife()){
+						console.setPhrase("Je ramasse de la vie");
+					}
+					else if(((Potion)elemPlusProche).getWeapon()){
+						console.setPhrase("Je ramasse une arme");
+					}
+					else
+					{
 						console.setPhrase("Je ramasse une potion");	
 					}
-
+					arene.ramassePotion(refRMI, refCible);
 				} else { // personnage
 					// duel
 					console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());

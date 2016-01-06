@@ -11,7 +11,9 @@ public class VuePotion extends VueElement implements Comparable<VuePotion> {
 	
 	private static final long serialVersionUID = 4227900415029065269L;
 	
-	private boolean estArmure; 
+	private boolean estArmure;
+	private boolean estVie;
+	private boolean estArme;
 	/**
 	 * Cree une vue d'une potion personnage.
 	 * @param potion potion correspondante
@@ -22,6 +24,8 @@ public class VuePotion extends VueElement implements Comparable<VuePotion> {
 	public VuePotion(Potion potion, Point position, int ref, boolean envoyeImm) {
 		super(potion, position, ref, envoyeImm);
 		estArmure = potion.getArmure();
+		estVie = potion.getLife();
+		estArme = potion.getWeapon();
 	}
 
 	@Override
@@ -31,5 +35,13 @@ public class VuePotion extends VueElement implements Comparable<VuePotion> {
 	
 	public boolean getEstArmure(){
 		return estArmure;
+	}
+	
+	public boolean getEstVie(){
+		return estVie;
+	}
+	
+	public boolean getEstArme(){
+		return estArme;
 	}
 }

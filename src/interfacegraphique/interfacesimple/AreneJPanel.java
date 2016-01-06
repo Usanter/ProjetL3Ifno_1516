@@ -210,11 +210,27 @@ public class AreneJPanel extends JPanel {
 		} else {
 			VuePotion vp= (VuePotion)vueElement;
 			if(vp.getEstArmure()){
+				//Graphisme armure
 				g.fillRect(coordX, coordY, ELEMENT_SIZE, ELEMENT_SIZE);
 				g.fillRect(coordX-5,coordY,ELEMENT_SIZE+10,ELEMENT_SIZE-9);
 			}
+			else if(vp.getEstArme()){
+				//Graphisme arme
+				g.fillRect(coordX-2, coordY, 8, 30);
+				g.fillRect(coordX-8, coordY+20, 20, 4);
+			}
+			else if(vp.getEstVie()){
+				//Graphisme vie
+				g.setColor(new Color(205,92,92));
+				g.fillOval(coordX-5, coordY-5, ELEMENT_SIZE-1, ELEMENT_SIZE-1);	
+				g.fillOval(coordX+5, coordY-5, ELEMENT_SIZE-1, ELEMENT_SIZE-1);
+				Polygon p = new Polygon(); // Triangle
+				p = creeTriangleReverse(coordX + ELEMENT_SIZE/2, coordY + ELEMENT_SIZE/2 +10, ELEMENT_SIZE+7);
+				g.fillPolygon(p);
+			}
 			else
 			{
+				//graphique potion de base
 				Polygon p = new Polygon(); // Triangle
 				p = creeTriangle(coordX + ELEMENT_SIZE/2, coordY + ELEMENT_SIZE/2 - 1, ELEMENT_SIZE);
 				g.fillPolygon(p);
@@ -339,6 +355,17 @@ public class AreneJPanel extends JPanel {
 		p.addPoint(coordX - base/2, coordY + hauteur/2);			
 		p.addPoint(coordX + base/2 , coordY + hauteur/2);			
 		p.addPoint(coordX, coordY - hauteur/2);
+		
+		return p;
+	}
+	
+	private Polygon creeTriangleReverse(int coordX,int coordY,int base){
+		Polygon p = new Polygon();
+		int hauteur = (int) (1.2 * base);
+		
+		p.addPoint(coordX - base/2, coordY - hauteur/2);			
+		p.addPoint(coordX + base/2 , coordY - hauteur/2);			
+		p.addPoint(coordX, coordY + hauteur/2 -8);
 		
 		return p;
 	}

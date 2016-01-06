@@ -61,10 +61,10 @@ public class LancePotionDArmure {
 			
 			// caracteristiques de la potion
 			HashMap<Caracteristique, Integer> caractsPotion = new HashMap<Caracteristique, Integer>();
-			caractsPotion.put(Caracteristique.ARMURE, 1);
+			caractsPotion.put(Caracteristique.BLOCK, 1);
 			
 			// ajout de la potion
-			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion,false));
+			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion,false,false,false));
 			logger.info("lanceur", "Lancement de la potion reussi");
 			
 		} catch (Exception e) {

@@ -69,7 +69,7 @@ public class LanceArmureFer {
 			caractsPotion.put(Caracteristique.POUVOIR, 0);
 			caractsPotion.put(Caracteristique.INITIATIVE, 0);
 			// ajout de l'armure
-			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion,true));
+			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion,true,false,false));
 			logger.info("lanceur", "Lancement de l'armure reussi");
 			
 		} catch (Exception e) {

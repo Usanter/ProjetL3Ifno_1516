@@ -113,7 +113,7 @@ public class Constantes {
 	
 	public static final int POUVOIR_MAX_TANK = 10;
 
-	public static final int ARMURE_MAX_TANK = 1;
+	public static final int BLOCK_MAX_TANK = 1;
 	
 	public static final int FORCE_MAX_BARBARE = 85;
 

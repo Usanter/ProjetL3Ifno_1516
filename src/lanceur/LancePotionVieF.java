@@ -65,7 +65,7 @@ public class LancePotionVieF {
 			caractsPotion.put(Caracteristique.VIE, Calculs.nombreAleatoire(1, 20));
 			
 			// ajout de la potion
-			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion,false));
+			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion,false,false,false));
 			logger.info("lanceur", "Lancement de la potion reussi");
 			
 		} catch (Exception e) {
