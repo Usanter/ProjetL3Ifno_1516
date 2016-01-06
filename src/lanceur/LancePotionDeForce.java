@@ -64,7 +64,7 @@ public class LancePotionDeForce {
 			caractsPotion.put(Caracteristique.FORCE, Calculs.nombreAleatoire(0, 100));
 			
 			// ajout de la potion
-			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion));
+			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion,false));
 			logger.info("lanceur", "Lancement de la potion reussi");
 			
 		} catch (Exception e) {

@@ -64,7 +64,7 @@ public class LancePotionDArmure {
 			caractsPotion.put(Caracteristique.ARMURE, 1);
 			
 			// ajout de la potion
-			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion));
+			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion,false));
 			logger.info("lanceur", "Lancement de la potion reussi");
 			
 		} catch (Exception e) {

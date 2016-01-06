@@ -256,7 +256,7 @@ public class ElementsJPanel extends JPanel {
         jScrollPanePotions.getViewport().setBackground(IHM.grisFonce);
         jScrollPanePotions.setBorder(BorderFactory.createTitledBorder(
         		null, 
-        		"Potions", 
+        		"Potions et Armures", 
         		TitledBorder.CENTER, 
         		TitledBorder.DEFAULT_POSITION, 
         		new Font("Helvetica Neue", 0, 14), 

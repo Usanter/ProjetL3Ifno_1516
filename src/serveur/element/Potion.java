@@ -15,6 +15,12 @@ public class Potion extends Element {
 	 */
 	private boolean ramassee;
 	
+	
+	/**
+	 * Vrai si la potion st une armure
+	 */
+	private boolean armure ;
+	
 	/**
 	 * Constructeur d'une potion avec un nom, le groupe qui l'a envoyee et ses 
 	 * caracteristiques (ajoutees lorsqu'un Personnage ramasse cette potion).
@@ -22,9 +28,10 @@ public class Potion extends Element {
 	 * @param groupe groupe d'etudiants de la potion
 	 * @param caracts caracteristiques de la potion
 	 */
-	public Potion(String nom, String groupe, HashMap<Caracteristique, Integer> caracts) {
+	public Potion(String nom, String groupe, HashMap<Caracteristique, Integer> caracts,boolean estarmure) {
 		super(nom, groupe, caracts);
 		ramassee = false;
+		armure = estarmure ;
 	}
 	
 	/**
@@ -37,5 +44,9 @@ public class Potion extends Element {
 	@Override
 	public boolean estVivant() {
 		return !ramassee;
+	}
+	
+	public boolean getArmure(){
+		return armure;
 	}
 }

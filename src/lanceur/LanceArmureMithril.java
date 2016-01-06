@@ -10,11 +10,12 @@ import serveur.element.Potion;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 
-public class LancePoison {
+public class LanceArmureMithril {
+	
 	private static String usage = "USAGE : java " + LancePotion.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-		String nom = "Cyanure";
+		String nom = "Armure de Mithril";
 		
 		// TODO remplacer la ligne suivante par votre numero de groupe
 		String groupe = "G19" ; 
@@ -46,7 +47,7 @@ public class LancePoison {
 		// creation du logger
 		LoggerProjet logger = null;
 		try {
-			logger = new LoggerProjet(true, "potion_"+nom+groupe);
+			logger = new LoggerProjet(true, "Armure_"+nom+groupe);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(ErreurLancement.suivant);
@@ -56,17 +57,20 @@ public class LancePoison {
 		try {
 			IArene arene = (IArene) java.rmi.Naming.lookup(Constantes.nomRMI(ipArene, port, "Arene"));
 
-			logger.info("lanceur", "Lancement de la potion sur le serveur...");
-			 
-			// caracteristiques de la potion
-			HashMap<Caracteristique, Integer> caractsPotion = new HashMap<Caracteristique, Integer>();
-			caractsPotion.put(Caracteristique.VIE, Calculs.nombreAleatoire(-20, -1));
-			caractsPotion.put(Caracteristique.FORCE, Calculs.nombreAleatoire(0,0));
-			caractsPotion.put(Caracteristique.INITIATIVE, Calculs.nombreAleatoire(0, 0));
+			logger.info("lanceur", "Lancement de l'armure sur le serveur...");
 			
-			// ajout de la potion
-			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion,false));
-			logger.info("lanceur", "Lancement de la potion reussi");
+			// caracteristiques de l'armure
+			HashMap<Caracteristique, Integer> caractsPotion = new HashMap<Caracteristique, Integer>();
+			caractsPotion.put(Caracteristique.ARMURE, Calculs.nombreAleatoire(25,50 ));
+			caractsPotion.put(Caracteristique.VIE, 0);
+			caractsPotion.put(Caracteristique.BLOCK, 0);
+			caractsPotion.put(Caracteristique.COMPTEUR, 0);
+			caractsPotion.put(Caracteristique.FORCE, 0);
+			caractsPotion.put(Caracteristique.POUVOIR, 0);
+			caractsPotion.put(Caracteristique.INITIATIVE, 0);
+			// ajout de l'armure
+			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion,true));
+			logger.info("lanceur", "Lancement de l'armure reussi");
 			
 		} catch (Exception e) {
 			logger.severe("lanceur", "Erreur lancement :\n" + e.getCause());

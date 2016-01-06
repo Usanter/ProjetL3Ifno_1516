@@ -36,11 +36,13 @@ public enum Caracteristique {
 	COMPTEUR("Compteur","CMP",0,100,0),
 	
 	/**
-	 *Armure: entre 0 et 1 , une armure a 1 permet de bloquer un coup ( l'annule entierement )
+	 *Armure: entre 0 et 75 permet de réduire les degats subits
 	 */
-	ARMURE("Armure","ARM",0,1,0);
-	
-	
+	ARMURE("Armure","ARM",0,50,0),
+	/**
+	 *Block: entre 0 et 1 , un block a 1 permet de bloquer un coup ( l'annule entierement )
+	 */
+	BLOCK("Block","BLK",0,1,0);
 	/**
 	 * Nom complet.
 	 */

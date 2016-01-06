@@ -10,7 +10,8 @@ import serveur.element.Potion;
 public class VuePotion extends VueElement implements Comparable<VuePotion> {
 	
 	private static final long serialVersionUID = 4227900415029065269L;
-
+	
+	private boolean estArmure; 
 	/**
 	 * Cree une vue d'une potion personnage.
 	 * @param potion potion correspondante
@@ -20,10 +21,15 @@ public class VuePotion extends VueElement implements Comparable<VuePotion> {
 	 */
 	public VuePotion(Potion potion, Point position, int ref, boolean envoyeImm) {
 		super(potion, position, ref, envoyeImm);
+		estArmure = potion.getArmure();
 	}
 
 	@Override
 	public int compareTo(VuePotion vp2) {
 		return vp2.getRefRMI() - this.getRefRMI();
+	}
+	
+	public boolean getEstArmure(){
+		return estArmure;
 	}
 }
