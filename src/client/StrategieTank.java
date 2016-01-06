@@ -75,8 +75,11 @@ public class StrategieTank extends StrategiePersonnage{
                 // j'interagis directement
                 if(elemPlusProche instanceof Potion) { // potion
                     // ramassage
-                    console.setPhrase("Je ramasse une potion");
-                    arene.ramassePotion(refRMI, refCible);
+                	if(((Potion) elemPlusProche).getArmure()){
+						console.setPhrase("Je ramasse une armure");
+					}else{
+						console.setPhrase("Je ramasse une potion");	
+					}
  
                 } else { // personnage
                     // duel
@@ -92,7 +95,7 @@ public class StrategieTank extends StrategiePersonnage{
                 // sinon c'est un personnage
                 else{
                     // on va toujours vers lui, on est un tank quand meme
-                        console.setPhrase(elemPlusProche.getNom()+" va sentir ma colere ...");
+                        console.setPhrase(elemPlusProche.getNom()+" me voila !");
                         arene.deplace(refRMI, refCible);
                 }
             }

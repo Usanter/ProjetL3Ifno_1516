@@ -51,7 +51,7 @@ public class StrategieVictime extends StrategiePersonnage{
 				}
 				
 				if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
-					console.setPhrase("J'erre...");
+					console.setPhrase("Je suis perdu...");
 					arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
 					// a modifier pour chaque personnage ( temps de recharge des pouvoirs )
 					if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) == 10 && console.getPersonnage().getCaract(Caracteristique.VIE) + 10 <= 100){
@@ -74,8 +74,11 @@ public class StrategieVictime extends StrategiePersonnage{
 						// j'interagis directement
 						if(elemPlusProche instanceof Potion) { // potion
 							// ramassage
-							console.setPhrase("Je ramasse une potion");
-							arene.ramassePotion(refRMI, refCible);
+							if(((Potion) elemPlusProche).getArmure()){
+								console.setPhrase("Je ramasse une armure");
+							}else{
+								console.setPhrase("Je ramasse une potion");	
+							}
 
 						} else { // personnage
 							// "duel"

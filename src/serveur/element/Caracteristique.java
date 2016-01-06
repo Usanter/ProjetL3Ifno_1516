@@ -12,37 +12,37 @@ public enum Caracteristique {
 	 * Vie : nombre de points de vie.
 	 */
 	
-	VIE("Vie", "VIE", 0, 100, 100),
+	VIE("Vie", "Vie", 0, 100, 100),
 	
 	/**
 	 * Force : indique les degats infliges. 
 	 */
 
-	FORCE("Force", "FOR", 0, 100, 1),
+	FORCE("Force", "For", 0, 100, 1),
 		
 	/**
 	 * Initiative : definit l'ordre d'action des personnages lors d'un tour de jeu. 
 	 */
 
-	INITIATIVE("Initiative", "INIT", 0, 100, 50),
+	INITIATIVE("Initiative", "Init", 0, 100, 50),
 	/**
 	*Pouvoir : permet d'utiliser le pouvoir du personnages
 	*/
 
-	POUVOIR("Pouvoir","PW",0,20,0),
+	POUVOIR("Pouvoir","Pw",0,20,0),
 	/**
 	 * Compteur : definit le nombre de mort effectue pendant la partie
 	 */
-	COMPTEUR("Compteur","CMP",0,100,0),
+	COMPTEUR("Compteur","Cmp",0,100,0),
 	
 	/**
 	 *Armure: entre 0 et 75 permet de réduire les degats subits
 	 */
-	ARMURE("Armure","ARM",0,50,0),
+	ARMURE("Armure","Arm",0,50,0),
 	/**
 	 *Block: entre 0 et 1 , un block a 1 permet de bloquer un coup ( l'annule entierement )
 	 */
-	BLOCK("Block","BLK",0,1,0);
+	BLOCK("Block","Blk",0,1,0);
 	/**
 	 * Nom complet.
 	 */

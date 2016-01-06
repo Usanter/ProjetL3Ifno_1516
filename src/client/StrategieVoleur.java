@@ -157,7 +157,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 					}
 					//Sinon, si le voleur a une vie >= 50 alors on erre
 					else {
-					console.setPhrase("J'erre...");
+					console.setPhrase("Je cherche quelqu'un a dépouiller...");
 					arene.deplace(refRMI, 0); }
 				}
 				//Si j'ai un voisin
@@ -172,15 +172,18 @@ public class StrategieVoleur extends StrategiePersonnage{
 						// j'interagis directement
 						if(elemPlusProche instanceof Potion) { // potion
 							// ramassage
-							console.setPhrase("Je ramasse une potion");
-							arene.ramassePotion(refRMI, refCible);
+							if(((Potion) elemPlusProche).getArmure()){
+								console.setPhrase("Je ramasse une armure");
+							}else{
+								console.setPhrase("Je ramasse une potion");	
+							}
 						} 
 						else { 
 							// personnage
 							//Si on peut se faire tuer en un coup on fui !!!
 							if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
 							{
-								console.setPhrase("J'erre...");
+								console.setPhrase("Je cherche quelqu'un à depouiller...");
 								arene.deplace(refRMI, 0); 		
 							}
 							//Sinon on attaque 
@@ -203,7 +206,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 					else { // si voisins, mais plus eloignes
 						// je vais vers le plus proche
 						if(elemPlusProche instanceof Potion) { // potion
-						console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
+						console.setPhrase( elemPlusProche.getNom()+ " je viens te chercher !");
 						arene.deplace(refRMI, refCible);
 						}
 						else
@@ -217,7 +220,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 							//Sinon on va vers lui
 							else
 							{
-								console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
+								console.setPhrase(elemPlusProche.getNom()+" j'arrive !");
 								arene.deplace(refRMI, refCible);
 							}
 						}

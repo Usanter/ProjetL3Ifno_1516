@@ -75,8 +75,11 @@ public class StrategieBarbare extends StrategiePersonnage{
 				// j'interagis directement
 				if(elemPlusProche instanceof Potion) { // potion
 					// ramassage
-					console.setPhrase("Je ramasse une potion");
-					arene.ramassePotion(refRMI, refCible);
+					if(((Potion) elemPlusProche).getArmure()){
+						console.setPhrase("Je ramasse une armure");
+					}else{
+						console.setPhrase("Je ramasse une potion");	
+					}
 
 				} else { // personnage
 					// duel
@@ -86,7 +89,7 @@ public class StrategieBarbare extends StrategiePersonnage{
 				
 			} else { // si voisins, mais plus eloignes
 				if(elemPlusProche instanceof Potion){
-					console.setPhrase("Je vais vers la potion " + elemPlusProche.getNom());
+					console.setPhrase("Je vais vers " + elemPlusProche.getNom());
 					arene.deplace(refRMI, refCible);
 				}
 				// sinon c'est un personnage
@@ -95,12 +98,12 @@ public class StrategieBarbare extends StrategiePersonnage{
 					if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
 					{
 						//on ne va pas vers lui
-						console.setPhrase(elemPlusProche.getNom()+" a l'air fort, je vais lui faire croire que je suis sans défence...");
+						console.setPhrase(elemPlusProche.getNom()+"est trop fort ! Je doit partir!");
 						arene.deplace(refRMI, 0);
 					}
 					//sinon on le défonce ( on est un barbare quand meme )
 					else{
-						console.setPhrase(elemPlusProche.getNom()+" va sentir ma colere ...");
+						console.setPhrase(elemPlusProche.getNom()+" j'arrive prépare toi!");
 						arene.deplace(refRMI, refCible);
 					}
 				}

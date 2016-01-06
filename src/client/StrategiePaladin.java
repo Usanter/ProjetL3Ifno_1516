@@ -74,27 +74,29 @@ public class StrategiePaladin extends StrategiePersonnage{
 						// j'interagis directement
 						if(elemPlusProche instanceof Potion) { // potion
 							// ramassage
-							console.setPhrase("Je ramasse une potion");
-							arene.ramassePotion(refRMI, refCible);
-
+							if(((Potion) elemPlusProche).getArmure()){
+								console.setPhrase("Je ramasse une armure");
+							}else{
+								console.setPhrase("Je ramasse une potion");	
+							}
 						} else { // personnage
 							// duel
 							
 							if(console.getPersonnage().getCaract(Caracteristique.VIE) > 50){
-								console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom());
+								console.setPhrase("Je fais un duel avec " + elemPlusProche.getNom()+",en garde!");
 								arene.lanceAttaque(refRMI, refCible);
 							}
 							else if(elemPlusProche.getCaract(Caracteristique.FORCE) >= console.getPersonnage().getCaract(Caracteristique.VIE))
 							{
 								//on ne va pas vers lui
-								console.setPhrase(elemPlusProche.getNom()+" a l'air fort, je vais lui faire croire que je suis sans défence...");
+								console.setPhrase(elemPlusProche.getNom()+" est trop fort, vaut mieux ne pas se battre.");
 								arene.deplaceLoin(refRMI, refCible);
 							}
 						}
 						
 					} else { // si voisins, mais plus eloignes
 						// je vais vers le plus proche
-						console.setPhrase("Je vais vers mon voisin " + elemPlusProche.getNom());
+						console.setPhrase("Je vais vers " + elemPlusProche.getNom());
 						arene.deplace(refRMI, refCible);
 					}
 				}
