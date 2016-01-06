@@ -61,7 +61,13 @@ public class LanceVie {
 			
 			// caracteristiques de la potion
 			HashMap<Caracteristique, Integer> caractsPotion = new HashMap<Caracteristique, Integer>();
-			caractsPotion.put(Caracteristique.VIE, Calculs.nombreAleatoire(10, 70));
+			caractsPotion.put(Caracteristique.ARMURE,0);
+			caractsPotion.put(Caracteristique.VIE, Calculs.nombreAleatoire(10, 40));
+			caractsPotion.put(Caracteristique.BLOCK, 0);
+			caractsPotion.put(Caracteristique.COMPTEUR, 0);
+			caractsPotion.put(Caracteristique.FORCE, 0);
+			caractsPotion.put(Caracteristique.POUVOIR, 0);
+			caractsPotion.put(Caracteristique.INITIATIVE, 0);
 			
 			// ajout de la potion
 			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion,false,false,true));
