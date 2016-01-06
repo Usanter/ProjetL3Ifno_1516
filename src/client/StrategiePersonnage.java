@@ -36,12 +36,9 @@ public abstract class StrategiePersonnage {
 	 */
 	public StrategiePersonnage(String ipArene, int port, String ipConsole, 
 			String nom, String groupe, HashMap<Caracteristique, Integer> caracts,
-
 			long nbTours, Point position, LoggerProjet logger,int categorie ) {
-		this.type = type;
 		logger.info("lanceur", "Creation de la console...");
 
-			long nbTours, Point position, LoggerProjet logger ) {
 			logger.info("lanceur", "Creation de la console...");
 
 		
