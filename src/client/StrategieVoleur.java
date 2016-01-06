@@ -254,7 +254,7 @@ public class StrategieVoleur extends StrategiePersonnage{
 								arene.deplace(refRMI, refCible);
 							}
 						}
-					}//Fin si j'ai nu voisin mais plus eloigne
+					}//Fin si j'ai un voisin mais plus eloigne
 				}//Fin si j'ai un voisin
 	}
 }

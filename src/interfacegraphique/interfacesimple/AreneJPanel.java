@@ -125,7 +125,7 @@ public class AreneJPanel extends JPanel {
 			message = null;
 			g.setFont(of);				
 		}
-		
+		g.drawRect( rect.width/10, rect.height/10, rect.width/10, rect.height/10);
 		// dessiner les elements
 		for(VueElement vueElement:potions) {
 			dessinerElement(g, vueElement);
