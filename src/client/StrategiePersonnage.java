@@ -13,6 +13,8 @@ import serveur.element.Personnage;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 
+import java.math.*;
+
 /**
  * Strategie d'un personnage. 
  */
@@ -101,19 +103,36 @@ public class StrategiePersonnage {
 					arene.ramassePotion(refRMI, refCible);			
 				} else { // personnage
 					// duel
+					
+					
 					console.setPhrase("Je fais un duel avec " + elemPlusProche);
-					arene.lanceAttaque(refRMI, refCible);
+					arene.lanceAttaque(refRMI, refCible); 	
 					arene.deplace(refRMI, refCible);
+					
 				}
 				
 			} else { // si voisins, mais plus eloignes
 				// je vais vers le plus proche
-				console.setPhrase("Je vais vers mon voisin " + elemPlusProche);
+				
+				console.setPhrase(elemPlusProche+" est a "+get_distance(refRMI,refCible,arene)+" metres de moi.");
+				fuir(refRMI,refCible,arene);
+				/*console.setPhrase("Je vais vers mon voisin " + elemPlusProche);
 				arene.deplace(refRMI, refCible);
-				arene.lanceAttaque(refRMI, refCible);
+				arene.lanceAttaque(refRMI, refCible);*/
 			}
 		}
 	}
+	
+	int get_distance(int refRMI, int refCible, IArene arene) throws RemoteException{
+		int delta_x = arene.getPosition(refCible).x - arene.getPosition(refRMI).x;
+		int delta_y = arene.getPosition(refCible).y - arene.getPosition(refRMI).y;
+		return (int)Math.sqrt(Math.pow(delta_x, 2) + Math.pow(delta_y, 2));
+	}
 
+	void fuir(int refRMI,int refCible,IArene arene) throws RemoteException {
+		arene.deplace(refRMI, new Point(arene.getPosition(refRMI).x * 2 - arene.getPosition(refCible).x,arene.getPosition(refRMI).x * 2 - arene.getPosition(refCible).x));
+	}
+	
+	
 	
 }
