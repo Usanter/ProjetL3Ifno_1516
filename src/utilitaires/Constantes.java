@@ -107,7 +107,7 @@ public class Constantes {
 
 	public static final int POUVOIR_MAX_TRAPPEUR = 20;
 
-	public static final int POUVOIR_MAX_MAGE = 15;
+	public static final int POUVOIR_MAX_MAGE = 20;
 	
 	public static final int POUVOIR_MAX_ASSASSIN = 15;
 	
@@ -120,6 +120,8 @@ public class Constantes {
 	public static final int FORCE_MAX_VOLEUR = 60;
 
 	public static final int VALEUR_POUVOIR_BARBARE = 1;
+	
+	public static final int VALEUR_POUVOIR_MAGE = 15;
 
 	public static final int  VALEUR_POUVOIR_PALADIN = 10;
 

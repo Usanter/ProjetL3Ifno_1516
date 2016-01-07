@@ -77,7 +77,7 @@ public class StrategieMage extends StrategiePersonnage{
 					//Si enemis dans le rayon d'action du pouvoir et pouvoir dispo alors attaque
 					
 					if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION_GRANDE 
-					&& console.getPersonnage().getCaract(Caracteristique.POUVOIR) > Constantes.POUVOIR_MAX_MAGE 
+					&& console.getPersonnage().getCaract(Caracteristique.POUVOIR) >= Constantes.VALEUR_POUVOIR_MAGE 
 					&& !(elemPlusProche instanceof Potion)){
 						//Duel a distance
 						console.setPhrase("Je lance ma boule de feu sur  " + elemPlusProche.getNom());
