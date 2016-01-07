@@ -72,6 +72,11 @@ public class AreneJPanel extends JPanel {
 	private List<VuePotion> potions = new ArrayList<VuePotion>();
 	
 	/**
+	 * Liste de tous les personnages morts
+	 */
+	private List<VuePersonnage> personnagesMorts;
+	
+	/**
 	 * Message a afficher.
 	 */
 	private String message = null;
@@ -154,7 +159,9 @@ public class AreneJPanel extends JPanel {
 		for(VuePersonnage vuePersonnage : personnages) {
 			dessinerElement(g, vuePersonnage);
 		}
-		
+		for(VuePersonnage vuePersonnageMort : personnagesMorts){
+			dessinerElementMort(g,vuePersonnageMort);
+		}
 		// affiche le decompte avant le debut de partie
 		if (compteARebours) {
 			g.setColor(new Color(0, 0, 0, 255));
@@ -203,7 +210,42 @@ public class AreneJPanel extends JPanel {
 			dessinerJauge(g, vueElement, rect, coordX, coordY, descendu);		
 		}
 	}
+	/**
+	 * Dessine une VuePersonnage si il est mort.
+	 * @param g graphics
+	 * @param vueElement vue de l'element a dessiner
+	 */
+	private void dessinerElementMort(Graphics g, VuePersonnage vueElement) {
+		 g.setPaintMode();
+		// affiche l'arene comme un rectangle
+		Rectangle rect = this.getBounds();
+		
+		// calcule les coordonnes pour afficher l'element
+		Point p = getRealPosition(vueElement.getPosition());
 
+		int coordX = (int) p.getX();
+		int coordY = (int) p.getY();
+		
+		// definit la couleur de l'element
+		g.setColor(vueElement.getColor());
+		
+		// dessine la representation geometrique de l'element
+		dessinerElementGeometrique(g, vueElement, coordX, coordY);
+		try{
+			Image perso;
+			perso = ImageIO.read(new File("images/Tomb.png"));
+			g.drawImage(perso, coordX-8, coordY, null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// ecrit le nom de l'element
+		//boolean descendu = dessinerElementNom(g, vueElement, coordX, coordY);
+		
+		// dessine la jauge de vie du personnage
+		//if(jaugesAffichees && vueElement instanceof VuePersonnage) {
+		//	dessinerJauge(g, vueElement, rect, coordX, coordY, descendu);		
+		//}
+	}
 	/**
 	 * Dessine la representation geometrique de l'element.
 	 * @param g graphics
@@ -466,9 +508,10 @@ public class AreneJPanel extends JPanel {
 	 * @param personnages liste des personnages a afficher
 	 * @param potions liste des potions a afficher
 	 */
-	public void setVues(List<VuePersonnage> personnages, List<VuePotion> potions) {
+	public void setVues(List<VuePersonnage> personnages, List<VuePotion> potions,List<VuePersonnage> personnagesMorts) {
 		this.potions = potions;
 		this.personnages = personnages;
+		this.personnagesMorts =personnagesMorts;
 	}
 
 	/**
