@@ -260,4 +260,23 @@ public static ArrayList<Integer> blacklist;
     return refCible;
   }
   
+  boolean isPotionNulle(IArene arene, int refCible) throws RemoteException{
+	  if((arene.caractFromRef(refCible, Caracteristique.FORCE) < 1
+		&& arene.caractFromRef(refCible, Caracteristique.DEFENSE) < 1)
+		||
+		(arene.caractFromRef(refCible, Caracteristique.VIE) < 1 
+		&& arene.caractFromRef(refCible, Caracteristique.FORCE) < 1
+		&& arene.caractFromRef(refCible, Caracteristique.INITIATIVE) < 1 
+		&& arene.caractFromRef(refCible, Caracteristique.DEFENSE) < 1)
+		||
+		(arene.caractFromRef(refCible, Caracteristique.VIE) <= -10
+		&& arene.caractFromRef(refCible, Caracteristique.FORCE) < 5
+		&& arene.caractFromRef(refCible, Caracteristique.DEFENSE) < 5)
+		){
+		  blacklist.add(refCible);
+		  return true;
+	  }
+	  else return false;
+  }
+  
 }
