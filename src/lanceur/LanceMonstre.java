@@ -28,7 +28,8 @@ public class LanceMonstre {
 		int port = Constantes.PORT_DEFAUT;
 		String ipArene = Constantes.IP_DEFAUT;
 		Point position = Calculs.positionAleatoireArene();
-		
+		position.x = 40;
+		position.y = 40;
 		if (args.length > 0) {
 			if (args[0].equals("--help") || args[0].equals("-h")) {
 				ErreurLancement.aide(usage);

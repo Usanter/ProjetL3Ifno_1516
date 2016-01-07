@@ -20,11 +20,7 @@ public class LancePersonnage {
 	private static String usage = "USAGE : java " + LancePersonnage.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-<<<<<<< HEAD
 		String nom = "G19";
-=======
-		String nom = "Hitler";
->>>>>>> 55046a4e2167459a1be288666b90e7f71f32ed48
 		
 		// TODO remplacer la ligne suivante par votre numero de groupe
 		String groupe = "G19"; 
@@ -77,7 +73,6 @@ public class LancePersonnage {
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
 			
 			Point position = Calculs.positionAleatoireArene();
-			
 			new StrategiePersonnage(ipArene, port, ipConsole, nom, groupe, caracts, nbTours, position, logger);
 			logger.info("Lanceur", "Creation du personnage reussie");
 			

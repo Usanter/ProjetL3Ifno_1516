@@ -93,7 +93,50 @@ public class StrategiePersonnage {
 			int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
 
 			String elemPlusProche = arene.nomFromRef(refCible);
-
+			//Si l'élément le plus proche n'est pas un monstre on cherche un monstre dans notre rayon de vision
+			if(!arene.estMonstreFromRef(refCible))
+			{
+				while(!arene.estMonstreFromRef(refCible) && voisins.size() >= 2)
+				{
+					voisins.remove(refCible);
+					refCible = Calculs.chercheElementProche(position,voisins);
+					distPlusProche = Calculs.distanceChebyshev(position,arene.getPosition(refCible));
+					elemPlusProche = arene.nomFromRef(refCible);
+					if (!arene.estMonstreFromRef(refCible))
+					{
+						refCible = 0;
+					}
+				}
+				//Si on a pas trouvé de monstre dans notre rayon d'action on cherche des popo
+				if (refCible == 0)
+				{
+					voisins=arene.getVoisins(refRMI);
+					refCible = Calculs.chercheElementProche(position, voisins);
+					distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
+					elemPlusProche = arene.nomFromRef(refCible);
+					while(!arene.estPotionFromRef(refCible) && voisins.size() >= 2)
+					{
+						voisins.remove(refCible);
+						refCible = Calculs.chercheElementProche(position,voisins);
+						distPlusProche = Calculs.distanceChebyshev(position,arene.getPosition(refCible));
+						elemPlusProche = arene.nomFromRef(refCible);
+						if (!arene.estPotionFromRef(refCible))
+						{
+							refCible = 0;
+						}
+					}
+				}
+				//Si on a ni trouvé de monstre ni de popo alors on garde notre voisin le plus proche
+				if (refCible == 0)
+				{
+					voisins=arene.getVoisins(refRMI);
+					refCible = Calculs.chercheElementProche(position, voisins);
+					distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
+					elemPlusProche = arene.nomFromRef(refCible);
+				}
+			}
+			
+			
 			if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
 				// j'interagis directement
 				if (elemPlusProche == "Monstre")
@@ -154,15 +197,6 @@ public class StrategiePersonnage {
 						{
 							//ICI IL FAUDRAIT FAIRE CLAIVOYANCE POUR SAVOIR SI ON LE FUI OU PAS
 							console.setPhrase("Je vais vers "  +elemPlusProche );
-						/*else{
-							if(voisins.size() >= 2){
-								String temp = elemPlusProche;
-								voisins.remove(refCible);
-								refCible = Calculs.chercheElementProche(position,voisins);
-								distPlusProche = Calculs.distanceChebyshev(position,arene.getPosition(refCible));
-								elemPlusProche = arene.nomFromRef(refCible);
-								console.setPhrase(temp+" -> "+elemPlusProche);
-							}*/
 							arene.deplace(refRMI, refCible);
 						}
 					}
