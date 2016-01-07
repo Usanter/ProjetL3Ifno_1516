@@ -130,11 +130,11 @@ public class StrategiePersonnage {
 						arene.deplace(refRMI, refCible);
 					}
 					//Personnage adverse !
-					else
+					if(arene.estPersonnageFromRef(refRMI) == true)
 					{
 						if(distPlusProche == 4) //On attend que l'ennemie avance pour pouvoir taper en premier !
 						{
-							//On se heal le tenmps que le perso adverse soit à une distance de 3
+							//On se heal le temps que le perso adverse soit à une distance de 3
 							if (console.getPersonnage().getCaract(Caracteristique.VIE) < 100)
 							{
 								arene.lanceAutoSoin(refRMI);
@@ -144,11 +144,17 @@ public class StrategiePersonnage {
 								console.setPhrase("J'attend que l'aversaire arrive ! ");
 							}
 						}
-						if(distPlusProche == 3)
+						else if(distPlusProche == 3)
 						{
-							console.setPhrase("Je vais vers "  +elemPlusProche);
+							console.setPhrase("Je vais vers "  +elemPlusProche + " pour l'attaquer");
 							arene.deplace(refRMI, refCible);
 							arene.lanceAttaque(refRMI, refCible);
+						}
+						else
+						{
+							//ICI IL FAUDRAIT FAIRE CLAIVOYANCE POUR SAVOIR SI ON LE FUI OU PAS
+							console.setPhrase("Je vais vers "  +elemPlusProche );
+							arene.deplace(refRMI, refCible);
 						}
 					}
 				}

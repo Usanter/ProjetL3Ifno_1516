@@ -20,10 +20,10 @@ public class LancePersonnage {
 	private static String usage = "USAGE : java " + LancePersonnage.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-		String nom = "Truc";
+		String nom = "G19";
 		
 		// TODO remplacer la ligne suivante par votre numero de groupe
-		String groupe = "G" + Calculs.nombreAleatoire(0,99); 
+		String groupe = "G19"; 
 		
 		// nombre de tours pour ce personnage avant d'etre deconnecte 
 		// (30 minutes par defaut)
