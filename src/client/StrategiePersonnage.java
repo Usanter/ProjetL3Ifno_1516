@@ -88,8 +88,16 @@ public static ArrayList<Integer> blacklist;
     }
     
     if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
-      console.setPhrase("J'erre...");
-      arene.deplace(refRMI, 0); 
+    	if(console.getPersonnage().getCaract(Caracteristique.VIE) < 100)
+		{
+			 console.setPhrase("Je me heal ! ");
+			arene.lanceAutoSoin(refRMI);
+		}
+		else
+		{
+		      console.setPhrase("J'erre...");
+		      arene.deplace(refRMI, 0);
+		}
       
     } else {
     	int refCible = Calculs.chercheElementProche(position, voisins);
@@ -105,31 +113,43 @@ public static ArrayList<Integer> blacklist;
             }
             else if(arene.estPotionFromRef(refCible)){ // potion
               // ATTETION RAMASSER QUE SI POPO GOOOD !!!!!!!!
-            	if (blacklist.contains(refCible))
+            	if (!blacklist.contains(refCible))
             	{
-            	      console.setPhrase("J'erre...");
-            	      arene.deplace(refRMI, 0); 
-            	}
-            	else
-            	{
-            		if (arene.caractFromRef(refCible, Caracteristique.VIE) < 1 
-            				&& arene.caractFromRef(refCible, Caracteristique.FORCE) < 1
-            				&& arene.caractFromRef(refCible, Caracteristique.INITIATIVE) < 1 
-            				&& arene.caractFromRef(refCible, Caracteristique.DEFENSE) < 1)
+            		if (isPotionNulle(arene ,refCible))
             		{
-            			blacklist.add(refCible);
-              	      console.setPhrase("J'erre...");
-              	      arene.deplace(refRMI, 0);
+            			if(console.getPersonnage().getCaract(Caracteristique.VIE) < 100)
+            			{
+            				 console.setPhrase("Je me heal ! ");
+            				arene.lanceAutoSoin(refRMI);
+            			}
+            			else
+            			{
+            			      console.setPhrase("J'erre...");
+            			      arene.deplace(refRMI, 0);
+            			}
             		}
             		else
             		{
             			console.setPhrase("Je ramasse une potion");
                         arene.ramassePotion(refRMI, refCible);
             		}
-                    
             	}
-      
-            } else { // personnage
+            	//Si popo dans la blacklist
+            	else
+            	{
+        			if(console.getPersonnage().getCaract(Caracteristique.VIE) < 100)
+        			{
+        				 console.setPhrase("Je me heal ! ");
+        				arene.lanceAutoSoin(refRMI);
+        			}
+        			else
+        			{
+        			      console.setPhrase("J'erre...");
+        			      arene.deplace(refRMI, 0);
+        			}
+            	}
+            } //Fin de si popo
+            else { // personnage
               // ATTATION !!!!! ATTAQUER QUE SI ON EST SUR DE LE TUER
               console.setPhrase("Je fais un duel avec " + elemPlusProche);
               arene.lanceAttaque(refRMI, refCible);
@@ -165,7 +185,7 @@ public static ArrayList<Integer> blacklist;
 	            arene.deplace(refRMI, refCible);
 	          }//Fin de si monstre
 	          //Personnage adverse !
-	          if(arene.estPersonnageFromRef(refRMI) )
+	          else if(arene.estPersonnageFromRef(refRMI) )
 	          {
 	            if(distPlusProche == 4) //On attend que l'ennemie avance pour pouvoir taper en premier !
 	            {
@@ -196,8 +216,42 @@ public static ArrayList<Integer> blacklist;
 	        //Potion ! 
 	        else
 	        {
-	          console.setPhrase("Je vais ramasser  " + elemPlusProche);
-	          arene.deplace(refRMI, refCible);
+	        	// ATTETION RAMASSER QUE SI POPO GOOOD !!!!!!!!
+            	if (!blacklist.contains(refCible))
+            	{
+            		if (isPotionNulle(arene ,refCible))
+            		{
+            			if(console.getPersonnage().getCaract(Caracteristique.VIE) < 100)
+            			{
+            				 console.setPhrase("Je me heal ! ");
+            				arene.lanceAutoSoin(refRMI);
+            			}
+            			else
+            			{
+            			      console.setPhrase("J'erre...");
+            			      arene.deplace(refRMI, 0);
+            			}
+            		}
+            		else
+            		{
+            			console.setPhrase("Je ramasse une potion");
+                        arene.ramassePotion(refRMI, refCible);
+            		}
+            	}
+            	//Si popo dans la blacklist ON RECUPERE PAS !!!!
+            	else
+            	{
+        			if(console.getPersonnage().getCaract(Caracteristique.VIE) < 100)
+        			{
+        				 console.setPhrase("Je me heal ! ");
+        				arene.lanceAutoSoin(refRMI);
+        			}
+        			else
+        			{
+        			      console.setPhrase("J'erre...");
+        			      arene.deplace(refRMI, 0);
+        			}
+            	}
 	        }
 	      }
     }
