@@ -3,6 +3,7 @@ package client;
 
 import java.awt.Point;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import client.controle.Console;
@@ -19,7 +20,10 @@ import java.math.*;
  * Strategie d'un personnage. 
  */
 public class StrategiePersonnage {
-  
+  /**
+   * BlackList des personnages
+   */
+public static ArrayList<Integer> blacklist;
   /**
    * Console permettant d'ajouter une phrase et de recuperer le serveur 
    * (l'arene).
@@ -45,7 +49,7 @@ public class StrategiePersonnage {
       String nom, String groupe, HashMap<Caracteristique, Integer> caracts,
       int nbTours, Point position, LoggerProjet logger) {
     this(logger);
-    
+    blacklist = new ArrayList<Integer>();
     try {
       console = new Console(ipArene, port, ipConsole, this, 
           new Personnage(nom, groupe, caracts), 
