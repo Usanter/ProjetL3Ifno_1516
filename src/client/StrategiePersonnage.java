@@ -131,7 +131,7 @@ public static ArrayList<Integer> blacklist;
 
 	        // je vais vers le plus proche
 	        //Si Mond=stre
-	          if(arene.estMonstreFromRef(refRMI) == true)
+	          if(arene.estMonstreFromRef(refRMI) )
 	          {
 	            if (distPlusProche == 3)
 	            {
