@@ -105,8 +105,30 @@ public static ArrayList<Integer> blacklist;
             }
             else if(arene.estPotionFromRef(refCible)){ // potion
               // ATTETION RAMASSER QUE SI POPO GOOOD !!!!!!!!
-              console.setPhrase("Je ramasse une potion");
-              arene.ramassePotion(refRMI, refCible);      
+            	if (blacklist.contains(refCible))
+            	{
+            	      console.setPhrase("J'erre...");
+            	      arene.deplace(refRMI, 0); 
+            	}
+            	else
+            	{
+            		if (arene.caractFromRef(refCible, Caracteristique.VIE) < 1 
+            				&& arene.caractFromRef(refCible, Caracteristique.FORCE) < 1
+            				&& arene.caractFromRef(refCible, Caracteristique.INITIATIVE) < 1 
+            				&& arene.caractFromRef(refCible, Caracteristique.DEFENSE) < 1)
+            		{
+            			blacklist.add(refCible);
+              	      console.setPhrase("J'erre...");
+              	      arene.deplace(refRMI, 0);
+            		}
+            		else
+            		{
+            			console.setPhrase("Je ramasse une potion");
+                        arene.ramassePotion(refRMI, refCible);
+            		}
+                    
+            	}
+      
             } else { // personnage
               // ATTATION !!!!! ATTAQUER QUE SI ON EST SUR DE LE TUER
               console.setPhrase("Je fais un duel avec " + elemPlusProche);
@@ -130,7 +152,7 @@ public static ArrayList<Integer> blacklist;
             //cible trouvée  
 
 	        // je vais vers le plus proche
-	        //Si Mond=stre
+	        //Si Monstre
 	          if(arene.estMonstreFromRef(refRMI) )
 	          {
 	            if (distPlusProche == 3)
