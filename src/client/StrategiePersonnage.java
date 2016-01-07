@@ -106,7 +106,7 @@ public static ArrayList<Integer> blacklist;
 
         if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
             // j'interagis directement
-            if (elemPlusProche == "Monstre")
+            if (arene.estMonstreFromRef(refCible))
             {
               console.setPhrase("J'attaque un monstre ! ");
               arene.lanceAttaque(refRMI, refCible);
@@ -157,7 +157,7 @@ public static ArrayList<Integer> blacklist;
             }
             
           } 
-        else
+        else	//Si pas d'interaction possible !
         {
             // chercher une cible
             refCible = get_nearest_monster(arene, voisins, refRMI);
@@ -173,7 +173,7 @@ public static ArrayList<Integer> blacklist;
 
 	        // je vais vers le plus proche
 	        //Si Monstre
-	          if(arene.estMonstreFromRef(refRMI) )
+	          if(arene.estMonstreFromRef(refCible) )
 	          {
 	            if (distPlusProche == 3)
 	            {
@@ -185,7 +185,7 @@ public static ArrayList<Integer> blacklist;
 	            arene.deplace(refRMI, refCible);
 	          }//Fin de si monstre
 	          //Personnage adverse !
-	          else if(arene.estPersonnageFromRef(refRMI) )
+	          else if(arene.estPersonnageFromRef(refCible) )
 	          {
 	            if(distPlusProche == 4) //On attend que l'ennemie avance pour pouvoir taper en premier !
 	            {
@@ -214,8 +214,8 @@ public static ArrayList<Integer> blacklist;
 	            }
 	          }//Fin de si personnage
 	        //Potion ! 
-	        else
-	        {
+	          else
+	          {
 	        	// ATTETION RAMASSER QUE SI POPO GOOOD !!!!!!!!
             	if (!blacklist.contains(refCible))
             	{
@@ -235,7 +235,7 @@ public static ArrayList<Integer> blacklist;
             		else
             		{
             			console.setPhrase("Je ramasse une potion");
-                        arene.ramassePotion(refRMI, refCible);
+                        arene.deplace(refRMI, refCible);
             		}
             	}
             	//Si popo dans la blacklist ON RECUPERE PAS !!!!
@@ -294,11 +294,11 @@ public static ArrayList<Integer> blacklist;
   
   int get_nearest_potion(IArene arene,HashMap<Integer, Point> voisins, int refRMI, ArrayList<Integer> blacklist  )throws RemoteException{
 	    int refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
-	    while(!arene.estPotionFromRef(refCible) && voisins.size() >= 2)
-	      if(!blacklist.contains(refCible)){
-	        voisins.remove(refCible);
+	    while(!arene.estPotionFromRef(refCible) && voisins.size() >= 2 && !blacklist.contains(refCible))
+	    {
+	    	voisins.remove(refCible);
 	        refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
-	      }
+  		}
 	    if(!arene.estPotionFromRef(refCible)) refCible = 0;
 	    return refCible;
 	  }
