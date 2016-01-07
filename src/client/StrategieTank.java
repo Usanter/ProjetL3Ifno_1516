@@ -122,7 +122,7 @@ public class StrategieTank extends StrategiePersonnage{
 						arene.lanceAttaque(refRMI, refCible);
 					}
                 }
-               
+                
             } else { // si voisins, mais plus eloignes
                 if(elemPlusProche instanceof Potion){
                 	// potion

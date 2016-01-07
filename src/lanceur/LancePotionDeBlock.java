@@ -9,12 +9,12 @@ import serveur.element.Caracteristique;
 import serveur.element.Potion;
 import utilitaires.Constantes;
 
-public class LancePotionDArmure {
+public class LancePotionDeBlock {
 	
 	private static String usage = "USAGE : java " + LancePotion.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-		String nom = "Potion d'armure";
+		String nom = "Potion de block";
 		
 		// TODO remplacer la ligne suivante par votre numero de groupe
 		String groupe = "G19" ; 
@@ -51,7 +51,7 @@ public class LancePotionDArmure {
 			e.printStackTrace();
 			System.exit(ErreurLancement.suivant);
 		}
-		
+		Color.
 		// lancement de la potion
 		try {
 			IArene arene = (IArene) java.rmi.Naming.lookup(Constantes.nomRMI(ipArene, port, "Arene"));

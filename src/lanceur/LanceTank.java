@@ -71,7 +71,6 @@ public class LanceTank {
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
 			caracts.put(Caracteristique.FORCE, 10);
 			caracts.put(Caracteristique.BLOCK , 1);
-			caracts.put(Caracteristique.VIE, 49);
 			
 			Point position = Calculs.positionAleatoireArene();	
 
