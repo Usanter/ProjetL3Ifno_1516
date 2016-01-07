@@ -14,7 +14,6 @@ import serveur.element.Personnage;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 
-import java.math.*;
 
 /**
  * Strategie d'un personnage. 
@@ -121,7 +120,7 @@ public static ArrayList<Integer> blacklist;
             // chercher une cible
             refCible = get_nearest_monster(arene, voisins, refRMI);
             if(refCible == 0){
-              refCible = get_nearest_potion(arene, voisins, refRMI);
+              refCible = get_nearest_potion(arene, voisins, refRMI, blacklist);
               if(refCible == 0){
                 refCible = Calculs.chercheElementProche(position, voisins);
               }
@@ -132,7 +131,7 @@ public static ArrayList<Integer> blacklist;
 
 	        // je vais vers le plus proche
 	        //Si Mond=stre
-	          if(arene.estMonstreFromRef(refRMI) == true)
+	          if(arene.estMonstreFromRef(refRMI) )
 	          {
 	            if (distPlusProche == 3)
 	            {
