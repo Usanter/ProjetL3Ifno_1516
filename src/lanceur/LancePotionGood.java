@@ -2,33 +2,24 @@ package lanceur;
 
 import java.awt.Point;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.HashMap;
 
-import client.StrategiePersonnage;
 import logger.LoggerProjet;
+import serveur.IArene;
 import serveur.element.Caracteristique;
+import serveur.element.Potion;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 
-/**
- * Lance une Console avec un Element sur l'Arene. 
- * A lancer apres le serveur, eventuellement plusieurs fois.
- */
-public class LancePersonnage {
+public class LancePotionGood {
 	
-	private static String usage = "USAGE : java " + LancePersonnage.class.getName() + " [ port [ ipArene ] ]";
+	private static String usage = "USAGE : java " + LancePotion.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-		String nom = "G19";
+		String nom = "Anduril5good";
 		
 		// TODO remplacer la ligne suivante par votre numero de groupe
 		String groupe = "G19"; 
-		
-		// nombre de tours pour ce personnage avant d'etre deconnecte 
-		// (30 minutes par defaut)
-		// si negatif, illimite
-		int nbTours = Constantes.NB_TOURS_PERSONNAGE_DEFAUT;
 		
 		// init des arguments
 		int port = Constantes.PORT_DEFAUT;
@@ -57,26 +48,31 @@ public class LancePersonnage {
 		// creation du logger
 		LoggerProjet logger = null;
 		try {
-			logger = new LoggerProjet(true, "personnage_" + nom + groupe);
+			logger = new LoggerProjet(true, "potion_"+nom+groupe);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(ErreurLancement.suivant);
 		}
 		
-		// lancement du serveur
+		// lancement de la potion
 		try {
-			String ipConsole = InetAddress.getLocalHost().getHostAddress();
+			IArene arene = (IArene) java.rmi.Naming.lookup(Constantes.nomRMI(ipArene, port, "Arene"));
+
+			logger.info("Lanceur", "Lancement de la potion sur le serveur...");
 			
-			logger.info("Lanceur", "Creation du personnage...");
+			// caracteristiques de la potion
+			HashMap<Caracteristique, Integer> caractsPotion = new HashMap<Caracteristique, Integer>();
 			
-			// caracteristiques du personnage
-			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
+			caractsPotion.put(Caracteristique.VIE, +10);
+			caractsPotion.put(Caracteristique.FORCE, +10);
+			caractsPotion.put(Caracteristique.INITIATIVE, +10);
+			caractsPotion.put(Caracteristique.DEFENSE, +10);
 			
-			Point position = Calculs.positionAleatoireArene();
-			position.x = 50;
-			position.y = 50;
-			new StrategiePersonnage(ipArene, port, ipConsole, nom, groupe, caracts, nbTours, position, logger);
-			logger.info("Lanceur", "Creation du personnage reussie");
+			// ajout de la potion
+			//arene.ajoutePotion(new Potion(nom, groupe, caractsPotion), Calculs.positionAleatoireArene());
+			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion), new Point (60,60));
+
+			logger.info("Lanceur", "Lancement de la potion reussi");
 			
 		} catch (Exception e) {
 			logger.severe("Lanceur", "Erreur lancement :\n" + e.getCause());

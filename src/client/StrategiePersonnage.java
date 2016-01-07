@@ -3,7 +3,6 @@ package client;
 
 import java.awt.Point;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import client.controle.Console;
@@ -13,22 +12,21 @@ import serveur.element.Caracteristique;
 import serveur.element.Personnage;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
+import java.util.ArrayList;
 
 
 /**
  * Strategie d'un personnage. 
  */
 public class StrategiePersonnage {
-  /**
-   * BlackList des personnages
-   */
-public static ArrayList<Integer> blacklist;
+  
   /**
    * Console permettant d'ajouter une phrase et de recuperer le serveur 
    * (l'arene).
    */
   protected Console console;
   
+
   protected StrategiePersonnage(LoggerProjet logger){
     logger.info("Lanceur", "Creation de la console...");
   }
@@ -48,7 +46,7 @@ public static ArrayList<Integer> blacklist;
       String nom, String groupe, HashMap<Caracteristique, Integer> caracts,
       int nbTours, Point position, LoggerProjet logger) {
     this(logger);
-    blacklist = new ArrayList<Integer>();
+
     try {
       console = new Console(ipArene, port, ipConsole, this, 
           new Personnage(nom, groupe, caracts), 
@@ -88,175 +86,149 @@ public static ArrayList<Integer> blacklist;
     }
     
     if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
-    	if(console.getPersonnage().getCaract(Caracteristique.VIE) < 100)
-		{
-			 console.setPhrase("Je me heal ! ");
-			arene.lanceAutoSoin(refRMI);
-		}
-		else
-		{
-		      console.setPhrase("J'erre...");
-		      arene.deplace(refRMI, 0);
-		}
+      console.setPhrase("J'erre...");
+      arene.deplace(refRMI, 0); 
       
     } else {
-    	int refCible = Calculs.chercheElementProche(position, voisins);
-		int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
-		String elemPlusProche = arene.nomFromRef(refCible);
+      int refCible = Calculs.chercheElementProche(position, voisins);
+      int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
 
-        if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
-            // j'interagis directement
-            if (arene.estMonstreFromRef(refCible))
+      String elemPlusProche = arene.nomFromRef(refCible);
+      if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
+          // j'interagis directement
+          if (elemPlusProche == "Monstre")
+          {
+            console.setPhrase("J'attaque un monstre ! ");
+            arene.lanceAttaque(refRMI, refCible);
+          }
+          else if(arene.estPotionFromRef(refCible)){ // potion
+            // ramassage
+            console.setPhrase("Je ramasse une potion");
+
+            arene.ramassePotion(refRMI, refCible);      
+          } else { // personnage
+            // duel
+            console.setPhrase("Je fais un duel avec " + elemPlusProche);
+            arene.lanceAttaque(refRMI, refCible);
+            arene.deplace(refRMI, refCible);
+          }
+          
+        }
+      else	//Si on est pas dans l'interaction
+      {
+
+      //Si l'élément le plus proche n'est pas un monstre on cherche un monstre dans notre rayon de vision
+      if(!arene.estMonstreFromRef(refCible))
+      {
+        while(!arene.estMonstreFromRef(refCible) && voisins.size() >= 2)
+        {
+          voisins.remove(refCible);
+          refCible = Calculs.chercheElementProche(position,voisins);
+          distPlusProche = Calculs.distanceChebyshev(position,arene.getPosition(refCible));
+          elemPlusProche = arene.nomFromRef(refCible);
+        }
+        if (!arene.estMonstreFromRef(refCible) && voisins.size() < 2)
+        {
+          refCible = 0;
+        }
+        //Si on a pas trouvé de monstre dans notre rayon d'action on cherche des popo
+        if (refCible == 0)
+        {
+          voisins=arene.getVoisins(refRMI);
+          refCible = Calculs.chercheElementProche(position, voisins);
+          distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
+          elemPlusProche = arene.nomFromRef(refCible);
+          while(!arene.estPotionFromRef(refCible) && voisins.size() >= 2)
+          {
+        	  if ( !isPotionNulle(arene,refCible))
+              {
+        			break;
+              }
+              else
+              {
+                  voisins.remove(refCible);
+                  refCible = Calculs.chercheElementProche(position,voisins);
+                  distPlusProche = Calculs.distanceChebyshev(position,arene.getPosition(refCible));
+                  elemPlusProche = arene.nomFromRef(refCible);
+              }
+          }
+          if (!arene.estPotionFromRef(refCible) && voisins.size() < 2)
+          {
+            refCible = 0;
+          }
+          //Si on a ni trouvé de monstre ni de popo alors on garde notre voisin le plus proche
+          if (refCible == 0)
+          {
+            voisins=arene.getVoisins(refRMI);
+            refCible = Calculs.chercheElementProche(position, voisins);
+            distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
+            elemPlusProche = arene.nomFromRef(refCible);
+          }
+        }
+      }
+
+      //Si personnage
+      if (arene.estPotionFromRef(refCible) == false)
+      {
+        if(arene.estMonstreFromRef(refRMI) == true)
+        {
+          if (distPlusProche == 3)
+          {
+            console.setPhrase("Je vais vers un monstre et je l'attaque !");
+            arene.deplace(refRMI, refCible);
+            arene.lanceAttaque(refRMI, refCible);
+          }
+          console.setPhrase("Je vais vers un monstre !");
+          arene.deplace(refRMI, refCible);
+        }
+        //Personnage adverse !
+        if(arene.estPersonnageFromRef(refRMI) == true)
+        {
+        	if(distPlusProche == 4) //On attend que l'ennemie avance pour pouvoir taper en premier !
             {
-              console.setPhrase("J'attaque un monstre ! ");
+	              //On se heal le temps que le perso adverse soit à une distance de 3
+	              if (console.getPersonnage().getCaract(Caracteristique.VIE) < 100)
+	              {
+	                arene.lanceAutoSoin(refRMI);
+	                console.setPhrase("Je me soigne ...");
+	              }
+	              else
+	              {
+	                console.setPhrase("J'attend que l'aversaire arrive ! ");
+	              }
+            }
+            else if(distPlusProche == 3)
+            {
+              console.setPhrase("Je vais vers "  +elemPlusProche + " pour l'attaquer");
+              arene.deplace(refRMI, refCible);
               arene.lanceAttaque(refRMI, refCible);
             }
-            else if(arene.estPotionFromRef(refCible)){ // potion
-              // ATTETION RAMASSER QUE SI POPO GOOOD !!!!!!!!
-            	if (!blacklist.contains(refCible))
-            	{
-            		if (isPotionNulle(arene ,refCible))
-            		{
-            			if(console.getPersonnage().getCaract(Caracteristique.VIE) < 100)
-            			{
-            				 console.setPhrase("Je me heal ! ");
-            				arene.lanceAutoSoin(refRMI);
-            			}
-            			else
-            			{
-            			      console.setPhrase("J'erre...");
-            			      arene.deplace(refRMI, 0);
-            			}
-            		}
-            		else
-            		{
-            			console.setPhrase("Je ramasse une potion");
-                        arene.ramassePotion(refRMI, refCible);
-            		}
-            	}
-            	//Si popo dans la blacklist
-            	else
-            	{
-        			if(console.getPersonnage().getCaract(Caracteristique.VIE) < 100)
-        			{
-        				 console.setPhrase("Je me heal ! ");
-        				arene.lanceAutoSoin(refRMI);
-        			}
-        			else
-        			{
-        			      console.setPhrase("J'erre...");
-        			      arene.deplace(refRMI, 0);
-        			}
-            	}
-            } //Fin de si popo
-            else { // personnage
-              // ATTATION !!!!! ATTAQUER QUE SI ON EST SUR DE LE TUER
-              console.setPhrase("Je fais un duel avec " + elemPlusProche);
-              arene.lanceAttaque(refRMI, refCible);
+            else
+            {
+              //ICI IL FAUDRAIT FAIRE CLAIVOYANCE POUR SAVOIR SI ON LE FUI OU PAS
+              console.setPhrase("Je vais vers "  +elemPlusProche );
               arene.deplace(refRMI, refCible);
             }
-            
-          } 
-        else	//Si pas d'interaction possible !
-        {
-            // chercher une cible
-            refCible = get_nearest_monster(arene, voisins, refRMI);
-            if(refCible == 0){
-              refCible = get_nearest_potion(arene, voisins, refRMI, blacklist);
-              if(refCible == 0){
-                refCible = Calculs.chercheElementProche(position, voisins);
-              }
-            }
-            distPlusProche = Calculs.distanceChebyshev(position,arene.getPosition(refCible));
-            elemPlusProche = arene.nomFromRef(refCible);      
-            //cible trouvée  
+        }
+      }
+      //Potion ! 
+      else
+      {
+    	  if(isPotionNulle(arene,refCible))
+    	  {
+        	  console.setPhrase("J'erre ... ");
+        	  arene.deplace(refRMI, 0);
+    	  }
+    	  else
+    	  {
+        	  console.setPhrase("Je vais ramasser ");
+        	  arene.deplace(refRMI, refCible);
+    	  }
+      }
+      }
 
-	        // je vais vers le plus proche
-	        //Si Monstre
-	          if(arene.estMonstreFromRef(refCible) )
-	          {
-	            if (distPlusProche == 3)
-	            {
-	              console.setPhrase("Je vais vers un monstre et je l'attaque !");
-	              arene.deplace(refRMI, refCible);
-	              arene.lanceAttaque(refRMI, refCible);
-	            }
-	            console.setPhrase("Je vais vers un monstre !");
-	            arene.deplace(refRMI, refCible);
-	          }//Fin de si monstre
-	          //Personnage adverse !
-	          else if(arene.estPersonnageFromRef(refCible) )
-	          {
-	            if(distPlusProche == 4) //On attend que l'ennemie avance pour pouvoir taper en premier !
-	            {
-		              //On se heal le temps que le perso adverse soit à une distance de 3
-		              if (console.getPersonnage().getCaract(Caracteristique.VIE) < 100)
-		              {
-		                arene.lanceAutoSoin(refRMI);
-		                console.setPhrase("Je me soigne ...");
-		              }
-		              else
-		              {
-		                console.setPhrase("J'attend que l'aversaire arrive ! ");
-		              }
-	            }
-	            else if(distPlusProche == 3)
-	            {
-	              console.setPhrase("Je vais vers "  +elemPlusProche + " pour l'attaquer");
-	              arene.deplace(refRMI, refCible);
-	              arene.lanceAttaque(refRMI, refCible);
-	            }
-	            else
-	            {
-	              //ICI IL FAUDRAIT FAIRE CLAIVOYANCE POUR SAVOIR SI ON LE FUI OU PAS
-	              console.setPhrase("Je vais vers "  +elemPlusProche );
-	              arene.deplace(refRMI, refCible);
-	            }
-	          }//Fin de si personnage
-	        //Potion ! 
-	          else
-	          {
-	        	// ATTETION RAMASSER QUE SI POPO GOOOD !!!!!!!!
-            	if (!blacklist.contains(refCible))
-            	{
-            		if (isPotionNulle(arene ,refCible))
-            		{
-            			if(console.getPersonnage().getCaract(Caracteristique.VIE) < 100)
-            			{
-            				 console.setPhrase("Je me heal ! ");
-            				arene.lanceAutoSoin(refRMI);
-            			}
-            			else
-            			{
-            			      console.setPhrase("J'erre...");
-            			      arene.deplace(refRMI, 0);
-            			}
-            		}
-            		else
-            		{
-            			console.setPhrase("Je ramasse une potion");
-                        arene.deplace(refRMI, refCible);
-            		}
-            	}
-            	//Si popo dans la blacklist ON RECUPERE PAS !!!!
-            	else
-            	{
-        			if(console.getPersonnage().getCaract(Caracteristique.VIE) < 100)
-        			{
-        				 console.setPhrase("Je me heal ! ");
-        				arene.lanceAutoSoin(refRMI);
-        			}
-        			else
-        			{
-        			      console.setPhrase("J'erre...");
-        			      arene.deplace(refRMI, 0);
-        			}
-            	}
-	        }
-	      }
     }
-}
-  
+  }
   
   /**
    * Fuit ( par symmetrie centrale ) la cible refCible sur l'arene arene
@@ -279,57 +251,16 @@ public static ArrayList<Integer> blacklist;
    */
   int get_distance(int refRMI, int refCible, IArene arene) throws RemoteException{
     return Calculs.distanceChebyshev(arene.getPosition(refRMI), arene.getPosition(refCible));
-  }
-  
-  int get_nearest_monster(IArene arene,HashMap<Integer, Point> voisins, int refRMI )throws RemoteException{
-    int refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
-    while(!arene.estMonstreFromRef(refCible) && voisins.size() >= 2)
-    {
-      voisins.remove(refCible);
-      refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
-    }
-    if(!arene.estMonstreFromRef(refCible)) refCible = 0;
-    return refCible;
-  }
-  
-  int get_nearest_potion(IArene arene,HashMap<Integer, Point> voisins, int refRMI, ArrayList<Integer> blacklist  )throws RemoteException{
-	    int refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
-	    while(!arene.estPotionFromRef(refCible) && voisins.size() >= 2 && !blacklist.contains(refCible))
-	    {
-	    	voisins.remove(refCible);
-	        refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
-  		}
-	    if(!arene.estPotionFromRef(refCible)) refCible = 0;
-	    return refCible;
-	  }
-  
-  int get_nearest_player(IArene arene,HashMap<Integer, Point> voisins, int refRMI )throws RemoteException{
-    int refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
-    while(!arene.estPersonnageFromRef(refCible) && voisins.size() >= 2)
-    {
-      voisins.remove(refCible);
-      refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
-    }
-    if(!arene.estPersonnageFromRef(refCible)) refCible = 0;
-    return refCible;
-  }
+  } 
   
   boolean isPotionNulle(IArene arene, int refCible) throws RemoteException{
-	  if((arene.caractFromRef(refCible, Caracteristique.FORCE) < 1
-		&& arene.caractFromRef(refCible, Caracteristique.DEFENSE) < 1)
-		||
-		(arene.caractFromRef(refCible, Caracteristique.VIE) < 1 
+	  if(arene.caractFromRef(refCible, Caracteristique.VIE) < 1 
 		&& arene.caractFromRef(refCible, Caracteristique.FORCE) < 1
 		&& arene.caractFromRef(refCible, Caracteristique.INITIATIVE) < 1 
-		&& arene.caractFromRef(refCible, Caracteristique.DEFENSE) < 1)
-		||
-		(arene.caractFromRef(refCible, Caracteristique.VIE) <= -10
-		&& arene.caractFromRef(refCible, Caracteristique.FORCE) < 5
-		&& arene.caractFromRef(refCible, Caracteristique.DEFENSE) < 5)
 		){
-		  blacklist.add(refCible);
+		 
 		  return true;
-	  }
+	  	}
 	  else return false;
   }
   

@@ -2,6 +2,7 @@ package lanceur;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.awt.Point;
 
 import logger.LoggerProjet;
 import serveur.IArene;
@@ -15,7 +16,7 @@ public class LancePotion {
 	private static String usage = "USAGE : java " + LancePotion.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
-		String nom = "Anduril";
+		String nom = "Anduril5nul";
 		
 		// TODO remplacer la ligne suivante par votre numero de groupe
 		String groupe = "G19"; 
@@ -62,13 +63,13 @@ public class LancePotion {
 			// caracteristiques de la potion
 			HashMap<Caracteristique, Integer> caractsPotion = new HashMap<Caracteristique, Integer>();
 			
-			caractsPotion.put(Caracteristique.VIE, Calculs.nombreAleatoire(-20, 20));
-			caractsPotion.put(Caracteristique.FORCE, Calculs.nombreAleatoire(-20, 20));
-			caractsPotion.put(Caracteristique.INITIATIVE, Calculs.nombreAleatoire(-20, 20));
-			caractsPotion.put(Caracteristique.DEFENSE, Calculs.nombreAleatoire(-10, 10));
+			caractsPotion.put(Caracteristique.VIE, -10);
+			caractsPotion.put(Caracteristique.FORCE, -10);
+			caractsPotion.put(Caracteristique.INITIATIVE, -10);
+			caractsPotion.put(Caracteristique.DEFENSE, -10);
 			
 			// ajout de la potion
-			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion), Calculs.positionAleatoireArene());
+			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion), new Point (45,45));
 			logger.info("Lanceur", "Lancement de la potion reussi");
 			
 		} catch (Exception e) {
