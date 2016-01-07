@@ -96,28 +96,71 @@ public class StrategiePersonnage {
 
 			if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
 				// j'interagis directement
-				if(arene.estPotionFromRef(refCible)){ // potion
+				if (elemPlusProche == "Monstre")
+				{
+					console.setPhrase("J'attaque un monstre ! ");
+					arene.lanceAttaque(refRMI, refCible);
+				}
+				else if(arene.estPotionFromRef(refCible)){ // potion
 					// ramassage
 					console.setPhrase("Je ramasse une potion");
 
 					arene.ramassePotion(refRMI, refCible);			
 				} else { // personnage
 					// duel
-					
-					
 					console.setPhrase("Je fais un duel avec " + elemPlusProche);
-					arene.lanceAttaque(refRMI, refCible); 	
+					arene.lanceAttaque(refRMI, refCible);
 					arene.deplace(refRMI, refCible);
-					
 				}
+				
 			} else { // si voisins, mais plus eloignes
 				// je vais vers le plus proche
-				
-				console.setPhrase(elemPlusProche+" est a "+get_distance(refRMI,refCible,arene)+" metres de moi.");
-				fuir(refRMI,refCible,arene);
-				/*console.setPhrase("Je vais vers mon voisin " + elemPlusProche);
-				arene.deplace(refRMI, refCible);
-				arene.lanceAttaque(refRMI, refCible);*/
+				//Si personnage
+				if (arene.estPotionFromRef(refCible) == false)
+				{
+					if(arene.estMonstreFromRef(refRMI) == true)
+					{
+						if (distPlusProche == 3)
+						{
+							console.setPhrase("Je vais vers un monstre et je l'attaque !");
+							arene.deplace(refRMI, refCible);
+							arene.lanceAttaque(refRMI, refCible);
+						}
+						console.setPhrase("Je vais vers un monstre !");
+						arene.deplace(refRMI, refCible);
+					}
+					//Personnage adverse !
+					else
+					{
+						if(distPlusProche == 4) //On attend que l'ennemie avance pour pouvoir taper en premier !
+						{
+							//On se heal le tenmps que le perso adverse soit à une distance de 3
+							if (console.getPersonnage().getCaract(Caracteristique.VIE) < 100)
+							{
+								arene.lanceAutoSoin(refRMI);
+							}
+							else
+							{
+								console.setPhrase("J'attend que l'aversaire arrive ! ");
+							}
+						}
+						if(distPlusProche == 3)
+						{
+							console.setPhrase("Je vais vers "  +elemPlusProche);
+							arene.deplace(refRMI, refCible);
+							arene.lanceAttaque(refRMI, refCible);
+						}
+					}
+				}
+				//Potion ! 
+				else
+				{
+					console.setPhrase("Je vais ramasser  " + elemPlusProche);
+					arene.deplace(refRMI, refCible);
+				}
+				//console.setPhrase("Je vais vers mon voisin " + elemPlusProche);
+				//arene.deplace(refRMI, refCible);
+				//arene.lanceAttaque(refRMI, refCible);
 			}
 		}
 	}
