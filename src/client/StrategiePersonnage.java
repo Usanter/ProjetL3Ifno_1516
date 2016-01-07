@@ -217,16 +217,16 @@ public static ArrayList<Integer> blacklist;
     return refCible;
   }
   
-  int get_nearest_potion(IArene arene,HashMap<Integer, Point> voisins, int refRMI )throws RemoteException{
-    int refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
-    while(!arene.estPotionFromRef(refCible) && voisins.size() >= 2)
-    {
-      voisins.remove(refCible);
-      refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
-    }
-    if(!arene.estPotionFromRef(refCible)) refCible = 0;
-    return refCible;
-  }
+  int get_nearest_potion(IArene arene,HashMap<Integer, Point> voisins, int refRMI, ArrayList<Integer> blacklist  )throws RemoteException{
+	    int refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
+	    while(!arene.estPotionFromRef(refCible) && voisins.size() >= 2)
+	      if(!blacklist.contains(refCible)){
+	        voisins.remove(refCible);
+	        refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
+	      }
+	    if(!arene.estPotionFromRef(refCible)) refCible = 0;
+	    return refCible;
+	  }
   
   int get_nearest_player(IArene arene,HashMap<Integer, Point> voisins, int refRMI )throws RemoteException{
     int refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
