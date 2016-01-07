@@ -34,17 +34,27 @@ public class AreneJPanel extends JPanel {
 	
 	public void paint(Graphics g)
 	{
+		Image logo;
+		try {
+			logo = ImageIO.read(new File("images/Background.png"));
+			g.drawImage(logo, 0, 0, null);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		Rectangle rect = this.getBounds();
 		super.paint(g);
-		g.setXORMode(getBackground());
-		g.setColor(new Color(140,250,140));
+		//g.setPaintMode();
+		//g.setXORMode(getBackground());
+		//g.setColor(new Color(140,250,140));
+		
 		
 		int milieuX = (int) rect.getCenterX();
 		int milieuY = (int) rect.getCenterY();
 		
-	    g.fillRect(milieuX - rect.width/15,milieuY- rect.height/6, rect.width/10, rect.height/10);
+	    //g.fillRect(milieuX - rect.width/15,milieuY- rect.height/6, rect.width/10, rect.height/10);
 	    
-	    g.setColor(Color.BLACK);
+	    g.setColor(Color.ORANGE);
 	    g.drawRect(milieuX - rect.width/15,milieuY- rect.height/6, rect.width/10, rect.height/10);
 	}	
 
@@ -158,6 +168,7 @@ public class AreneJPanel extends JPanel {
 			}
 			
 			g.setFont(of);
+			
 		}
 		
 	}
@@ -168,6 +179,7 @@ public class AreneJPanel extends JPanel {
 	 * @param vueElement vue de l'element a dessiner
 	 */
 	private void dessinerElement(Graphics g, VueElement vueElement) {
+		 g.setPaintMode();
 		// affiche l'arene comme un rectangle
 		Rectangle rect = this.getBounds();
 		
@@ -200,7 +212,7 @@ public class AreneJPanel extends JPanel {
 	 * @param coordY ordonnee de l'element
 	 */
 	private void dessinerElementGeometrique(Graphics g, VueElement vueElement, int coordX, int coordY) {
-
+		
 		if (vueElement.isSelectionne()) {
 			g.setColor(SELECTED_COLOR);
 			g.fillOval(coordX - 5, coordY - 5, ELEMENT_SIZE + 10, ELEMENT_SIZE + 10);
@@ -258,30 +270,54 @@ public class AreneJPanel extends JPanel {
 			VuePotion vp= (VuePotion)vueElement;
 			if(vp.getEstArmure()){
 				//Graphisme armure
-				g.fillRect(coordX, coordY, ELEMENT_SIZE, ELEMENT_SIZE);
-				g.fillRect(coordX-5,coordY,ELEMENT_SIZE+10,ELEMENT_SIZE-9);
+				//g.fillRect(coordX, coordY, ELEMENT_SIZE, ELEMENT_SIZE);
+				//g.fillRect(coordX-5,coordY,ELEMENT_SIZE+10,ELEMENT_SIZE-9);
+				try{
+				Image armor = ImageIO.read(new File("images/Armor.png"));
+				g.drawImage(armor, coordX-8, coordY, null);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 			else if(vp.getEstArme()){
 				//Graphisme arme
-				g.fillRect(coordX-2, coordY, 8, 30);
-				g.fillRect(coordX-8, coordY+20, 20, 4);
+				//g.fillRect(coordX-2, coordY, 8, 30);
+				//g.fillRect(coordX-8, coordY+20, 20, 4);
+				try{
+					Image weapon = ImageIO.read(new File("images/Sword.png"));
+					g.drawImage(weapon, coordX-8, coordY, null);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 			}
 			else if(vp.getEstVie()){
 				//Graphisme vie
-				g.setColor(new Color(205,92,92));
-				g.fillOval(coordX-5, coordY-5, ELEMENT_SIZE-1, ELEMENT_SIZE-1);	
-				g.fillOval(coordX+5, coordY-5, ELEMENT_SIZE-1, ELEMENT_SIZE-1);
-				Polygon p = new Polygon(); // Triangle
-				p = creeTriangleReverse(coordX + ELEMENT_SIZE/2, coordY + ELEMENT_SIZE/2 +10, ELEMENT_SIZE+7);
-				g.fillPolygon(p);
+				//g.setColor(new Color(205,92,92));
+				//g.fillOval(coordX-5, coordY-5, ELEMENT_SIZE-1, ELEMENT_SIZE-1);	
+				//g.fillOval(coordX+5, coordY-5, ELEMENT_SIZE-1, ELEMENT_SIZE-1);
+				//Polygon p = new Polygon(); // Triangle
+				//p = creeTriangleReverse(coordX + ELEMENT_SIZE/2, coordY + ELEMENT_SIZE/2 +10, ELEMENT_SIZE+7);
+				//g.fillPolygon(p);
+				try{
+					Image life = ImageIO.read(new File("images/Life.png"));
+					g.drawImage(life, coordX-8, coordY, null);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 			}
 			else
 			{
 				//graphique potion de base
-				Polygon p = new Polygon(); // Triangle
-				p = creeTriangle(coordX + ELEMENT_SIZE/2, coordY + ELEMENT_SIZE/2 - 1, ELEMENT_SIZE);
-				g.fillPolygon(p);
-				g.fillRect(coordX+3, coordY-1, ELEMENT_SIZE-5, 3);
+				//Polygon p = new Polygon(); // Triangle
+				//p = creeTriangle(coordX + ELEMENT_SIZE/2, coordY + ELEMENT_SIZE/2 - 1, ELEMENT_SIZE);
+				//g.fillPolygon(p);
+				//g.fillRect(coordX+3, coordY-1, ELEMENT_SIZE-5, 3);
+				try{
+					Image potion = ImageIO.read(new File("images/Potion.png"));
+					g.drawImage(potion, coordX-8, coordY, null);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 			}
 		}
 	}

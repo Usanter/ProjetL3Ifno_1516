@@ -72,11 +72,10 @@ public class LanceZombie {
 			// caracteristiques du personnage
 			HashMap<Caracteristique, Integer> caracts = new HashMap<Caracteristique, Integer>();
 			
-			//A MODIFIER EN FONCTION DES PERSOS !!!! 
 			// seule la force n'a pas sa valeur par defaut (exemple)
 			caracts.put(Caracteristique.FORCE, 100);
 			caracts.put(Caracteristique.VIE, 100);
-			caracts.put(Caracteristique.INITIATIVE, 100);
+			caracts.put(Caracteristique.INITIATIVE, Calculs.nombreAleatoire(0, 100));
 			
 			Point position = Calculs.positionAleatoireArene();	
 			
