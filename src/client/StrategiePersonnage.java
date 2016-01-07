@@ -110,7 +110,6 @@ public class StrategiePersonnage {
 					arene.deplace(refRMI, refCible);
 					
 				}
-				
 			} else { // si voisins, mais plus eloignes
 				// je vais vers le plus proche
 				
@@ -122,9 +121,28 @@ public class StrategiePersonnage {
 			}
 		}
 	}
-
+	
+	/**
+	 * Fuit ( par symmetrie centrale ) la cible refCible sur l'arene arene
+	 * @param refRMI personnage
+	 * @param refCible ennemi
+	 * @param arene arene actuelle
+	 * @throws RemoteException
+	 */
 	void fuir(int refRMI,int refCible,IArene arene) throws RemoteException {
 		arene.deplace(refRMI, new Point(arene.getPosition(refRMI).x * 2 - arene.getPosition(refCible).x,arene.getPosition(refRMI).x * 2 - arene.getPosition(refCible).x));
+	}
+	
+	/**
+	 * petit rajout de calcul de distance pour alleger le code ( eviter les arene.getposition partout )
+	 * @param refRMI personnage
+	 * @param refCible ennemi
+	 * @param arene arene actuelle
+	 * @throws RemoteException
+	 * @return retourne la distance
+	 */
+	int get_distance(int refRMI, int refCible, IArene arene) throws RemoteException{
+		return Calculs.distanceChebyshev(arene.getPosition(refRMI), arene.getPosition(refCible));
 	}
 	
 	
