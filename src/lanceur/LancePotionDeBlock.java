@@ -51,7 +51,7 @@ public class LancePotionDeBlock {
 			e.printStackTrace();
 			System.exit(ErreurLancement.suivant);
 		}
-		Color.
+		
 		// lancement de la potion
 		try {
 			IArene arene = (IArene) java.rmi.Naming.lookup(Constantes.nomRMI(ipArene, port, "Arene"));
