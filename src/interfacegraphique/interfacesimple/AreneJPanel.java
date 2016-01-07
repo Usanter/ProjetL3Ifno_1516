@@ -151,6 +151,9 @@ public class AreneJPanel extends JPanel {
 			message = null;
 			g.setFont(of);				
 		}
+		for(VuePersonnage vuePersonnageMort : personnagesMorts){
+			dessinerElementMort(g,vuePersonnageMort);
+		}
 		// dessiner les elements
 		for(VueElement vueElement:potions) {
 			dessinerElement(g, vueElement);
@@ -159,9 +162,7 @@ public class AreneJPanel extends JPanel {
 		for(VuePersonnage vuePersonnage : personnages) {
 			dessinerElement(g, vuePersonnage);
 		}
-		for(VuePersonnage vuePersonnageMort : personnagesMorts){
-			dessinerElementMort(g,vuePersonnageMort);
-		}
+		
 		// affiche le decompte avant le debut de partie
 		if (compteARebours) {
 			g.setColor(new Color(0, 0, 0, 255));
