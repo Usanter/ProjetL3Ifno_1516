@@ -73,6 +73,11 @@ public class AreneJPanel extends JPanel {
 	 * Vrai si le compte a rebours a demarre.
 	 */
 	private boolean compteARebours = false;
+	
+	/**
+	 * Offset pour dessiner le carre
+	 */
+	private int offset;
 
 	/**
 	 * Cree un panel affichant l'arene.
@@ -97,7 +102,7 @@ public class AreneJPanel extends JPanel {
 	/**
 	 * Lance le compte a rebours.
 	 */
-	public void lancerCompteARebours() {
+	public void lanceCompteARebours() {
 		compteARebours = true;
 		declencheur.start();
 	}
@@ -105,6 +110,21 @@ public class AreneJPanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		Rectangle rect = this.getBounds();
+
+		int witdthBorder = (Constantes.XMAX_ARENE - Constantes.XMIN_ARENE - (2*offset));
+		int heightBorder = (Constantes.YMAX_ARENE - Constantes.YMIN_ARENE - (2*offset));
+		
+		// création des coins sup. gauche et inf. droit
+		Point pMin = new Point((Constantes.XMIN_ARENE + offset),(Constantes.YMIN_ARENE + offset));
+		Point pMax = new Point(pMin.x + witdthBorder, pMin.y + heightBorder);
+		
+		// transformation en coordonnées écran
+		pMin = getPositionReelle(new Point(pMin));
+		pMax = getPositionReelle(new Point(pMax));
+
+	
+		Rectangle frame = new Rectangle (pMin.x, pMin.y, pMax.x - pMin.x, pMax.y - pMin.y);
+
 		
 		// si la connexion est en cours ou il y a une erreur
 		if (message != null) {
@@ -112,16 +132,21 @@ public class AreneJPanel extends JPanel {
 			g.setFont(new Font("Arial",Font.BOLD,20));
 			g.drawString(message, 20, rect.height - 20);
 			message = null;
-			g.setFont(of);				
+			g.setFont(of);
 		}
 		
+		
+		// dessiner la bordure
+		g.drawRect(frame.x, frame.y, frame.width, frame.height);
+		
+		
 		// dessiner les elements
-		for(VueElement vueElement:potions) {
-			dessinerElement(g, vueElement);
+		for(VuePotion vuePotion : potions) {
+			dessineElement(g, vuePotion);
 		}
 
 		for(VuePersonnage vuePersonnage : personnages) {
-			dessinerElement(g, vuePersonnage);
+			dessineElement(g, vuePersonnage);
 		}
 		
 		// affiche le decompte avant le debut de partie
@@ -142,54 +167,54 @@ public class AreneJPanel extends JPanel {
 	}
 	
 	/**
-	 * Dessine une VueElement.
+	 * Dessine la vue d'un element.
 	 * @param g graphics
 	 * @param vueElement vue de l'element a dessiner
 	 */
-	private void dessinerElement(Graphics g, VueElement vueElement) {
+	private void dessineElement(Graphics g, VueElement<?> vueElement) {
 		// affiche l'arene comme un rectangle
 		Rectangle rect = this.getBounds();
 		
 		// calcule les coordonnes pour afficher l'element
-		Point p = getRealPosition(vueElement.getPosition());
+		Point p = getPositionReelle(vueElement.getPosition());
 
 		int coordX = (int) p.getX();
 		int coordY = (int) p.getY();
 		
 		// definit la couleur de l'element
-		g.setColor(vueElement.getColor());
+		g.setColor(vueElement.getCouleur());
 		
 		// dessine la representation geometrique de l'element
-		dessinerElementGeometrique(g, vueElement, coordX, coordY);									
+		dessineElementGeometrique(g, vueElement, coordX, coordY);									
 		
 		// ecrit le nom de l'element
-		boolean descendu = dessinerElementNom(g, vueElement, coordX, coordY);
+		boolean descendu = dessineElementNom(g, vueElement, coordX, coordY);
 		
 		// dessine la jauge de vie du personnage
 		if(jaugesAffichees && vueElement instanceof VuePersonnage) {
-			dessinerJauge(g, vueElement, rect, coordX, coordY, descendu);		
+			dessineJauge(g, vueElement, rect, coordX, coordY, descendu);		
 		}
 	}
 
 	/**
-	 * Dessine la representation geometrique de l'element.
+	 * Dessine la representation geometrique de l'element (cercle pour un 
+	 * personnage, triangle pour une potion).
 	 * @param g graphics
 	 * @param vueElement vue de l'element a dessiner
 	 * @param coordX abscisse de l'element
 	 * @param coordY ordonnee de l'element
 	 */
-	private void dessinerElementGeometrique(Graphics g, VueElement vueElement, int coordX, int coordY) {
-
+	private void dessineElementGeometrique(Graphics g, VueElement<?> vueElement, int coordX, int coordY) {
 		if (vueElement.isSelectionne()) {
 			g.setColor(SELECTED_COLOR);
 			g.fillOval(coordX - 5, coordY - 5, ELEMENT_SIZE + 10, ELEMENT_SIZE + 10);
-			g.setColor(vueElement.getColor());
+			g.setColor(vueElement.getCouleur());
 		}
 		
 		if(vueElement instanceof VuePersonnage) {
 			g.fillOval(coordX, coordY, ELEMENT_SIZE, ELEMENT_SIZE);	
 		} else {
-			Polygon p = new Polygon(); // Triangle
+			Polygon p = new Polygon(); // triangle
 			p = creeTriangle(coordX + ELEMENT_SIZE/2, coordY + ELEMENT_SIZE/2 - 1, ELEMENT_SIZE);
 			g.fillPolygon(p);
 		}
@@ -204,7 +229,7 @@ public class AreneJPanel extends JPanel {
 	 * @return vrai si le texte a ete ecrit en dessous de la forme representant 
 	 * l'element, faux sinon
 	 */
-	private boolean dessinerElementNom(Graphics g, VueElement vueElement, int coordX, int coordY) {
+	private boolean dessineElementNom(Graphics g, VueElement<?> vueElement, int coordX, int coordY) {
 		Rectangle rect = this.getBounds();
 		
 		// affiche au dessus du point ses informations
@@ -243,8 +268,9 @@ public class AreneJPanel extends JPanel {
 	 * @param descendu vrai si le texte a ete ecrit en dessous de la forme 
 	 * representant l'element, faux sinon
 	 */
-	private void dessinerJauge(Graphics g, VueElement vueElement, Rectangle rect, int coordX, int coordY, boolean descendu) {
-		Color elementColor = vueElement.getColor();	
+	private void dessineJauge(Graphics g, VueElement<?> vueElement, Rectangle rect, 
+			int coordX, int coordY, boolean descendu) {
+		Color elementColor = vueElement.getCouleur();	
 		
 		// dessin de la jauge de vie			
 		int barWidth = 80;
@@ -319,7 +345,7 @@ public class AreneJPanel extends JPanel {
 	 * Definit le message a afficher.
 	 * @param msg message a afficher
 	 */
-	public void afficherMessage(String msg) {
+	public void afficheMessage(String msg) {
 		message = msg;
 	}
 
@@ -328,9 +354,10 @@ public class AreneJPanel extends JPanel {
 	 * @param personnages liste des personnages a afficher
 	 * @param potions liste des potions a afficher
 	 */
-	public void setVues(List<VuePersonnage> personnages, List<VuePotion> potions) {
+	public void setVues(List<VuePersonnage> personnages, List<VuePotion> potions, int offset) {
 		this.potions = potions;
 		this.personnages = personnages;
+		this.offset = offset;
 	}
 
 	/**
@@ -368,7 +395,7 @@ public class AreneJPanel extends JPanel {
 	 * @param point position dans l'arene
 	 * @return position dans le panel
 	 */
-	private Point getRealPosition(Point point) {
+	private Point getPositionReelle(Point point) {
 		Rectangle rect = this.getBounds();
 		
 		int width = (int) rect.getWidth();

@@ -26,7 +26,7 @@ public class LancePotion {
 		
 		if (args.length > 0) {
 			if (args[0].equals("--help") || args[0].equals("-h")) {
-				ErreurLancement.help(usage);
+				ErreurLancement.aide(usage);
 			}
 			
 			if (args.length > 2) {
@@ -57,20 +57,22 @@ public class LancePotion {
 		try {
 			IArene arene = (IArene) java.rmi.Naming.lookup(Constantes.nomRMI(ipArene, port, "Arene"));
 
-			logger.info("lanceur", "Lancement de la potion sur le serveur...");
+			logger.info("Lanceur", "Lancement de la potion sur le serveur...");
 			
 			// caracteristiques de la potion
 			HashMap<Caracteristique, Integer> caractsPotion = new HashMap<Caracteristique, Integer>();
-			caractsPotion.put(Caracteristique.VIE, Calculs.nombreAleatoire(-100, 100));
-			caractsPotion.put(Caracteristique.FORCE, Calculs.nombreAleatoire(-100, 100));
-			caractsPotion.put(Caracteristique.INITIATIVE, Calculs.nombreAleatoire(-100, 100));
+			
+			caractsPotion.put(Caracteristique.VIE, Calculs.nombreAleatoire(-20, 20));
+			caractsPotion.put(Caracteristique.FORCE, Calculs.nombreAleatoire(-20, 20));
+			caractsPotion.put(Caracteristique.INITIATIVE, Calculs.nombreAleatoire(-20, 20));
+			caractsPotion.put(Caracteristique.DEFENSE, Calculs.nombreAleatoire(-10, 10));
 			
 			// ajout de la potion
-			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion));
-			logger.info("lanceur", "Lancement de la potion reussi");
+			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion), Calculs.positionAleatoireArene());
+			logger.info("Lanceur", "Lancement de la potion reussi");
 			
 		} catch (Exception e) {
-			logger.severe("lanceur", "Erreur lancement :\n" + e.getCause());
+			logger.severe("Lanceur", "Erreur lancement :\n" + e.getCause());
 			e.printStackTrace();
 			System.exit(ErreurLancement.suivant);
 		}

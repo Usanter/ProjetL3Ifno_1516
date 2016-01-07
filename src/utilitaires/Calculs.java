@@ -15,6 +15,14 @@ import serveur.element.Caracteristique;
  * elements voisins...).
  */
 public class Calculs {
+	
+	/**
+	 * Offset pour retrouver l'arene init.
+	 */
+	public static int OFFSET_ARENE = 0;
+	
+	public static int getOffset() {return OFFSET_ARENE;}
+	public static void setOffset(int val) {OFFSET_ARENE = val;}
 
 	/**
 	 * Renvoie la distance de Chebyshev entre deux points.
@@ -51,8 +59,8 @@ public class Calculs {
 	 * @return vrai si le point est dans les limites de l'arene, faux sinon
 	 */
 	public static boolean estDansArene(Point p) {
-		return XMIN_ARENE <= p.x && p.x <= XMAX_ARENE &&
-				YMIN_ARENE <= p.y && p.y <= YMAX_ARENE;
+		return (XMIN_ARENE + OFFSET_ARENE <= p.x) && (p.x <= XMAX_ARENE - OFFSET_ARENE) &&
+				(YMIN_ARENE + OFFSET_ARENE <= p.y) && (p.y <= YMAX_ARENE - OFFSET_ARENE);
 	}
 	
 	/** 
@@ -110,7 +118,7 @@ public class Calculs {
 	 * @param voisins liste des voisins
 	 * @return reference de l'element le plus proche, 0 si il n'y en a pas
 	 */
-	public static int chercherElementProche(Point origine, HashMap<Integer, Point> voisins) {
+	public static int chercheElementProche(Point origine, HashMap<Integer, Point> voisins) {
 		int distPlusProche = VISION;
 		int refPlusProche = 0;
 		
@@ -137,12 +145,23 @@ public class Calculs {
 	}
 
 	/**
-	 * Genere un valeur aleatoire pour une caracteristique donnee.
+	 * Genere un valeur aleatoire pour une caracteristique donnee, entre min et
+	 * max.
 	 * @param c caracteristique
 	 * @return valeur aleatoire generee
 	 */
 	public static int valeurCaracAleatoire(Caracteristique c) {
 		return nombreAleatoire(c.getMin(), c.getMax());
+	}
+
+	/**
+	 * Genere un valeur aleatoire pour une caracteristique donnee, entre -max
+	 * et +max (pour les potions).
+	 * @param c caracteristique
+	 * @return valeur aleatoire generee
+	 */
+	public static int valeurCaracAleatoirePosNeg(Caracteristique c) {
+		return nombreAleatoire(-c.getMax(), c.getMax());
 	}
 	
 	/**
@@ -151,8 +170,8 @@ public class Calculs {
 	 */
 	public static Point positionAleatoireArene() {
 		return new Point(
-				Calculs.nombreAleatoire(XMIN_ARENE, XMAX_ARENE), 
-				Calculs.nombreAleatoire(YMIN_ARENE, YMAX_ARENE));
+				Calculs.nombreAleatoire(XMIN_ARENE + OFFSET_ARENE, XMAX_ARENE - OFFSET_ARENE), 
+				Calculs.nombreAleatoire(YMIN_ARENE + OFFSET_ARENE, YMAX_ARENE - OFFSET_ARENE));
 	}
 
 	/**
@@ -162,7 +181,7 @@ public class Calculs {
 	 * @param val valeur a caper
 	 * @return valeur capee
 	 */
-	public static int restreindreNombre(int min, int max, int val) {
+	public static int restreintNombre(int min, int max, int val) {
 		return Math.min(Math.max(val, min), max);
 	}
 
@@ -172,13 +191,13 @@ public class Calculs {
 	 * @param val valeur
 	 * @return valeur capee
 	 */
-	public static int restreindreCarac(Caracteristique c, int val) {		
-		return restreindreNombre(c.getMin(), c.getMax(), val);
+	public static int restreintCarac(Caracteristique c, int val) {		
+		return restreintNombre(c.getMin(), c.getMax(), val);
 	}
 
-	public static Point restreindrePositionArene(Point position) {		
-		return new Point(restreindreNombre(XMIN_ARENE, XMAX_ARENE, position.x), 
-				restreindreNombre(YMIN_ARENE, YMAX_ARENE, position.y));
+	public static Point restreintPositionArene(Point position) {		
+		return new Point(restreintNombre(XMIN_ARENE + OFFSET_ARENE, XMAX_ARENE - OFFSET_ARENE, position.x), 
+				restreintNombre(YMIN_ARENE + OFFSET_ARENE, YMAX_ARENE - OFFSET_ARENE, position.y));
 	}
 
 	/**
@@ -187,24 +206,24 @@ public class Calculs {
 	 * @param duree en secondes
 	 * @return duree en chaine sous la forme H:M:S
 	 */
-	public static String timerToString(int duree) {
+	public static String timerToString(int duree) {	
 		String res;
 		
 		if (duree < 0) {
 			res = "illimite";
-		}
-		
-		int heure, minute, seconde;
-		
-		seconde = duree % 60;
-		minute = duree / 60;
-		heure = minute / 60;
-		minute = minute % 60;
-		
-		if (heure == 0) {
-			res = minute + ":" + ((seconde<10) ? "0" : "") + seconde ;
 		} else {
-			res = heure + ":" + ((minute<10) ? "0" : "") + minute + ":" + ((seconde<10) ? "0" : "") + seconde;				
+			int heure, minute, seconde;
+			
+			seconde = duree % 60;
+			minute = duree / 60;
+			heure = minute / 60;
+			minute = minute % 60;
+			
+			if (heure == 0) {
+				res = minute + ":" + ((seconde<10) ? "0" : "") + seconde ;
+			} else {
+				res = heure + ":" + ((minute<10) ? "0" : "") + minute + ":" + ((seconde<10) ? "0" : "") + seconde;				
+			}
 		}
 		
 		return res;

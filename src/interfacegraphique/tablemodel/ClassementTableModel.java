@@ -33,6 +33,9 @@ public class ClassementTableModel extends ElementTableModel<VuePersonnage> {
 		// groupe du personnage
 		colonnes.add(new InformationColonne<VuePersonnage>("Groupe", 0, String.class, new ValeurColonneGroupe()));
 		
+		// groupe du personnage
+		colonnes.add(new InformationColonne<VuePersonnage>("Degat", 0, String.class, new ValeurColonneDegat()));
+		
 		// caracteristiques
 		for(Caracteristique car : Caracteristique.values()) {
 			colonnes.add(new InformationColonne<VuePersonnage>(car.toString(), 40, Integer.class, new ValeurColonneCaract(car)));
