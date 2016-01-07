@@ -122,12 +122,6 @@ public class StrategiePersonnage {
 			}
 		}
 	}
-	
-	int get_distance(int refRMI, int refCible, IArene arene) throws RemoteException{
-		int delta_x = arene.getPosition(refCible).x - arene.getPosition(refRMI).x;
-		int delta_y = arene.getPosition(refCible).y - arene.getPosition(refRMI).y;
-		return (int)Math.sqrt(Math.pow(delta_x, 2) + Math.pow(delta_y, 2));
-	}
 
 	void fuir(int refRMI,int refCible,IArene arene) throws RemoteException {
 		arene.deplace(refRMI, new Point(arene.getPosition(refRMI).x * 2 - arene.getPosition(refCible).x,arene.getPosition(refRMI).x * 2 - arene.getPosition(refCible).x));
