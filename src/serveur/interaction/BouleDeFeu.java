@@ -11,6 +11,7 @@ import serveur.vuelement.VuePersonnage;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 
+
 /**
  * Represente un duel entre deux personnages.
  *
@@ -53,6 +54,11 @@ public class BouleDeFeu extends Interaction<VuePersonnage> {
 			// initiative
 			incrementerInitiative(defenseur);
 			decrementerInitiative(attaquant);
+			
+			if(defenseur.getElement().getCaract(Caracteristique.VIE) <= 0){
+				arene.modifCara(attaquant.getRefRMI(), 1 , Caracteristique.COMPTEUR);
+			}
+			
 			
 		} catch (RemoteException e) {
 			logs(Level.INFO, "\nErreur lors d'une attaque : " + e.toString());
