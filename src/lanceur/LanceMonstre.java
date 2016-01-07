@@ -15,7 +15,7 @@ import utilitaires.Constantes;
  */
 public class LanceMonstre {
 	
-	private static String usage = "USAGE : java " + LanceMonstre.class.getName() + " [ port [ ipArene [ x y ] ] ]";
+	private static String usage = "USAGE : java " + LanceMonstre.class.getName() + " [ port [ ipArene ] ]";
 
 	public static void main(String[] args) {
 		
@@ -27,15 +27,13 @@ public class LanceMonstre {
 		// init des arguments
 		int port = Constantes.PORT_DEFAUT;
 		String ipArene = Constantes.IP_DEFAUT;
-		Point position = Calculs.positionAleatoireArene();
-		position.x = 40;
-		position.y = 40;
+		
 		if (args.length > 0) {
 			if (args[0].equals("--help") || args[0].equals("-h")) {
 				ErreurLancement.aide(usage);
 			}
 			
-			if (args.length > 4) {
+			if (args.length > 2) {
 				ErreurLancement.TROP_ARGS.erreur(usage);
 			}
 			
@@ -47,10 +45,6 @@ public class LanceMonstre {
 			
 			if (args.length > 1) {
 				ipArene = args[1];
-				
-				if(args.length > 2) {
-					position = new Point(Integer.parseInt(args[2]), Integer.parseInt(args[3]));
-				}
 			}
 		}
 		
@@ -68,6 +62,8 @@ public class LanceMonstre {
 			String ipConsole = InetAddress.getLocalHost().getHostAddress();
 			
 			logger.info("Lanceur", "Creation du monstre...");
+			
+			Point position = Calculs.positionAleatoireArene();
 			
 			new StrategieMonstre(ipArene, port, ipConsole, nbTours, position, logger);
 			logger.info("Lanceur", "Creation du monstre reussie");

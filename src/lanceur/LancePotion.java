@@ -10,13 +10,6 @@ import serveur.element.Potion;
 import utilitaires.Calculs;
 import utilitaires.Constantes;
 
-
-
-import java.awt.Point;
-
-
-
-
 public class LancePotion {
 	
 	private static String usage = "USAGE : java " + LancePotion.class.getName() + " [ port [ ipArene ] ]";
@@ -25,7 +18,7 @@ public class LancePotion {
 		String nom = "Anduril";
 		
 		// TODO remplacer la ligne suivante par votre numero de groupe
-		String groupe = "G19" ; 
+		String groupe = "G19"; 
 		
 		// init des arguments
 		int port = Constantes.PORT_DEFAUT;
@@ -75,8 +68,7 @@ public class LancePotion {
 			caractsPotion.put(Caracteristique.DEFENSE, Calculs.nombreAleatoire(-10, 10));
 			
 			// ajout de la potion
-			//arene.ajoutePotion(new Potion(nom, groupe, caractsPotion), Calculs.positionAleatoireArene());
-			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion), new Point(53,53));
+			arene.ajoutePotion(new Potion(nom, groupe, caractsPotion), Calculs.positionAleatoireArene());
 			logger.info("Lanceur", "Lancement de la potion reussi");
 			
 		} catch (Exception e) {
