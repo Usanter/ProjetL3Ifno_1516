@@ -89,56 +89,18 @@ public class StrategiePersonnage {
 			arene.deplace(refRMI, 0); 
 			
 		} else {
-			int refCible = Calculs.chercheElementProche(position, voisins);
-			int distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
-
-			String elemPlusProche = arene.nomFromRef(refCible);
-			//Si l'élément le plus proche n'est pas un monstre on cherche un monstre dans notre rayon de vision
-			if(!arene.estMonstreFromRef(refCible))
-			{
-				while(!arene.estMonstreFromRef(refCible) && voisins.size() >= 2)
-				{
-					voisins.remove(refCible);
-					refCible = Calculs.chercheElementProche(position,voisins);
-					distPlusProche = Calculs.distanceChebyshev(position,arene.getPosition(refCible));
-					elemPlusProche = arene.nomFromRef(refCible);
-
-				}
-				if (!arene.estMonstreFromRef(refCible) && voisins.size() < 2)
-				{
-					refCible = 0;
-				}
-				//Si on a pas trouvé de monstre dans notre rayon d'action on cherche des popo
-				if (refCible == 0)
-				{
-					voisins=arene.getVoisins(refRMI);
+			// chercher une cible
+			int refCible = get_nearest_monster(arene, voisins, refRMI);
+			if(refCible == 0){
+				refCible = get_nearest_potion(arene, voisins, refRMI);
+				if(refCible == 0){
 					refCible = Calculs.chercheElementProche(position, voisins);
-					distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
-					elemPlusProche = arene.nomFromRef(refCible);
-					while(!arene.estPotionFromRef(refCible) && voisins.size() >= 2)
-					{
-						voisins.remove(refCible);
-						refCible = Calculs.chercheElementProche(position,voisins);
-						distPlusProche = Calculs.distanceChebyshev(position,arene.getPosition(refCible));
-						elemPlusProche = arene.nomFromRef(refCible);
-
-					}
-					if (!arene.estPotionFromRef(refCible) && voisins.size() < 2)
-					{
-						refCible = 0;
-					}
-					//Si on a ni trouvé de monstre ni de popo alors on garde notre voisin le plus proche
-					if (refCible == 0)
-					{
-						voisins=arene.getVoisins(refRMI);
-						refCible = Calculs.chercheElementProche(position, voisins);
-						distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
-						elemPlusProche = arene.nomFromRef(refCible);
-					}
 				}
 			}
+			int distPlusProche = Calculs.distanceChebyshev(position,arene.getPosition(refCible));
+			String elemPlusProche = arene.nomFromRef(refCible);			
+			//cible trouvée
 			
-
 			if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
 				// j'interagis directement
 				if (elemPlusProche == "Monstre")
@@ -246,8 +208,30 @@ public class StrategiePersonnage {
 		{
 			voisins.remove(refCible);
 			refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
-			if(arene.estMonstreFromRef(refCible)) return refCible;
 		}
+		if(!arene.estMonstreFromRef(refCible)) refCible = 0;
+		return refCible;
+	}
+	
+	int get_nearest_potion(IArene arene,HashMap<Integer, Point> voisins, int refRMI )throws RemoteException{
+		int refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
+		while(!arene.estPotionFromRef(refCible) && voisins.size() >= 2)
+		{
+			voisins.remove(refCible);
+			refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
+		}
+		if(!arene.estPotionFromRef(refCible)) refCible = 0;
+		return refCible;
+	}
+	
+	int get_nearest_player(IArene arene,HashMap<Integer, Point> voisins, int refRMI )throws RemoteException{
+		int refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
+		while(!arene.estPersonnageFromRef(refCible) && voisins.size() >= 2)
+		{
+			voisins.remove(refCible);
+			refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
+		}
+		if(!arene.estPersonnageFromRef(refCible)) refCible = 0;
 		return refCible;
 	}
 	
