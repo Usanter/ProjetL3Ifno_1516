@@ -49,14 +49,14 @@ public class StrategiePaladin extends StrategiePersonnage{
 				} catch (RemoteException e) {
 					e.printStackTrace();
 				}
-				if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) < 10){
+				if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) < Constantes.POUVOIR_MAX_PALADIN){
 					arene.modifCara(refRMI, 1 , Caracteristique.POUVOIR);
 				}
 				
-				if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) == 10 
+				if(console.getPersonnage().getCaract(Caracteristique.POUVOIR) == Constantes.POUVOIR_MAX_PALADIN 
 						&& console.getPersonnage().getCaract(Caracteristique.VIE) <= 90){
 					arene.modifCara(refRMI, -console.getPersonnage().getCaract(Caracteristique.POUVOIR),Caracteristique.POUVOIR);
-					arene.modifCara(refRMI, 10, Caracteristique.VIE);
+					arene.modifCara(refRMI, Constantes.VALEUR_POUVOIR_PALADIN, Caracteristique.VIE);
 				}
 				
 				if(arene.TestSurSpawn(refRMI, arene.getPosition(refRMI))){

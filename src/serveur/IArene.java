@@ -21,7 +21,15 @@ public interface IArene extends Remote {
 	/**************************************************************************
 	 * Connexion et deconnexion, partie non commencee ou finie. 
 	 **************************************************************************/
-	public void modifCara(int refRMI, int modifForce, Caracteristique cara) throws RemoteException;
+	
+	/**
+	 * modifie une caracteristique personnage a partir de la refRMI
+	 * @param refRMI personnage
+	 * @param modif valeur de modification
+	 * @param cara caracteristique a modifier
+	 * @throws RemoteException
+	 */
+	public void modifCara(int refRMI, int modif, Caracteristique cara) throws RemoteException;
 	/**
 	 * Retourne une reference RMI libre pour un element.
 	 * @return reference RMI inutilisee
@@ -184,7 +192,7 @@ public interface IArene extends Remote {
 	public boolean lanceAttaque(int refRMI, int refAdv) throws RemoteException;
 	
 
-	/*
+	/**
 	* Permert à un mage de lancer une boule de feu, cette boule de feu possède une
 	* force equivalente à la force du mage divisé par deux
 	 * @param refRMI reference RMI du personnage voulant se deplacer
@@ -222,7 +230,13 @@ public interface IArene extends Remote {
 	 */
 	public boolean deplace(int refRMI, int refCible) throws RemoteException;
 	
-	
+	/**
+	 * se teleporte sur la cible (sur une case libre autour de la cible)
+	 * @param refRMI personnage
+	 * @param refCible ennemi
+	 * @return isDeplacementEffectué
+	 * @throws RemoteException
+	 */
 	public boolean blink(int refRMI, int refCible) throws RemoteException; 
 	/**
 	 * Deplace le personnage correspondant a la console donne vers le point 
@@ -237,10 +251,37 @@ public interface IArene extends Remote {
 	public boolean deplace(int refRMI, Point objectif) throws RemoteException;
 	
 	/*Principe Inverse de deplace */
+	/**
+	 * fait l'inverse de déplace ( s'eloigne de la cible )
+	 * @param refRMI personnage
+	 * @param objectif ennemi
+	 * @return isDeplacementEffectué
+	 * @throws RemoteException
+	 */
 	public boolean deplaceLoin(int refRMI, Point objectif) throws RemoteException ;
 
+	/**
+	 * fait l'inverse de déplace ( s'eloigne de la cible )
+	 * @param refRMI personnage
+	 * @param objectif ennemi
+	 * @return isDeplacementEffectué
+	 * @throws RemoteException
+	 */
 	public boolean deplaceLoin(int refRMI, int refCible) throws RemoteException ;
 	
+
+	/**
+	 * Permet de se déplacer en direction du spawn
+	 * @param position
+	 */
+	public boolean deplaceSpawn(int refRMI, Point objectif) throws RemoteException ;
+	
+	/**
+	 * Permet de regenerer sa vie
+	 * @param refRMI cible
+	 * @throws RemoteException
+	 */
+	public void RegeneVie(int refRMI ) throws RemoteException ;
 
 	/**************************************************************************
 	 * Specifique au tournoi.
@@ -295,18 +336,6 @@ public interface IArene extends Remote {
 	 */
 	public void lancePotionEnAttente(int refRMI, String mdp) throws RemoteException;
 	
-	/**
-	 * Permet de se déplacer en direction du spawn
-	 * @param position
-	 */
-	public boolean deplaceSpawn(int refRMI, Point objectif) throws RemoteException ;
-	
-	/**
-	 * Permet de regenerer sa vie
-	 * @param refRMI cible
-	 * @throws RemoteException
-	 */
-	public void RegeneVie(int refRMI ) throws RemoteException ;
 
 }
 

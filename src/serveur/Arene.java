@@ -737,11 +737,13 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 		return res;
 	}
 	
-	public void modifCara(int refRMI, int modifForce, Caracteristique cara) throws RemoteException{
+	@Override
+	public void modifCara(int refRMI, int modif, Caracteristique cara) throws RemoteException{
 		VuePersonnage client = personnages.get(refRMI);
-		new ModifCara(this,client,modifForce,cara).agir();
+		new ModifCara(this,client,modif,cara).agir();
 	}
 	
+	@Override
 	public boolean lanceBouleDeFeu (int refRMI,int refRMIAdv) throws RemoteException{
 		boolean res =false ;
 
@@ -876,14 +878,8 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 		return res;
 	}
 	
-	/**
-	 * Verifie si on est sur le spawn
-	 * @param refRMI personnage
-	 * @param position position personnage
-	 * @return boolean si on est sur le spawn
-	 * @throws RemoteException
-	 */
 	
+	@Override
 	public boolean TestSurSpawn (int refRMI , Point position)  throws RemoteException
 	{	
 		if(( position.x >= 45 && position.x <= 55 )&&
@@ -984,6 +980,7 @@ public class Arene extends UnicastRemoteObject implements IAreneIHM, Runnable {
 		return res;
 	}
 	
+	@Override
 	public boolean blink(int refRMI, int refCible) throws RemoteException {		
 		boolean res = false;
 		
