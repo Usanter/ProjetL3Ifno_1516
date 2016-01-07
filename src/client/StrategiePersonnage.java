@@ -27,6 +27,7 @@ public class StrategiePersonnage {
   protected Console console;
   
 
+
   protected StrategiePersonnage(LoggerProjet logger){
     logger.info("Lanceur", "Creation de la console...");
   }
@@ -86,8 +87,16 @@ public class StrategiePersonnage {
     }
     
     if (voisins.isEmpty()) { // je n'ai pas de voisins, j'erre
-      console.setPhrase("J'erre...");
-      arene.deplace(refRMI, 0); 
+    	if(console.getPersonnage().getCaract(Caracteristique.VIE) < 100)
+		{
+			 console.setPhrase("Je me heal ! ");
+			arene.lanceAutoSoin(refRMI);
+		}
+		else
+		{
+		      console.setPhrase("J'erre...");
+		      arene.deplace(refRMI, 0);
+		}
       
     } else {
       int refCible = Calculs.chercheElementProche(position, voisins);
