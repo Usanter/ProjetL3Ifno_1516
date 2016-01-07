@@ -53,7 +53,7 @@ public class AreneJPanel extends JPanel {
 		int milieuY = (int) rect.getCenterY();
 		
 	    //g.fillRect(milieuX - rect.width/15,milieuY- rect.height/6, rect.width/10, rect.height/10);
-	    
+		//rectangle de heal
 	    g.setColor(Color.ORANGE);
 	    g.drawRect(milieuX - rect.width/15,milieuY- rect.height/6, rect.width/10, rect.height/10);
 	}	

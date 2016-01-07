@@ -18,7 +18,7 @@ import utilitaires.Constantes;
 public class BouleDeFeu extends Interaction<VuePersonnage> {
 	
 	/**
-	 * Cree une interaction de duel.
+	 * Cree une interaction de boule de feu (inflige la moitié de la force en dégats (bypass l'armure et le block))
 	 * @param arene arene
 	 * @param attaquant attaquant
 	 * @param defenseur defenseur

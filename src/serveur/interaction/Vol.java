@@ -16,10 +16,11 @@ import utilitaires.Constantes;
 public class Vol extends Interaction<VuePersonnage> {
 	
 	/**
-	 * Cree une interaction de duel.
-	 * @param arene arene
-	 * @param attaquant attaquant
-	 * @param defenseur defenseur
+	 * Cree une interaction de vol, vole Constantes.VOL_DE_VIE vie et Constantes.VOL_DE_FORCE force
+	 * ne vole plus de force si on est deja au dessus de 60
+	 * @param arene arene arene actuelle
+	 * @param attaquant attaquant attaquant
+	 * @param defenseur defenseur défenseur
 	 */
 	public Vol(Arene arene, VuePersonnage attaquant, VuePersonnage defenseur) {
 		super(arene, attaquant, defenseur);
@@ -30,8 +31,8 @@ public class Vol extends Interaction<VuePersonnage> {
 		try {
 			Personnage pAttaquant = (Personnage) attaquant.getElement();
 			int forceAttaquant = pAttaquant.getCaract(Caracteristique.FORCE);
-			int perteVie = 25;
-			int perteForce = 10;
+			int perteVie = Constantes.VOL_DE_VIE;
+			int perteForce = Constantes.VOL_DE_FORCE ;
 
 
 			// On enlève 25 de vie au défenseur 
