@@ -6,6 +6,7 @@ import java.util.logging.Level;
 
 import serveur.Arene;
 import serveur.element.Caracteristique;
+import serveur.element.Monstre;
 import serveur.element.Personnage;
 import serveur.vuelement.VuePersonnage;
 import utilitaires.Calculs;
@@ -28,11 +29,23 @@ public class Duel extends Interaction<VuePersonnage> {
 	}
 	
 	@Override
-	public void interagir() {
+	public void interagit() {
 		try {
-			Personnage pAttaquant = (Personnage) attaquant.getElement();
+			Personnage pAttaquant = attaquant.getElement();
+			Personnage pDefenseur = defenseur.getElement();
 			int forceAttaquant = pAttaquant.getCaract(Caracteristique.FORCE);
-			int perteVie = forceAttaquant;
+			int defDefenseur = pDefenseur.getCaract(Caracteristique.DEFENSE);
+			
+			/**
+			 * calcul des degats avec reduction
+			 */
+			double tauxDegatRecu = 1.0-(defDefenseur/100.0);
+			int perteVie = (int) (forceAttaquant*tauxDegatRecu);
+			
+			/**
+			 * Perte de defense
+			 */
+			arene.incrementeCaractElement(defenseur, Caracteristique.DEFENSE, -10);
 		
 			Point positionEjection = positionEjection(defenseur.getPosition(), attaquant.getPosition(), forceAttaquant);
 
@@ -41,15 +54,27 @@ public class Duel extends Interaction<VuePersonnage> {
 
 			// degats
 			if (perteVie > 0) {
-				arene.ajouterCaractElement(defenseur, Caracteristique.VIE, -perteVie);
+				arene.incrementeCaractElement(defenseur, Caracteristique.VIE, -perteVie);
 				
 				logs(Level.INFO, Constantes.nomRaccourciClient(attaquant) + " colle une beigne ("
 						+ perteVie + " points de degats) a " + Constantes.nomRaccourciClient(defenseur));
+				Personnage at = attaquant.getElement();
+				at.setDegatTotal(at.getDegatTotal()+perteVie);
+			}
+			
+			/**
+			 * Regain de vie si l'on tue le defenseur
+			 */
+			if (pDefenseur.getCaract(Caracteristique.VIE) <= 0 && !(pDefenseur instanceof Monstre) && !(pAttaquant instanceof Monstre)){
+				arene.incrementeCaractElement(attaquant, Caracteristique.VIE, 10);
+			}
+			if (pDefenseur.getCaract(Caracteristique.VIE) <= 0 && (pDefenseur instanceof Monstre) && !(pAttaquant instanceof Monstre)){
+				arene.incrementeCaractElement(attaquant, Caracteristique.FORCE, 10);
 			}
 			
 			// initiative
-			incrementerInitiative(defenseur);
-			decrementerInitiative(attaquant);
+			incrementeInitiative(defenseur);
+			decrementeInitiative(attaquant);
 			
 		} catch (RemoteException e) {
 			logs(Level.INFO, "\nErreur lors d'une attaque : " + e.toString());
@@ -61,8 +86,8 @@ public class Duel extends Interaction<VuePersonnage> {
 	 * @param defenseur defenseur
 	 * @throws RemoteException
 	 */
-	private void incrementerInitiative(VuePersonnage defenseur) throws RemoteException {
-		arene.ajouterCaractElement(defenseur, Caracteristique.INITIATIVE, 
+	private void incrementeInitiative(VuePersonnage defenseur) throws RemoteException {
+		arene.incrementeCaractElement(defenseur, Caracteristique.INITIATIVE, 
 				Constantes.INCR_DECR_INITIATIVE_DUEL);
 	}
 	
@@ -71,8 +96,8 @@ public class Duel extends Interaction<VuePersonnage> {
 	 * @param attaquant attaquant
 	 * @throws RemoteException
 	 */
-	private void decrementerInitiative(VuePersonnage attaquant) throws RemoteException {
-		arene.ajouterCaractElement(attaquant, Caracteristique.INITIATIVE, 
+	private void decrementeInitiative(VuePersonnage attaquant) throws RemoteException {
+		arene.incrementeCaractElement(attaquant, Caracteristique.INITIATIVE, 
 				-Constantes.INCR_DECR_INITIATIVE_DUEL);
 	}
 
@@ -112,7 +137,7 @@ public class Duel extends Interaction<VuePersonnage> {
 		int x = posDefenseur.x + dirX;
 		int y = posDefenseur.y + dirY;
 		
-		return Calculs.restreindrePositionArene(new Point(x, y));
+		return Calculs.restreintPositionArene(new Point(x, y));
 	}
 	
 	/**

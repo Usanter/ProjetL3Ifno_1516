@@ -9,7 +9,11 @@ import java.util.Scanner;
 
 import client.controle.IConsole;
 import logger.LoggerProjet;
+import serveur.element.Caracteristique;
+import serveur.element.Monstre;
+import serveur.element.Personnage;
 import serveur.element.Potion;
+import serveur.element.PotionTP;
 import serveur.vuelement.VuePersonnage;
 import serveur.vuelement.VuePotion;
 import utilitaires.Constantes;
@@ -21,8 +25,10 @@ import utilitaires.Constantes;
  *
  */
 public class AreneTournoi extends Arene {
-
+	private static List<Point> lstCoord = new ArrayList<Point>();
+	private int numeroPersonnage = 0;
 	private static final long serialVersionUID = 1L;
+	
 	
 	/**
 	 * Mot de passe administrateur.
@@ -34,6 +40,10 @@ public class AreneTournoi extends Arene {
 	 */
 	private boolean partieCommencee;
 
+	
+	//private String[] groupes = new String[30]; // contient le nom de chaque groupe present dans l'arene
+	//private int nombreGroupes = 0; // Nombre de groupes dans l'arene
+	
 	/**
 	 * Constructeur de l'arene de tournoi.
 	 * @param port le port de connexion
@@ -43,7 +53,7 @@ public class AreneTournoi extends Arene {
 	 * @param logger gestionnaire de log 
 	 * @throws Exception
 	 */
-	public AreneTournoi(int port, String adresseIP, long nbTours, LoggerProjet logger) throws Exception {
+	public AreneTournoi(int port, String adresseIP, int nbTours, LoggerProjet logger) throws Exception {
 		super(port, adresseIP, nbTours, logger);
 		
 		synchronized (this) {
@@ -52,7 +62,7 @@ public class AreneTournoi extends Arene {
 			motDePasse = sc.nextLine();
 			sc.close();
 		}
-		
+		initList(10);
 		partieCommencee = false;
 	}
 	
@@ -68,11 +78,70 @@ public class AreneTournoi extends Arene {
 				e.printStackTrace();
 			}
 		}
+		
 		super.run();
 	}
 	
-	
-	
+	@Override
+	public synchronized boolean connecte(int refRMI, String ipConsole, 
+			Personnage personnage, int nbTours, Point position) throws RemoteException {
+		
+		boolean res = true;
+		
+		int portConsole = port + refRMI;
+		String adr = Constantes.nomRMI(ipConsole, portConsole, "Console" + refRMI);
+		
+		/*
+		for (int i = 0; i < nombreGroupes; i++) { // Verification que le personnage ne fait pas parti d'un groupe deja present
+			if (personnage.getGroupe().equals(groupes[i])) {
+				logger.info(Constantes.nomClasse(this), 
+						"Demande de connexion refusee (groupe deja present)");
+				return false;
+			}
+		}
+		groupes[nombreGroupes++] = personnage.getGroupe();
+		*/
+		
+		// Verification des caracteristiques de chaque personnages
+		if((personnage.getCaract(Caracteristique.FORCE) != 30 || personnage.getCaract(Caracteristique.VIE) != 100 
+				|| personnage.getCaract(Caracteristique.INITIATIVE) != 100 || personnage.getCaract(Caracteristique.DEFENSE) != 50)
+				&& !(personnage instanceof Monstre)){
+			// refus si la partie a commence
+			res = false;
+			
+			logger.info(Constantes.nomClasse(this),"Demande de connexion refusee (Caracteristiques) (" + adr + ")");
+			
+			
+
+		} else {
+			if(!(personnage instanceof Monstre)) { // les monstres peuvent etre envoyes tout le temps
+				if(numeroPersonnage < 10){
+					if(partieCommencee) {
+						// refus si la partie a commence
+						res = false;
+						
+						logger.info(Constantes.nomClasse(this), 
+								"Demande de connexion refusee (partie deja commencee) (" + adr + ")");
+					} else {
+						position = lstCoord.get(numeroPersonnage);
+						numeroPersonnage += 1;
+						res = super.connecte(refRMI, ipConsole, personnage, nbTours, position);
+					}
+				} else {
+					res = false;
+					
+					logger.info(Constantes.nomClasse(this),"Demande de connexion refusee (nombre de joueurs = 10) (" + adr + ")");
+				}
+			} else {
+				res = super.connecte(refRMI, ipConsole, personnage, nbTours, position);
+			}
+		
+			
+		}
+		
+		return res;
+	}
+
 	@Override
 	public boolean verifieMotDePasse(char[] motDePasse) throws RemoteException{
 		boolean retour = false;
@@ -86,13 +155,13 @@ public class AreneTournoi extends Arene {
 
 	@Override
 	public void ejectePersonnage(int refRMI, String motDePasse) throws RemoteException {
-		if (this.motDePasse.equals(motDePasse)) {
+		if(this.motDePasse.equals(motDePasse)) {
 			IConsole console = consoleFromRef(refRMI);
 			
 			if (console != null) {
 				try {
 					// fermeture de la console en donnant la raison
-					consoleFromRef(refRMI).shutDown("Vous avez ete renvoye du salon.");
+					consoleFromRef(refRMI).deconnecte("Vous avez ete renvoye du salon.");
 					
 				} catch (UnmarshalException e) {
 					// ne rien faire
@@ -110,7 +179,43 @@ public class AreneTournoi extends Arene {
 	}
 
 	@Override
-	public void commencerPartie(String motDePasse) throws RemoteException {
+	public synchronized void lancePotion(Potion potion, Point position, String motDePasse) throws RemoteException {
+		if (motDePasse.equals(motDePasse)) {
+			int refRMI = alloueRefRMI();
+			VuePotion vuePotion = new VuePotion(potion, position, refRMI);
+			vuePotion.setPhrase("Caracteristiques !");
+			
+			// ajout a la liste
+			potions.put(refRMI, vuePotion);
+			
+			logger.info(Constantes.nomClasse(this), "Lancement de la potion " + 
+					vuePotion.getElement().getNomGroupe() + " (" + refRMI + ")");
+			logElements();
+		} else {
+			logger.info("Tentative de lancement de potion avec mot de passe errone");
+		}	
+	}
+
+	@Override
+	public synchronized void lancePotionTP(PotionTP potion, Point position, String motDePasse) throws RemoteException {
+		if (motDePasse.equals(motDePasse)) {
+			int refRMI = alloueRefRMI();
+			VuePotion vuePotion = new VuePotion(potion, position, refRMI);
+			vuePotion.setPhrase("Teleportation !");
+			
+			// ajout a la liste
+			potions.put(refRMI, vuePotion);
+			
+			logger.info(Constantes.nomClasse(this), "Lancement de la potion de teleportation " + 
+					vuePotion.getElement().getNomGroupe() + " (" + refRMI + ")");
+			logElements();
+		} else {
+			logger.info("Tentative de lancement de potion de teleportation avec mot de passe errone");
+		}	
+	}
+
+	@Override
+	public void commencePartie(String motDePasse) throws RemoteException {
 		if (this.motDePasse.equals(motDePasse)) {
 			partieCommencee = true;
 			logger.info("Demarrage de la partie");
@@ -121,7 +226,7 @@ public class AreneTournoi extends Arene {
 	}
 
 	@Override
-	public boolean isPartieCommencee() throws RemoteException {
+	public boolean estPartieCommencee() throws RemoteException {
 		return partieCommencee;
 	}
 
@@ -130,58 +235,25 @@ public class AreneTournoi extends Arene {
 		super.verifierPartieFinie();
 		
 		// la partie est aussi terminee s'il n'y a qu'un seul personnage
-		partieFinie = partieFinie || countPersonnages() <= 1;
+		partieFinie = partieFinie || compterPersonnages() <= 1;
 	}
 	
-	@Override
-	public synchronized void ajoutePotionEnAttente(Potion potion, Point position, 
-			String mdp) throws RemoteException {
+	/**
+	 * Compte le nombre de personnages restants (pas les monstres). 
+	 * @return
+	 */
+	private int compterPersonnages() {
+		int cpt = 0;
 		
-		if (motDePasse.equals(mdp)) {
-			int refRMI = allocateRefRMI();
-			VuePotion vuePotion = new VuePotion(potion, position, refRMI, false); // ne pas envoyer immediatement
-			vuePotion.setPhrase("En attente !");
-			
-			// ajout a la liste
-			potions.put(refRMI, vuePotion);
-			
-			logger.info(Constantes.nomClasse(this), "Ajout de la potion " + vuePotion.getElement().getNomGroupe()+" ("+refRMI+")");
-			logElements();
-		} else {
-			logger.info("Tentative d'ajout de potion avec mot de passe errone");
-		}			
-	}
-	
-	@Override
-	public void lancePotionEnAttente(int refRMI, String mdp) throws RemoteException {
-		if (this.motDePasse.equals(mdp)) {
-			VuePotion vuePotion = potions.get(refRMI);
-			
-			vuePotion.envoyer();
-			vuePotion.setPhrase("");
-			
-			logger.info(Constantes.nomClasse(this), "Lancement de la potion " + 
-					Constantes.nomCompletClient(vuePotion) + " (" + refRMI + ") dans la partie");
-			
-			logElements();
-		} else {
-			logger.info("Tentative de lancement de potion en attente avec mot de passe errone");			
-		}
-	}	
-
-	@Override
-	public List<VuePotion> getPotionsEnAttente() throws RemoteException{
-		ArrayList<VuePotion> aux = new ArrayList<VuePotion>();
-		
-		for(VuePotion vuePotion : potions.values()) {
-			if(vuePotion.isEnAttente()) {
-				aux.add(vuePotion);
+		for(VuePersonnage vp : personnages.values()) {
+			if(!(vp.getElement() instanceof Monstre)) {
+				cpt++;
 			}
 		}
 		
-		return aux;
+		return cpt;
 	}
-
+	
 	@Override
 	public String getPrintElementsMessage() {		
 		String msg = "";
@@ -195,13 +267,23 @@ public class AreneTournoi extends Arene {
 		}
 		
 		for(VuePotion vuePot : potions.values()) {
-			if(vuePot.isEnAttente()) {
-				msg += "\n" + Constantes.nomCompletClient(vuePot) + " (en attente)";
-			} else {
-				msg += "\n" + Constantes.nomCompletClient(vuePot);
-			}
+			msg += "\n" + Constantes.nomCompletClient(vuePot);
 		}
 		
 		return msg;
+	}
+
+	public void initList(int points){
+		int x = 50;
+		int y = 50;
+		int radius = 40;
+		double slice = 2 * Math.PI / points;
+	    for (int i = 0; i < points; i++)
+	    {
+	        double angle = slice * i;
+	        int newX = (int)(x + radius * Math.cos(angle));
+	        int newY = (int)(y + radius * Math.sin(angle));
+	        lstCoord.add(new Point(newX, newY));
+	    }
 	}
 }

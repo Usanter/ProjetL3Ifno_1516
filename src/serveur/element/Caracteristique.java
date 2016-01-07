@@ -16,13 +16,18 @@ public enum Caracteristique {
 	/**
 	 * Force : indique les degats infliges. 
 	 */
-	FORCE("Force", "FOR", 0, 100, 1),
+	FORCE("Force", "FOR", 0, 100, 30),
 		
 	/**
 	 * Initiative : definit l'ordre d'action des personnages lors d'un tour de jeu. 
 	 */
-	INITIATIVE("Initiative", "INIT", 0, 200, 50);
-	
+	INITIATIVE("Initiative", "INIT", 0, 200, 100),
+
+	/**
+	 * Defense : Definit la reduction de degats appliques lorsque le personne subit une attaque
+	 */
+	DEFENSE("Defense","DEF", 0, 50, 50);
+
 	/**
 	 * Nom complet.
 	 */
@@ -75,6 +80,21 @@ public enum Caracteristique {
 		
 		for (Caracteristique caract : values()) {
 			caractsValues.put(caract, caract.init);
+		}
+		
+		return caractsValues;
+	}
+
+	/**
+	 * Cree un map de caracteristiques contenant toutes les caracteristiques 
+	 * avec une valeur de 0. 
+	 * @return map caracteristique/valeur contenant les valeurs par defaut
+	 */
+	public static HashMap<Caracteristique,Integer> mapCaracteristiquesNul() {
+		HashMap<Caracteristique, Integer> caractsValues = new HashMap<Caracteristique, Integer>();
+		
+		for (Caracteristique caract : values()) {
+			caractsValues.put(caract, 0);
 		}
 		
 		return caractsValues;

@@ -15,6 +15,7 @@ import javax.swing.event.ChangeListener;
 
 import serveur.element.Caracteristique;
 import utilitaires.Calculs;
+import utilitaires.Constantes;
 
 /**
  * Panel permettant la saisie d'une caracteristique donnee.
@@ -83,9 +84,11 @@ public class SaisieCaracteristique extends JPanel {
 	
 		valeurCaract.setPreferredSize(new java.awt.Dimension(50, 28));
 		this.add(valeurCaract);
+		
+		int limiteCaract = Constantes.LIMITES_POTIONS.get(caracteristique);
 	
 		maxCaract.setHorizontalAlignment(SwingConstants.LEFT);
-		maxCaract.setText("/" + caracteristique.getMax());
+		maxCaract.setText("/" + limiteCaract);
 		maxCaract.setPreferredSize(new Dimension(31,16));
 		this.add(maxCaract);
 	
@@ -103,9 +106,9 @@ public class SaisieCaracteristique extends JPanel {
 		this.add(aleatoireCaract);
 		
 		ComboBoxModel cbm = new DefaultComboBoxModel(new String[] { 
-					"[0," + caracteristique.getMax() + "]",
-					"[-" + caracteristique.getMax() + ",0]", 
-					"[-" + caracteristique.getMax() + "," + caracteristique.getMax() + "]" 
+					"[-" + limiteCaract + "," + limiteCaract + "]",
+					"[0," + limiteCaract + "]",
+					"[-" + limiteCaract + ",0]", 
 			});
 		
 		aleatoireIntervalleCaract.setModel(cbm);
@@ -120,9 +123,9 @@ public class SaisieCaracteristique extends JPanel {
 	 */
 	private int getMinRange() {
 		switch (aleatoireIntervalleCaract.getSelectedIndex()) {
-		case 1:
+		case 0:
 		case 2:
-			return -caracteristique.getMax();
+			return -Constantes.LIMITES_POTIONS.get(caracteristique);
 		default:
 			return 0;
 		}
@@ -135,8 +138,8 @@ public class SaisieCaracteristique extends JPanel {
 	private int getMaxRange() {
 		switch (aleatoireIntervalleCaract.getSelectedIndex()) {
 		case 0:
-		case 2:
-			return caracteristique.getMax();
+		case 1:
+			return Constantes.LIMITES_POTIONS.get(caracteristique);
 		default:
 			return 0;
 		}

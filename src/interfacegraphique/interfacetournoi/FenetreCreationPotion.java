@@ -8,16 +8,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
@@ -42,6 +46,28 @@ public class FenetreCreationPotion extends JFrame {
 	 * TextField permettant d'entrer le nom de la potion.
 	 */
 	private JTextField valueNom;
+	
+	/**
+	 * Vrai si le nom de la potion a ete change. 
+	 * Si oui, on ne le modifie pas automatiquement. 
+	 */
+	private boolean nomChange = false;
+	
+	/**
+	 * Bouton radio permettant de creer une potion "standard" 
+	 * (caracteristiques).
+	 */
+	private JRadioButton radioCaract;
+	
+	/**
+	 * Bouton radio permettant de creer une potion de teleportation.
+	 */
+	private JRadioButton radioTeleportation;
+	
+	/**
+	 * Bouton radio permettant de creer un monstre.
+	 */
+	private JRadioButton radioMonstre;
 	
 	/**
 	 * Liste des panels de saisie des caracteristiques.
@@ -75,10 +101,10 @@ public class FenetreCreationPotion extends JFrame {
 
 	/**
 	 * Cree une fenetre de creation de potion.
-	 * @param ihm IHM de tournoi
+	 * @param ihmTournoi IHM de tournoi
 	 */
-    public FenetreCreationPotion(IHMTournoi ihmControle) {
-    	this.ihmTournoi = ihmControle;
+    public FenetreCreationPotion(IHMTournoi ihmTournoi) {
+    	this.ihmTournoi = ihmTournoi;
         initComponents();
     }
     
@@ -87,34 +113,105 @@ public class FenetreCreationPotion extends JFrame {
      */
     private void initComponents() {
     	setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new Dimension(460, 425));
+        setPreferredSize(new Dimension(460, 460));
         setResizable(false);
         setAlwaysOnTop(true);
         
         // grid layout de 1 colonne et de nbCaract() + 4 lignes (nom, position, bouton)
-        getContentPane().setLayout(new GridLayout(Caracteristique.nbCaracts() + 3, 1, 0, 0));        
+        getContentPane().setLayout(new GridLayout(Caracteristique.nbCaracts() + 4, 1, 0, 0));        
 
     	// nom
     	JPanel panelNom = new JPanel();
     	
-    	JLabel labelNom = new JLabel("Nom de la potion");
+    	JLabel labelNom = new JLabel("Nom de l'objet");
     	panelNom.add(labelNom);    	
 
-    	valueNom = new JTextField();
+    	valueNom = new JTextField("Potion");
     	valueNom.setPreferredSize(new Dimension(150,28));
+    	
+    	// detecter les changements
+    	valueNom.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				nomChange = true;
+ 			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {}
+		});
+    	
     	panelNom.add(valueNom);
     	
         getContentPane().add(panelNom); 
+        
+        // normale ou teleportation
+        JPanel panelType = new JPanel();
+        
+        ButtonGroup groupeType = new ButtonGroup();
+        radioCaract = new JRadioButton("Caracteristiques");
+        radioTeleportation = new JRadioButton("Teleportation");
+        radioMonstre = new JRadioButton("Monstre");
+        
+        radioCaract.setSelected(true);
+        
+        groupeType.add(radioCaract);
+        groupeType.add(radioTeleportation);
+        groupeType.add(radioMonstre);
+        
+        panelType.add(radioCaract);
+        panelType.add(radioTeleportation);
+        panelType.add(radioMonstre);
+        
+        getContentPane().add(panelType);
 
         // caracteristiques
         caractPanels = new ArrayList<SaisieCaracteristique>();
         
-        for (Caracteristique c : Caracteristique.values()) {
+        for(Caracteristique c : Caracteristique.values()) {
     		caractPanels.add(new SaisieCaracteristique(c));
         }           
         
-        for (SaisieCaracteristique cPanel : caractPanels)
-            getContentPane().add(cPanel);       
+        for(SaisieCaracteristique cPanel : caractPanels) {
+        	getContentPane().add(cPanel);       
+        }
+        
+        // activer ou desactiver les panels de caracteristiques et changer le nom
+        radioCaract.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setActiveCaracteristiques(true);
+				
+				if(!nomChange) {
+					valueNom.setText("Potion");
+				}
+			}
+		});
+        
+        radioTeleportation.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setActiveCaracteristiques(false);
+				
+				if(!nomChange) {
+					valueNom.setText("Teleportation");
+				}
+			}
+		});
+        
+        radioMonstre.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setActiveCaracteristiques(false);
+				
+				if(!nomChange) {
+					valueNom.setText("Monstre");
+				}
+			}
+		});
 
         // position
         positionPanel = new SaisiePosition();          
@@ -126,7 +223,7 @@ public class FenetreCreationPotion extends JFrame {
         lancePotion = new JButton(); 
         
 
-        clicPourPoser.setText("Cliquer sur l'arene pour poser la potion");
+        clicPourPoser.setText("Cliquer sur l'arene pour poser l'objet");
         clicPourPoser.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -140,7 +237,7 @@ public class FenetreCreationPotion extends JFrame {
         
         panelBouton.add(clicPourPoser);
         
-        lancePotion.setText("Lancer la potion");
+        lancePotion.setText("Lancer l'objet");
         panelBouton.add(lancePotion);
         lancePotion.addActionListener(new ActionListener() {
 			
@@ -153,6 +250,16 @@ public class FenetreCreationPotion extends JFrame {
         getContentPane().add(panelBouton);
 
         pack();
+    }
+    
+    /**
+     * Active ou desactive tous les panels de caracteristiques.
+     * @param active vrai si a activer, faux sinon
+     */
+    private void setActiveCaracteristiques(boolean active) {
+    	for(SaisieCaracteristique cPanel : caractPanels) {
+        	cPanel.setEnabled(active);     
+        }
     }
     
     /**
@@ -176,13 +283,15 @@ public class FenetreCreationPotion extends JFrame {
 			erreurMessage.add("Le nom saisi est invalide.");
 		}
 
-		try {
-			caracts = getCaracts();
-			
-		} catch (CaractNonValideException e) {
-			validValues = false;
-			erreurMessage.add("Les caracteristiques suivantes ne sont pas valides : <br>"
-					+ e.afficherCaracts());					
+		if(radioCaract.isSelected()) {
+			try {
+				caracts = getCaracts();
+				
+			} catch (CaractNonValideException e) {
+				validValues = false;
+				erreurMessage.add("Les caracteristiques suivantes ne sont pas valides : <br>"
+						+ e.afficheCaracts());					
+			}
 		}
 		
 		try {
@@ -196,9 +305,17 @@ public class FenetreCreationPotion extends JFrame {
 		}
 		
 		if (validValues) {
-			ihmTournoi.lancePotion(nom, caracts, position);
+			if(radioCaract.isSelected()) {
+				ihmTournoi.lancePotion(nom, caracts, position);
+				
+			} else if(radioTeleportation.isSelected()) {
+				ihmTournoi.lancePotionTeleportation(nom, position);
+				
+			} else if(radioMonstre.isSelected()) {
+				ihmTournoi.lanceMonstre(nom, position);
+			}
 		} else {
-			afficherMessageErreur(erreurMessage);
+			afficheMessageErreur(erreurMessage);
 		}
 	}
 
@@ -207,7 +324,7 @@ public class FenetreCreationPotion extends JFrame {
 	 * Affiche une liste de messages d'erreur dans une JOptionPane.
 	 * @param messages messages d'erreur
 	 */
-	private void afficherMessageErreur(List<String> messages) {
+	private void afficheMessageErreur(List<String> messages) {
 		String s = "<html><body><div width='300px' align='center'>";
 		
 		for (String msg : messages) {
@@ -281,9 +398,8 @@ public class FenetreCreationPotion extends JFrame {
      * l'arene est selectionnee.
      * @return vrai si la checkbox est selectionnee
      */
-    public boolean isClicPourPoserSelectionne() {
+    public boolean estClicPourPoserSelectionne() {
     	return clicPourPoser.isSelected();
     }
-    
     
 }

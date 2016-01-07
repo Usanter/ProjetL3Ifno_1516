@@ -8,13 +8,14 @@ import javax.swing.table.AbstractTableModel;
 
 import serveur.element.Caracteristique;
 import serveur.vuelement.VueElement;
+import serveur.vuelement.VuePersonnage;
 
 /**
  * Classe abstraite de Table Model affichant une liste de vueElement.
  * 
  * @param <V> type de vue affichee (personnages ou potions).
  */
-public abstract class ElementTableModel<V extends VueElement> extends AbstractTableModel {
+public abstract class ElementTableModel<V extends VueElement<?>> extends AbstractTableModel {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -75,6 +76,17 @@ public abstract class ElementTableModel<V extends VueElement> extends AbstractTa
 		@Override
 		public Object valeurColonne(int rowIndex, V vue) {
 			return vue.getElement().getGroupe();
+		}
+	}
+	
+	/**
+	 * Affiche le degat total d'un personnage.
+	 *
+	 */
+	protected class ValeurColonneDegat implements IValeurColonne<V> {
+		@Override
+		public Object valeurColonne(int rowIndex, V vue) {
+			return ((VuePersonnage)vue).getElement().getDegatTotal();
 		}
 	}
 
@@ -140,7 +152,7 @@ public abstract class ElementTableModel<V extends VueElement> extends AbstractTa
 	 */
 	public Color getColor(int rowIndex) {
         if (rowIndex < vues.size()) {
-        	return vues.get(rowIndex).getColor();
+        	return vues.get(rowIndex).getCouleur();
         } else {
         	return null;
         }
