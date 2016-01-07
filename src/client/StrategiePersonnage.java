@@ -238,6 +238,18 @@ public class StrategiePersonnage {
 		return Calculs.distanceChebyshev(arene.getPosition(refRMI), arene.getPosition(refCible));
 	}
 	
+	int get_nearest_monster(IArene arene,HashMap<Integer, Point> voisins, int refRMI )throws RemoteException{
+		int refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
+		while(!arene.estMonstreFromRef(refCible) && voisins.size() >= 2)
+		{
+			voisins.remove(refCible);
+			refCible = Calculs.chercheElementProche(arene.getPosition(refRMI),voisins);
+			if(arene.estMonstreFromRef(refCible)) return refCible;
+		}
+		return refCible;
+	}
+	
+	
 	
 	
 }
