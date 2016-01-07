@@ -150,10 +150,22 @@ public class StrategiePersonnage {
 							arene.deplace(refRMI, refCible);
 							arene.lanceAttaque(refRMI, refCible);
 						}
+<<<<<<< HEAD
 						else
 						{
 							//ICI IL FAUDRAIT FAIRE CLAIVOYANCE POUR SAVOIR SI ON LE FUI OU PAS
 							console.setPhrase("Je vais vers "  +elemPlusProche );
+=======
+						else{
+							if(voisins.size() >= 2){
+								String temp = elemPlusProche;
+								voisins.remove(refCible);
+								refCible = Calculs.chercheElementProche(position,voisins);
+								distPlusProche = Calculs.distanceChebyshev(position,arene.getPosition(refCible));
+								elemPlusProche = arene.nomFromRef(refCible);
+								console.setPhrase(temp+" -> "+elemPlusProche);
+							}
+>>>>>>> 55046a4e2167459a1be288666b90e7f71f32ed48
 							arene.deplace(refRMI, refCible);
 						}
 					}
