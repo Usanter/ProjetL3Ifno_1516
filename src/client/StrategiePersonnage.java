@@ -102,10 +102,11 @@ public class StrategiePersonnage {
 					refCible = Calculs.chercheElementProche(position,voisins);
 					distPlusProche = Calculs.distanceChebyshev(position,arene.getPosition(refCible));
 					elemPlusProche = arene.nomFromRef(refCible);
-					if (!arene.estMonstreFromRef(refCible))
-					{
-						refCible = 0;
-					}
+
+				}
+				if (!arene.estMonstreFromRef(refCible) && voisins.size() < 2)
+				{
+					refCible = 0;
 				}
 				//Si on a pas trouvé de monstre dans notre rayon d'action on cherche des popo
 				if (refCible == 0)
@@ -120,23 +121,24 @@ public class StrategiePersonnage {
 						refCible = Calculs.chercheElementProche(position,voisins);
 						distPlusProche = Calculs.distanceChebyshev(position,arene.getPosition(refCible));
 						elemPlusProche = arene.nomFromRef(refCible);
-						if (!arene.estPotionFromRef(refCible))
-						{
-							refCible = 0;
-						}
+
 					}
-				}
-				//Si on a ni trouvé de monstre ni de popo alors on garde notre voisin le plus proche
-				if (refCible == 0)
-				{
-					voisins=arene.getVoisins(refRMI);
-					refCible = Calculs.chercheElementProche(position, voisins);
-					distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
-					elemPlusProche = arene.nomFromRef(refCible);
+					if (!arene.estPotionFromRef(refCible) && voisins.size() < 2)
+					{
+						refCible = 0;
+					}
+					//Si on a ni trouvé de monstre ni de popo alors on garde notre voisin le plus proche
+					if (refCible == 0)
+					{
+						voisins=arene.getVoisins(refRMI);
+						refCible = Calculs.chercheElementProche(position, voisins);
+						distPlusProche = Calculs.distanceChebyshev(position, arene.getPosition(refCible));
+						elemPlusProche = arene.nomFromRef(refCible);
+					}
 				}
 			}
 			
-			
+
 			if(distPlusProche <= Constantes.DISTANCE_MIN_INTERACTION) { // si suffisamment proches
 				// j'interagis directement
 				if (elemPlusProche == "Monstre")
@@ -181,6 +183,7 @@ public class StrategiePersonnage {
 							if (console.getPersonnage().getCaract(Caracteristique.VIE) < 100)
 							{
 								arene.lanceAutoSoin(refRMI);
+								console.setPhrase("Je me soigne ...");
 							}
 							else
 							{
@@ -201,7 +204,6 @@ public class StrategiePersonnage {
 						}
 					}
 				}
-					
 				//Potion ! 
 				else
 				{
